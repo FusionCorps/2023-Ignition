@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -12,6 +15,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.math.SwerveCalcs;
@@ -72,6 +78,8 @@ public class Chassis extends SubsystemBase {
 
     public Chassis() {
         m_field = new Field2d();
+
+        SmartDashboard.putData("Field", m_field);
     }
 
     // ported from last year
@@ -204,6 +212,25 @@ public class Chassis extends SubsystemBase {
         comboBR.passState(desired[3]);
     }
 
-    
+    public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
+        return new SequentialCommandGroup(
+                new InstantCommand(() -> {
+                    // Reset odometry for the first path you run during auto
+                    if(isFirstPath){
+                        this.resetOdometry(traj.getInitialHolonomicPose());
+                    }
+                }),
+                new PPSwerveControllerCommand(
+                        traj,
+                        this::getPose, // Pose supplier
+                        this.m_kinematics, // SwerveDriveKinematics
+                        new PIDController(1, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        new PIDController(1, 0, 0), // Y controller (usually the same values as X controller)
+                        new PIDController(1, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        this::setModuleStates, // Module states consumer
+                        this // Requires this drive subsystem
+                )
+        );
+    }
 
 }
