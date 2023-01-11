@@ -19,7 +19,6 @@ public class XboxTrigger extends Trigger {
         threshold = thresh;
     }
 
-    @Override
     public boolean get() {
         return(mController.getRawAxis(axis_val) > threshold);
     }
