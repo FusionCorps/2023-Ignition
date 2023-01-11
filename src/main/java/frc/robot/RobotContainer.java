@@ -29,7 +29,6 @@ public class RobotContainer {
   public static CommandXboxController m_controller =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-  private final Chassis m_chassis = new Chassis();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
