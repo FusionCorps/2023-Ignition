@@ -66,4 +66,6 @@ public final class Constants {
 
   public static double WHEEL_RADIUS_METERS = 0.0508;
 
+  public static double Align_P = 0;
+  public static double Align_D = 0;
 }
