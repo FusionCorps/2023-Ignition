@@ -24,13 +24,13 @@ public class SwerveCalcs {
     public SwerveCalcs(double forward_input, double strafe_input, double rot_input) {
         new Constants();
 
-        this.alpha = Math.atan(Constants.TRACK_LENGTH_METERS/Constants.TRACK_WIDTH_METERS);
-        this.distToWheel = Math.sqrt((Math.pow(Constants.TRACK_LENGTH_METERS, 2)) +
+        alpha = Math.atan(Constants.TRACK_LENGTH_METERS/Constants.TRACK_WIDTH_METERS);
+        distToWheel = Math.sqrt((Math.pow(Constants.TRACK_LENGTH_METERS, 2)) +
                 (Math.pow(Constants.TRACK_WIDTH_METERS, 2)));
 
-        this.forward_speed = forward_input*Constants.SWERVE_FORWARD_SPEED_MAX;
-        this.strafe_speed = strafe_input*Constants.SWERVE_STRAFE_SPEED_MAX;
-        this.rot_added_speed = rot_input*distToWheel*Constants.SWERVE_ROT_SPEED_MAX;
+        forward_speed = forward_input*Constants.SWERVE_FORWARD_SPEED_MAX;
+        strafe_speed = strafe_input*Constants.SWERVE_STRAFE_SPEED_MAX;
+        rot_added_speed = rot_input*distToWheel*Constants.SWERVE_ROT_SPEED_MAX;
     }
 
 

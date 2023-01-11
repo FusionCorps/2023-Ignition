@@ -23,8 +23,6 @@ import frc.robot.Constants;
 import frc.robot.math.SwerveCalcs;
 import frc.robot.modules.SwerveCombo;
 
-import java.io.FileWriter;
-
 import static frc.robot.Constants.*;
 import static frc.robot.math.SwerveCalcs.getAngle;
 import static frc.robot.math.SwerveCalcs.getSpeed;
