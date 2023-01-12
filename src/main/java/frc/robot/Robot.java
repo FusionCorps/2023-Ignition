@@ -4,11 +4,16 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import static frc.robot.RobotContainer.m_chassis;
 
 
 /**
@@ -62,9 +67,10 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(8, 5));
 
-    // schedule the autonomous command (example)
+    m_autonomousCommand = m_chassis.followTrajectoryCommand(examplePath, true);
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }

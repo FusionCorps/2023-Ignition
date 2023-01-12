@@ -4,10 +4,16 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Chassis.ChassisDrive;
+import frc.robot.commands.Chassis.ChassisDriveFC;
+import frc.robot.commands.Chassis.ChassisTargetToCone;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.Cameras;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,7 +29,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Chassis m_chassis = new Chassis();
+  public static Chassis m_chassis = new Chassis();
+  private final Cameras m_cameras = new Cameras();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static CommandXboxController m_controller =
@@ -40,7 +47,7 @@ public class RobotContainer {
     m_chassis.comboFL.zero();
     m_chassis.comboBL.zero();
 
-    m_chassis.setDefaultCommand(new ChassisDrive(m_chassis));
+    m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
   }
 
   /**
@@ -60,6 +67,10 @@ public class RobotContainer {
     // // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // // cancelling on release.
     // m_controller.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    m_controller.b().whileTrue(new InstantCommand(m_chassis::resetGyro));
+
+    m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
   }
 
   /**

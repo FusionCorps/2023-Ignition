@@ -70,7 +70,8 @@ public class Chassis extends SubsystemBase {
                 comboBL.getPosition(),
                 comboFR.getPosition(),
                 comboBR.getPosition()
-            });
+            },
+            new Pose2d(5, 5, ahrs.getRotation2d()));
 
     Field2d m_field;
 
@@ -229,6 +230,11 @@ public class Chassis extends SubsystemBase {
                         this // Requires this drive subsystem
                 )
         );
+
+    }
+
+    public void resetGyro() {
+        ahrs.reset();
     }
 
 }
