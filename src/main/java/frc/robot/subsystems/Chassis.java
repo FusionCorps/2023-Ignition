@@ -192,6 +192,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public void resetOdometry(Pose2d pose) {
+
         m_odometry.resetPosition(ahrs.getRotation2d(), new SwerveModulePosition[] {
                 comboFL.getPosition(),
                 comboBL.getPosition(),
@@ -206,8 +207,8 @@ public class Chassis extends SubsystemBase {
 
     public void setModuleStates(SwerveModuleState[] desired) {
         comboFL.passState(desired[0]);
-        comboFR.passState(desired[1]);
-        comboBL.passState(desired[2]);
+        comboBL.passState(desired[1]);
+        comboFR.passState(desired[2]);
         comboBR.passState(desired[3]);
     }
 
@@ -225,7 +226,7 @@ public class Chassis extends SubsystemBase {
                         this.m_kinematics, // SwerveDriveKinematics
                         new PIDController(1, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
                         new PIDController(1, 0, 0), // Y controller (usually the same values as X controller)
-                        new PIDController(1, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        new PIDController(5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
                         this::setModuleStates, // Module states consumer
                         this // Requires this drive subsystem
                 )

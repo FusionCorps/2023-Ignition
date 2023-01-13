@@ -19,6 +19,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.ShooterTest;
 
 
 /**
@@ -31,6 +32,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public static Chassis m_chassis = new Chassis();
   private final Cameras m_cameras = new Cameras();
+  private final ShooterTest m_shooter = new ShooterTest();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static CommandXboxController m_controller =
@@ -69,6 +71,7 @@ public class RobotContainer {
     // m_controller.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     m_controller.b().whileTrue(new InstantCommand(m_chassis::resetGyro));
+    m_controller.a().whileTrue(m_shooter.runOnce(() -> {m_shooter.setShooterTalon(-0.25);}));
 
     m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
   }
