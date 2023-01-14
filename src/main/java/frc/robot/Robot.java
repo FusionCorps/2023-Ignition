@@ -42,11 +42,16 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
 
-     // -----AUTON SELECTION INSTRUCTIONS--------
+    // -----AUTON SELECTION INSTRUCTIONS--------
     // to add new command to command selction follow this format:
     // m_chooser.addOption("Auton_Name", auton_variable)
     // if it is the first auton in the list, use m_chooser.setDefaultOption("Auton_Name", auton_variable)
     m_robotContainer = new RobotContainer();
+
+    m_chooser.addOption("Test Line", m_robotContainer.autoOne);
+    m_chooser.addOption("Two Piece Left", m_robotContainer.autoTwo);
+
+    m_chooser.setDefaultOption("Two Piece Left", m_robotContainer.autoTwo);
 
     // adds the auton selection to ShuffleBoard
     SmartDashboard.putData(m_chooser);
@@ -80,12 +85,9 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(8, 5));
 
     // returns the selected auton
     m_autonomousCommand = m_chooser.getSelected();
-    
-    //m_autonomousCommand = m_chassis.followTrajectoryCommand(examplePath, true);
 
 
     if (m_autonomousCommand != null) {

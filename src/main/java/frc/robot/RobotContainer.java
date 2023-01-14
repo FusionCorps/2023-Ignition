@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -39,6 +42,9 @@ public class RobotContainer {
   public static CommandXboxController m_controller =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+  public Command autoOne;
+  public Command autoTwo;
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -51,6 +57,12 @@ public class RobotContainer {
     m_chassis.comboBL.zero();
 
     m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
+
+    PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
+    autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
+
+    PathPlannerTrajectory examplePathTwo = PathPlanner.loadPath("2piececombo", new PathConstraints(4, 3));
+    autoTwo = m_chassis.followTrajectoryCommand(examplePathTwo, true);
   }
 
   /**
@@ -85,8 +97,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.AutonLine(m_chassis);
-  }
+//  public Command getAutonomousCommand() {
+//    // An example command will be run in autonomous
+//    return autoCommand;
+//  }
 }

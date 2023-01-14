@@ -54,10 +54,9 @@ public class ChassisAutoBalance extends CommandBase {
         // don't want to end command, so keep holding wheels locked
         if (isTriggered) {
             mChassis.crossWheels();
+        } else {
+            mChassis.runSwerve(-0.2, 0, 0);
         }
-//        else {
-//            mChassis.runSwerve(-0.2, 0, 0);
-//        }
 
         priorPitch = mChassis.ahrs.getPitch();
     }
