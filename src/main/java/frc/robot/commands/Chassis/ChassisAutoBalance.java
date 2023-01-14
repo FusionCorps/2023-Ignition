@@ -35,6 +35,7 @@ public class ChassisAutoBalance extends CommandBase {
 
     @Override
     public void execute() {
+        // alternate idea: start tilted up, then trigger on going underneath a certain thresh
         if (mChassis.ahrs.getPitch() < priorPitch) {
             triggerCounter++;
         } else {
