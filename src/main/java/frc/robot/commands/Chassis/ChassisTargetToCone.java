@@ -7,6 +7,7 @@ import frc.robot.subsystems.Cameras;
 import frc.robot.subsystems.Chassis;
 
 import static frc.robot.RobotContainer.m_controller;
+import static java.lang.Math.abs;
 
 public class ChassisTargetToCone extends CommandBase {
 
@@ -38,6 +39,11 @@ public class ChassisTargetToCone extends CommandBase {
     public void execute() {
         // pass args to swerve modules
         double tx = mCameras.ll_table.getEntry("tx").getDouble(0.0);
+
+        if (abs(tx) <= 0.8) {
+            tx = 0;
+        }
+
         double angle = mChassis.ahrs.getAngle() % 360;
 
         System.out.println(angle);

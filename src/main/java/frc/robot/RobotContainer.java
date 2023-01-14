@@ -71,7 +71,7 @@ public class RobotContainer {
     // m_controller.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     m_controller.b().whileTrue(new InstantCommand(m_chassis::resetGyro));
-    m_controller.a().whileTrue(m_shooter.runOnce(() -> {m_shooter.setShooterTalon(-0.25);}));
+    m_controller.a().onTrue(m_cameras.runOnce(() -> {m_cameras.togglePipeline();}));
 
     m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
   }
