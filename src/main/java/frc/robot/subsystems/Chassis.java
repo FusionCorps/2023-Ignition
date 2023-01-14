@@ -132,10 +132,10 @@ public class Chassis extends SubsystemBase {
 
     // used for braking when scoring, balancing ideally
     public void crossWheels() {
-        this.comboFL.passArgs(0, 1/4*PI);
-        this.comboBL.passArgs(0, 3/4*PI);
-        this.comboFR.passArgs(0, 5/4*PI);
-        this.comboBR.passArgs(0, 7/4*PI);
+        this.comboFL.passArgsNoDeadzone(0, -PI/4);
+        this.comboBL.passArgsNoDeadzone(0, PI/4);
+        this.comboFR.passArgsNoDeadzone(0, PI/4);
+        this.comboBR.passArgsNoDeadzone(0, -PI/4);
     }
 
 

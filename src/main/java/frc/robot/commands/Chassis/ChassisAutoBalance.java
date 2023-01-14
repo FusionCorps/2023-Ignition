@@ -31,12 +31,14 @@ public class ChassisAutoBalance extends CommandBase {
     @Override
     public void initialize() {
         priorPitch = mChassis.ahrs.getPitch();
+        isTriggered = false;
+        System.out.println("Command Started");
     }
 
     @Override
     public void execute() {
         // alternate idea: start tilted up, then trigger on going underneath a certain thresh
-        if (mChassis.ahrs.getPitch() < priorPitch) {
+        if (mChassis.ahrs.getPitch() + 0.005 < priorPitch) {
             triggerCounter++;
         } else {
             triggerCounter--;
@@ -46,14 +48,18 @@ public class ChassisAutoBalance extends CommandBase {
 
         if (triggerCounter > 3) {
             isTriggered = true;
+            System.out.println("Triggered");
         }
 
         // don't want to end command, so keep holding wheels locked
         if (isTriggered) {
             mChassis.crossWheels();
-        } else {
-            mChassis.runSwerve(0.2, 0, 0);
         }
+//        else {
+//            mChassis.runSwerve(-0.2, 0, 0);
+//        }
+
+        priorPitch = mChassis.ahrs.getPitch();
     }
 
 

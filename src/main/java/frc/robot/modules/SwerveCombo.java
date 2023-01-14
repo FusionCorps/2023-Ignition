@@ -118,6 +118,49 @@ public class SwerveCombo {
         }
     }
 
+    public void passArgsNoDeadzone(double speed, double angle) {
+
+        // pass a speed and angle to a module
+        new Constants();
+
+        // get the current angle, as well a driveConstant and angleConstant to convert ticks to meters
+        double encAngle = axisMotor.getSelectedSensorPosition()/STEERING_RATIO/2048*(2*PI);
+
+        // thank you CTRE for making this per 100ms
+        // I'm sure it was for a good reason at some point
+        double driveConstant = 204.8/(2*PI)*DRIVING_RATIO/WHEEL_RADIUS_METERS;
+        double angleConstant = 2048/(2*PI)*STEERING_RATIO;
+
+        // convert speed to ticks / 100 ms
+        speed *= driveConstant;
+
+        // loop angle to 0-2PI
+        double encTrue = encAngle%(2*PI);
+
+        // get the difference in theta
+        double dTheta = angle - encTrue;
+
+        // logic to make the axle motion continuous
+        // (thank you 2910)
+        if (abs(-2*PI + dTheta) < abs(dTheta)) {
+            if (abs(-2*PI + dTheta) < abs(2*PI + dTheta)) {
+                dTheta = -2*PI + dTheta;
+            } else {
+                dTheta = 2*PI + dTheta;
+            }
+        } else if (abs(dTheta) > abs(2*PI + dTheta)) {
+            dTheta = 2*PI + dTheta;
+        }
+
+        // convert to final position target
+        double angleFinal = encAngle + dTheta;
+        angleFinal *= angleConstant;
+
+        this.axisMotor.set(ControlMode.Position, angleFinal);
+        this.driveMotor.set(ControlMode.Velocity, speed);
+
+    }
+
     // resets encoders from CanCoder value
     public void zero() {
         absEncDeg = this.coder.getAbsolutePosition();
