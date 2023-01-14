@@ -27,6 +27,7 @@ import static frc.robot.Constants.*;
 import static frc.robot.math.SwerveCalcs.getAngle;
 import static frc.robot.math.SwerveCalcs.getSpeed;
 import static java.lang.Double.max;
+import static java.lang.Math.PI;
 
 public class Chassis extends SubsystemBase {
 
@@ -79,6 +80,9 @@ public class Chassis extends SubsystemBase {
         m_field = new Field2d();
 
         SmartDashboard.putData("Field", m_field);
+
+        // TODO: Make sure this doesn't break anything
+        ahrs.calibrate();
     }
 
     // ported from last year
@@ -125,6 +129,16 @@ public class Chassis extends SubsystemBase {
         this.comboBR.passArgs(ratio * speedBR, getAngle(fwd, str, rot, 3));
 
     }
+
+    // used for braking when scoring, balancing ideally
+    public void crossWheels() {
+        this.comboFL.passArgs(0, 1/4*PI);
+        this.comboBL.passArgs(0, 3/4*PI);
+        this.comboFR.passArgs(0, 5/4*PI);
+        this.comboBR.passArgs(0, 7/4*PI);
+    }
+
+
 
     // does the same calcs but passes a velocity of 0
     // used to align the modules in auton
