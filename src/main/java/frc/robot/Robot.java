@@ -10,6 +10,8 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -27,6 +29,9 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  // -----AUTON SELECTION INSTRUCTIONS--------
+  // to add auton to auton selection, initiate auton variable here:
+  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -36,8 +41,16 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
+
+     // -----AUTON SELECTION INSTRUCTIONS--------
+    // to add new command to command selction follow this format:
+    // m_chooser.addOption("Auton_Name", auton_variable)
+    // if it is the first auton in the list, use m_chooser.setDefaultOption("Auton_Name", auton_variable)
     m_robotContainer = new RobotContainer();
 
+    // adds the auton selection to ShuffleBoard
+    SmartDashboard.putData(m_chooser);
+    
     CameraServer.startAutomaticCapture();
   }
 
@@ -69,7 +82,11 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(8, 5));
 
-    m_autonomousCommand = m_chassis.followTrajectoryCommand(examplePath, true);
+    // returns the selected auton
+    m_autonomousCommand = m_chooser.getSelected();
+    
+    //m_autonomousCommand = m_chassis.followTrajectoryCommand(examplePath, true);
+
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
