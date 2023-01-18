@@ -1,5 +1,6 @@
 package frc.robot.commands.Chassis;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
 
@@ -22,15 +23,18 @@ public class ChassisAutoBalance extends CommandBase {
     int triggerCounter = 0;
     boolean isTriggered = false;
 
+    Timer backup_timer;
+
     public ChassisAutoBalance(Chassis chassis) {
         mChassis = chassis;
+        backup_timer = new Timer();
 
         addRequirements(mChassis);
     }
 
     @Override
     public void initialize() {
-        priorPitch = mChassis.ahrs.getPitch();
+        priorPitch = mChassis.ahrs.getRoll();
         isTriggered = false;
         System.out.println("Command Started");
     }
@@ -38,27 +42,31 @@ public class ChassisAutoBalance extends CommandBase {
     @Override
     public void execute() {
         // alternate idea: start tilted up, then trigger on going underneath a certain thresh
-        if (mChassis.ahrs.getPitch() + 0.005 < priorPitch) {
-            triggerCounter++;
-        } else {
-            triggerCounter--;
-        }
 
-        triggerCounter = max(triggerCounter, 0);
+        // System.out.println(mChassis.ahrs.getRoll());
 
-        if (triggerCounter > 3) {
+        if (mChassis.ahrs.getRoll() < 13) {
+
+            if (!isTriggered) {
+                backup_timer.reset();
+                backup_timer.start();
+            }
+
             isTriggered = true;
-            System.out.println("Triggered");
         }
+
+
+
 
         // don't want to end command, so keep holding wheels locked
-        if (isTriggered) {
+        if (isTriggered && backup_timer.hasElapsed(1)) {
             mChassis.crossWheels();
+        } else if (isTriggered) {
+            mChassis.runSwerve(0.05, 0, 0);
         } else {
-            mChassis.runSwerve(-0.2, 0, 0);
+            mChassis.runSwerve(-0.15, 0, 0);
         }
 
-        priorPitch = mChassis.ahrs.getPitch();
     }
 
 

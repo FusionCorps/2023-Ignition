@@ -49,9 +49,9 @@ public final class Constants {
 
   // PIDs (potentially very wack)
   public static double AXIS_kF = 0.0;
-  public static double AXIS_kP = 0.07;
+  public static double AXIS_kP = 0.2;
   public static double AXIS_kI = 0.0;
-  public static double AXIS_kD = 0.30;
+  public static double AXIS_kD = 0.1;
 
   // note SDS default 0 0.2 0 0.1
 

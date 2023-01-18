@@ -132,6 +132,8 @@ public class Chassis extends SubsystemBase {
 
     // used for braking when scoring, balancing ideally
     public void crossWheels() {
+        System.out.println("Crossing");
+
         this.comboFL.passArgsNoDeadzone(0, -PI/4);
         this.comboBL.passArgsNoDeadzone(0, PI/4);
         this.comboFR.passArgsNoDeadzone(0, PI/4);
@@ -238,8 +240,8 @@ public class Chassis extends SubsystemBase {
                         traj,
                         this::getPose, // Pose supplier
                         this.m_kinematics, // SwerveDriveKinematics
-                        new PIDController(1, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        new PIDController(1, 0, 0), // Y controller (usually the same values as X controller)
+                        new PIDController(10, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        new PIDController(10, 0, 0), // Y controller (usually the same values as X controller)
                         new PIDController(5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
                         this::setModuleStates, // Module states consumer
                         this // Requires this drive subsystem
