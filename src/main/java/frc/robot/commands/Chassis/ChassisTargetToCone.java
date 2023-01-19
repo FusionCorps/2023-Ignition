@@ -48,13 +48,22 @@ public class ChassisTargetToCone extends CommandBase {
 
         System.out.println(angle);
 
+//        try {
+//            mChassis.runSwerve(m_controller.getRawAxis(1),
+//                    str_controller.calculate(tx, 0),
+//                    rot_controller.calculate(angle, starting_angle));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         try {
             mChassis.runSwerve(m_controller.getRawAxis(1),
                     str_controller.calculate(tx, 0),
-                    rot_controller.calculate(angle, starting_angle));
+                    m_controller.getRawAxis(4));
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
 }

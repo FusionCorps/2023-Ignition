@@ -62,9 +62,9 @@ public class ChassisAutoBalance extends CommandBase {
         if (isTriggered && backup_timer.hasElapsed(1)) {
             mChassis.crossWheels();
         } else if (isTriggered) {
-            mChassis.runSwerve(0.05, 0, 0);
+            mChassis.runSwerve(0.2, 0, 0);
         } else {
-            mChassis.runSwerve(-0.15, 0, 0);
+            mChassis.runSwerve(-0.3, 0, 0);
         }
 
     }

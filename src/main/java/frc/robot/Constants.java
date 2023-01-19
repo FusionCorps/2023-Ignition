@@ -47,7 +47,7 @@ public final class Constants {
 
   public static double MAX_SPEED = 9.2;
 
-  // PIDs (potentially very wack)
+  // PIDs (potentially very wack) (olds can be found in 2022 code)
   public static double AXIS_kF = 0.0;
   public static double AXIS_kP = 0.2;
   public static double AXIS_kI = 0.0;
