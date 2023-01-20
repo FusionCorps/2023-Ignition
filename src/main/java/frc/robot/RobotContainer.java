@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.Chassis.ChassisAltAutoBalance;
 import frc.robot.commands.Chassis.ChassisAutoBalance;
 import frc.robot.commands.Chassis.ChassisDrive;
 import frc.robot.commands.Chassis.ChassisDriveFC;
@@ -87,7 +88,8 @@ public class RobotContainer {
     m_controller.x().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
     m_controller.a().onTrue(m_cameras.runOnce(() -> {m_cameras.togglePipeline();}));
 
-    m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
+    //m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
+    m_controller.leftBumper().whileTrue(new ChassisAltAutoBalance(m_chassis));
 
     m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
   }

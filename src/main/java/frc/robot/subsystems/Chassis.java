@@ -250,6 +250,14 @@ public class Chassis extends SubsystemBase {
 
     }
 
+    public double getPitch(){
+        return ahrs.getPitch();
+    }
+
+    public double getRoll(){
+        return ahrs.getRoll();
+    }
+
     public void resetGyro() {
         ahrs.reset();
     }

@@ -66,4 +66,6 @@ public final class Constants {
 
   public static double WHEEL_RADIUS_METERS = 0.0508;
 
+  public static double CHARGE_STATION_BALANCE_ANGLE_GOAL = 3.25;
+
 }
