@@ -41,21 +41,21 @@ public class ChassisAltAutoBalance extends CommandBase {
     public void execute(){
         currentAngle = mChassis.getRoll();
 
-        error = -currentAngle;
-        drivePower = Math.min(error* Constants.DRIVE_kP,1);
+        error = -currentAngle + 11.75;
+        drivePower = Math.min(error* Constants.AUTON_DRIVE_kP,1);
 
         System.out.println(error + ", " + drivePower + ", " + currentAngle);
 
 
-        if (Math.abs(drivePower) > 0.2) {
-            drivePower = Math.copySign(0.2, drivePower);
+        if (Math.abs(drivePower) > 0.1) {
+            drivePower = Math.copySign(0.1, drivePower);
         }
         mChassis.runSwerve(drivePower,0,0);
     }
 
     @Override
     public void end(boolean interrupted){
-        mChassis.runSwerve(0,0,0);
+        mChassis.crossWheels();
     }
 
     @Override
@@ -72,6 +72,7 @@ public class ChassisAltAutoBalance extends CommandBase {
         } else if (inMarginofError && endTimer.hasElapsed(Constants.CHARGE_STATION_STABILIZE_SECONDS)) {
             endTimer.stop();
             endTimer.reset();
+            mChassis.crossWheels();
             finished = true;
         }
 
