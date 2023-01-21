@@ -17,6 +17,31 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
+  public static class ArmConstants {
+    public static final int BASE_ID = -1;
+    public static final int WRIST_ID = -1;
+
+    public static final double BASE_kF = 0;
+    public static final double BASE_kP = 0;
+    public static final double BASE_kI = 0;
+    public static final double BASE_kD = 0;
+
+    public static final double WRIST_kF = 0;
+    public static final double WRIST_kP = 0;
+    public static final double WRIST_kI = 0;
+    public static final double WRIST_kD = 0;
+
+    public static final double BASE_FF = 0;
+    public static final double WRIST_FF = 0;
+
+    public static final double BASE_GEAR_RATIO = 1;
+    public static final double WRIST_GEAR_RATIO = 1;
+
+    public static final int BASE_START_POS = 0;
+    public static final int WRIST_START_POS = 0;
+
+  }
+
   // MOTOR IDS for the SWERVE
   public static int AXIS_FL_ID = 0;
   public static int AXIS_BL_ID = 1;
