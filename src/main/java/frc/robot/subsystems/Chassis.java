@@ -54,7 +54,7 @@ public class Chassis extends SubsystemBase {
 
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
-    // odometry set-up
+    // odometry set-up (import)
     private final Translation2d m_frontLeftLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_frontRightLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, -TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_backLeftLocation = new Translation2d(-TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
