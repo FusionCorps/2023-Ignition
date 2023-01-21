@@ -8,6 +8,8 @@ import frc.robot.subsystems.Chassis;
 
 import static frc.robot.RobotContainer.m_controller;
 import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.StrictMath.PI;
 
 public class ChassisTargetToCone extends CommandBase {
 
@@ -57,7 +59,7 @@ public class ChassisTargetToCone extends CommandBase {
 //        }
 
         try {
-            mChassis.runSwerve(m_controller.getRawAxis(1),
+            mChassis.runSwerve(m_controller.getRawAxis(1)*cos(angle/360*(2*PI)),
                     str_controller.calculate(tx, 0),
                     m_controller.getRawAxis(4));
         } catch (Exception e) {

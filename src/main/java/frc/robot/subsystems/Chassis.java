@@ -260,6 +260,12 @@ public class Chassis extends SubsystemBase {
 
     public void resetGyro() {
         ahrs.reset();
+        ahrs.setAngleAdjustment(0);
+    }
+
+    public void setGyroAngle(double angle) {
+        ahrs.reset();
+        ahrs.setAngleAdjustment(angle);
     }
 
 }

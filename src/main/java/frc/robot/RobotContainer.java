@@ -9,6 +9,7 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
@@ -63,7 +64,8 @@ public class RobotContainer {
     autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
 
     PathPlannerTrajectory examplePathTwo = PathPlanner.loadPath("2piececombo", new PathConstraints(4, 3));
-    autoTwo = m_chassis.followTrajectoryCommand(examplePathTwo, true);
+    autoTwo = new SequentialCommandGroup(m_chassis.runOnce(() -> {m_chassis.setGyroAngle(180);}),
+            m_chassis.followTrajectoryCommand(examplePathTwo, true));
   }
 
   /**
