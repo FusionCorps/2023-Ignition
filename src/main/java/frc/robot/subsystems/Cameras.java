@@ -19,16 +19,16 @@ public class Cameras extends SubsystemBase {
 
     @Override
     public void periodic() {
-        double[] botpose = ll_table.getEntry("botpose").getDoubleArray(new double[] {0.0, 0.0});
+        // double[] botpose = ll_table.getEntry("botpose").getDoubleArray(new double[] {0.0, 0.0});
 
-        String ret_str = "";
-
-        for (double value: botpose) {
-            ret_str += value;
-            ret_str += "|";
-        }
-
-        System.out.println(ret_str);
+//        String ret_str = "";
+//
+//        for (double value: botpose) {
+//            ret_str += value;
+//            ret_str += "|";
+//        }
+//
+//        System.out.println(ret_str);
     }
 
     public double tx() {
@@ -37,6 +37,10 @@ public class Cameras extends SubsystemBase {
 
     public double ty() {
         return ll_table.getEntry("ty").getDouble(0.0);
+    }
+
+    public double[] botpose() {
+        return ll_table.getEntry("botpose").getDoubleArray(new double[] {0.0, 0.0});
     }
 
     // assuming we are using 0/1 for tape/tag pipelines, respectively

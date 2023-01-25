@@ -16,6 +16,8 @@ public class ChassisTargetToCone extends CommandBase {
     Chassis mChassis;
     Cameras mCameras;
 
+    // TODO: Investigate squared PID
+    // PIDController str_controller = new PIDController(0.002, 0, 0);
     PIDController str_controller = new PIDController(0.04, 0, 0);
     PIDController rot_controller = new PIDController(0.01, 0, 0);
 
@@ -45,6 +47,9 @@ public class ChassisTargetToCone extends CommandBase {
         if (abs(tx) <= 0.8) {
             tx = 0;
         }
+
+        // TODO: Investigate quadratic PID
+        // tx = tx * abs(tx);
 
         double angle = mChassis.ahrs.getAngle() % 360;
 
