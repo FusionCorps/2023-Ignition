@@ -17,6 +17,20 @@ public class Cameras extends SubsystemBase {
         ll_table.getEntry("stream").setNumber(1);
     }
 
+    @Override
+    public void periodic() {
+        double[] botpose = ll_table.getEntry("botpose").getDoubleArray(new double[] {0.0, 0.0});
+
+        String ret_str = "";
+
+        for (double value: botpose) {
+            ret_str += value;
+            ret_str += "|";
+        }
+
+        System.out.println(ret_str);
+    }
+
     public double tx() {
         return ll_table.getEntry("tx").getDouble(0.0);
     }

@@ -48,7 +48,6 @@ public class ChassisTargetToCone extends CommandBase {
 
         double angle = mChassis.ahrs.getAngle() % 360;
 
-        System.out.println(angle);
 
 //        try {
 //            mChassis.runSwerve(m_controller.getRawAxis(1),

@@ -28,8 +28,6 @@ public class ChassisDriveFC extends CommandBase {
 
         double angle = -(mChassis.ahrs.getAngle() % 360);
 
-        System.out.println(mChassis.ahrs.getRoll());
-
 //        angle = 0;
 
         double axis0 = m_controller.getRawAxis(0);
