@@ -7,22 +7,15 @@ package frc.robot;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.Cameras.UpdateOdometryBotpose;
-import frc.robot.commands.Chassis.ChassisAltAutoBalance;
-import frc.robot.commands.Chassis.ChassisAutoBalance;
-import frc.robot.commands.Chassis.ChassisDrive;
-import frc.robot.commands.Chassis.ChassisDriveFC;
-import frc.robot.commands.Chassis.ChassisTargetToCone;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.cameras.UpdateOdometryBotpose;
+import frc.robot.commands.chassis.ChassisAltAutoBalance;
+import frc.robot.commands.chassis.ChassisDriveFC;
+import frc.robot.commands.chassis.ChassisTargetToCone;
 import frc.robot.subsystems.Cameras;
 import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -41,7 +34,7 @@ public class
 
 RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public static Chassis m_chassis = new Chassis();
+  private final Chassis m_chassis = new Chassis();
   private final Cameras m_cameras = new Cameras();
   private final ShooterTest m_shooter = new ShooterTest();
 
@@ -91,7 +84,7 @@ RobotContainer {
     // // cancelling on release.
     // m_controller.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
-    m_controller.b().whileTrue(new InstantCommand(m_chassis::resetGyro));
+    m_controller.b().onTrue(new InstantCommand(m_chassis::resetGyro));
     m_controller.x().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
     m_controller.a().onTrue(m_cameras.runOnce(() -> {m_cameras.togglePipeline();}));
     m_controller.y().whileTrue(new UpdateOdometryBotpose(m_chassis, m_cameras));

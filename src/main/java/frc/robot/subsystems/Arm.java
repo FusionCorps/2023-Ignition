@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,12 +21,16 @@ public class Arm extends SubsystemBase {
 
         baseTalon.setSelectedSensorPosition(BASE_START_POS);
 
+        baseTalon.setNeutralMode(NeutralMode.Brake);
+
         baseTalon.config_kF(0, BASE_kF);
         baseTalon.config_kP(0, BASE_kP);
         baseTalon.config_kI(0, BASE_kI);
         baseTalon.config_kD(0, BASE_kD);
 
         wristTalon.setSelectedSensorPosition(WRIST_START_POS);
+
+        wristTalon.setNeutralMode(NeutralMode.Brake);
 
         wristTalon.config_kF(0, WRIST_kF);
         wristTalon.config_kP(0, WRIST_kP);

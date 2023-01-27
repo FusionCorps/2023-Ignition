@@ -1,7 +1,6 @@
-package frc.robot.commands.Chassis;
+package frc.robot.commands.chassis;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Cameras;
 import frc.robot.subsystems.Chassis;
@@ -42,8 +41,10 @@ public class ChassisTargetToCone extends CommandBase {
     @Override
     public void execute() {
         // pass args to swerve modules
-        double tx = mCameras.ll_table.getEntry("tx").getDouble(0.0);
+        // tx is degree difference between reticule and target
+        double tx = mCameras.tx();
 
+        // deadzone/min error
         if (abs(tx) <= 0.8) {
             tx = 0;
         }
@@ -51,9 +52,11 @@ public class ChassisTargetToCone extends CommandBase {
         // TODO: Investigate quadratic PID
         // tx = tx * abs(tx);
 
+        // maintain FC control
         double angle = mChassis.ahrs.getAngle() % 360;
 
 
+        // non FC version
 //        try {
 //            mChassis.runSwerve(m_controller.getRawAxis(1),
 //                    str_controller.calculate(tx, 0),

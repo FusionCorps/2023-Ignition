@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.commands.chassis.ChassisDriveAuton;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;

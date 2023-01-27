@@ -54,7 +54,7 @@ public class Chassis extends SubsystemBase {
 
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
-    // odometry set-up (import)
+    // odometry set-up (import - Ri3D Redux)
     private final Translation2d m_frontLeftLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_frontRightLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, -TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_backLeftLocation = new Translation2d(-TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
@@ -116,10 +116,9 @@ public class Chassis extends SubsystemBase {
         // cap wheel speeds by finding max and adjusting all others down
         double maxWheelSpeed = max(max(speedFL, speedBL), max(speedFR, speedBR));
 
+        // desaturate wheel speeds
         if (maxWheelSpeed > Constants.MAX_SPEED) {
             ratio = (Constants.MAX_SPEED/ maxWheelSpeed);
-        } else {
-            ratio = 1.0;
         }
 
         // pass all values to motors
@@ -132,8 +131,6 @@ public class Chassis extends SubsystemBase {
 
     // used for braking when scoring, balancing ideally
     public void crossWheels() {
-        System.out.println("Crossing");
-
         this.comboFL.passArgsNoDeadzone(0, -PI/4);
         this.comboBL.passArgsNoDeadzone(0, PI/4);
         this.comboFR.passArgsNoDeadzone(0, PI/4);

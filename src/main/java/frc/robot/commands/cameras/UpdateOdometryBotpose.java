@@ -1,4 +1,4 @@
-package frc.robot.commands.Cameras;
+package frc.robot.commands.cameras;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -17,6 +17,9 @@ public class UpdateOdometryBotpose extends CommandBase {
 
     @Override
     public void execute() {
+        // TODO: Ensure works for both alliances
+        // magic numbers added to botpose are to translate coord system
+
         Pose2d chassisPose = mChassis.getPose();
         double avgX = (chassisPose.getX() + mCameras.botpose()[0] + 8.2296)/2;
         double avgY = (chassisPose.getY() + mCameras.botpose()[1] + 8.2296/2)/2;

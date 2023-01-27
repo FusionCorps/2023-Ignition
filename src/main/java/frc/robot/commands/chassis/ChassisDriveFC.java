@@ -1,4 +1,4 @@
-package frc.robot.commands.Chassis;
+package frc.robot.commands.chassis;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -12,6 +12,7 @@ import static java.lang.StrictMath.PI;
 public class ChassisDriveFC extends CommandBase {
     Chassis mChassis;
 
+    // limit stick accel
     private SlewRateLimiter fwdLimiter = new SlewRateLimiter(6.5);
     private SlewRateLimiter strLimiter = new SlewRateLimiter(6.5);
     private SlewRateLimiter rotLimiter = new SlewRateLimiter(6.5);
@@ -28,12 +29,18 @@ public class ChassisDriveFC extends CommandBase {
 
         double angle = -(mChassis.ahrs.getAngle() % 360);
 
+        // toggle gyro off
 //        angle = 0;
 
+        // getRawAxis returns from -1 to 1 joystick magnitude
+        // 0 - LJoystick X Axis
+        // 1 - LJoystick Y Axis
+        // 4 - RJoystick X Axis
         double axis0 = m_controller.getRawAxis(0);
         double axis1 = m_controller.getRawAxis(1);
         double axis4 = m_controller.getRawAxis(4);
 
+        // skew correction
         angle -= 40*axis4;
 
         try {

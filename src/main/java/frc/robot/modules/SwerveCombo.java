@@ -63,7 +63,7 @@ public class SwerveCombo {
 
         this.mPosition = position;
 
-        // in hindsight, probably needed to current limit
+        // TODO: in hindsight, probably needed to current limit
 
     }
 
@@ -73,7 +73,7 @@ public class SwerveCombo {
         // pass a speed and angle to a module
         new Constants();
 
-        // get the current angle, as well a driveConstant and angleConstant to convert ticks to meters
+        // get the current angle, as well a driveConstant and angleConstant to convert ticks to radians
         double encAngle = axisMotor.getSelectedSensorPosition()/STEERING_RATIO/2048*(2*PI);
 
         // thank you CTRE for making this per 100ms

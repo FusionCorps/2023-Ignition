@@ -1,4 +1,4 @@
-package frc.robot.commands.Chassis;
+package frc.robot.commands.chassis;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
@@ -18,6 +18,11 @@ public class ChassisDrive extends CommandBase {
     @Override
     public void execute() {
         // pass args to swerve modules
+
+        // getRawAxis returns from -1 to 1 joystick magnitude
+        // 0 - LJoystick X Axis
+        // 1 - LJoystick Y Axis
+        // 4 - RJoystick X Axis
         try {
             mChassis.runSwerve(m_controller.getRawAxis(1),
                     -m_controller.getRawAxis(0),
