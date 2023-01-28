@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static java.lang.Math.PI;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -18,27 +20,43 @@ public final class Constants {
   }
 
   public static class ArmConstants {
-    public static final int BASE_ID = -1;
-    public static final int WRIST_ID = -1;
+    public static final int BASE_ID = 20;
+    public static final int WRIST_ID = 21;
+
+    public static final int BASE_FOLLOWER_ID = 22;
 
     public static final double BASE_kF = 0;
-    public static final double BASE_kP = 0;
+    public static final double BASE_kP = 0.1;
     public static final double BASE_kI = 0;
     public static final double BASE_kD = 0;
 
+    public static final double BASE_MAX_V = 256000;
+    public static final double BASE_MAX_A = 19200;
+    public static final int BASE_CURVE_STR = 1;
+
     public static final double WRIST_kF = 0;
-    public static final double WRIST_kP = 0;
+    public static final double WRIST_kP = 0.07;
     public static final double WRIST_kI = 0;
     public static final double WRIST_kD = 0;
 
-    public static final double BASE_FF = 0;
-    public static final double WRIST_FF = 0;
+    public static final double WRIST_MAX_V = 128000;
+    public static final double WRIST_MAX_A = 51200;
+    public static final int WRIST_CURVE_STR = 1;
 
-    public static final double BASE_GEAR_RATIO = 1;
-    public static final double WRIST_GEAR_RATIO = 1;
+    public static final double BASE_FF = 0;
+    public static final double WRIST_FF = 0.0;
+
+    public static final double BASE_GEAR_RATIO = 58.286*3;
+    public static final double WRIST_GEAR_RATIO = 60;
 
     public static final int BASE_START_POS = 0;
     public static final int WRIST_START_POS = 0;
+
+    public static final int BASE_ERROR_THRESHOLD = 500;
+    public static final int WRIST_STOWED_POS = 0;
+
+    public static final double MID_BASE_POS = -127*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double MID_WRIST_POS = -90*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
   }
 

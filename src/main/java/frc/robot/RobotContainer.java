@@ -10,16 +10,22 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.arm.ManageArm;
 import frc.robot.commands.cameras.UpdateOdometryBotpose;
 import frc.robot.commands.chassis.ChassisAltAutoBalance;
 import frc.robot.commands.chassis.ChassisDriveFC;
 import frc.robot.commands.chassis.ChassisTargetToCone;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Cameras;
 import frc.robot.subsystems.Chassis;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.ShooterTest;
+
+import static frc.robot.Constants.ArmConstants.BASE_GEAR_RATIO;
+import static frc.robot.Constants.ArmConstants.WRIST_GEAR_RATIO;
+import static java.lang.Math.PI;
 
 
 /**
@@ -37,6 +43,7 @@ RobotContainer {
   private final Chassis m_chassis = new Chassis();
   private final Cameras m_cameras = new Cameras();
   private final ShooterTest m_shooter = new ShooterTest();
+  private final Arm m_arm = new Arm();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static CommandXboxController m_controller =
@@ -57,6 +64,7 @@ RobotContainer {
     m_chassis.comboBL.zero();
 
     m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
+    m_arm.setDefaultCommand(new ManageArm(m_arm));
 
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
     autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
@@ -87,10 +95,15 @@ RobotContainer {
     m_controller.b().onTrue(new InstantCommand(m_chassis::resetGyro));
     m_controller.x().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
     m_controller.a().onTrue(m_cameras.runOnce(() -> {m_cameras.togglePipeline();}));
-    m_controller.y().whileTrue(new UpdateOdometryBotpose(m_chassis, m_cameras));
+
+    m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(-127*PI/180/(PI/1024/BASE_GEAR_RATIO), -90*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+//    m_controller.y().whileTrue(m_arm.run(() -> {m_arm.passSetpoints(PI/2/(PI/1024/BASE_GEAR_RATIO), 0);}));
+    m_controller.y().onFalse(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, -80*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+//    m_controller.y().whileTrue(new ManageArm(m_arm));
 
     //m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
-    m_controller.leftBumper().whileTrue(new ChassisAltAutoBalance(m_chassis));
+    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+    m_controller.leftBumper().onFalse(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, -80*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
 
     m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
   }
