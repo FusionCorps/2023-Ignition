@@ -4,9 +4,10 @@
 
 package frc.robot;
 
+/*
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory;*/
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.math.Tilt;
 
 import static frc.robot.RobotContainer.m_chassis;
 
@@ -80,7 +82,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(8, 5));
+    /*PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(8, 5));
 
     // returns the selected auton
     m_autonomousCommand = m_chooser.getSelected();
@@ -90,13 +92,12 @@ public class Robot extends TimedRobot {
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
-    }
+    }*/
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {}
-
   @Override
   public void teleopInit() {
     // This makes sure that the autonomous stops running when
@@ -110,7 +111,11 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    double tilt = Tilt.calculate(m_chassis.ahrs.getPitch(), m_chassis.ahrs.getRoll());
+
+    System.out.println(tilt);
+  }
 
   @Override
   public void testInit() {

@@ -28,6 +28,10 @@ public final class Constants {
   public static int DRIVE_FR_ID = 4;
   public static int DRIVE_BR_ID = 5;
 
+  // motor IDs for arm(Not Actually)
+  public static final int BICEP_MOTOR_ID = 21;
+  public static final int FOREARM_MOTOR_ID = 88;
+
   // CANCODER IDS
   public static int CODER_FL_ID = 12;
   public static int CODER_BL_ID = 2;
@@ -36,6 +40,10 @@ public final class Constants {
 
   // Indexer Output
   public static double INDEXER_TARGET = 0.8;
+
+  // Arm angles (THESE ARE ONLY PLACEHOLDERS)
+  public static double SAFE_BICEP_ANGLE = 30.0;
+  public static double SAFE_FOREARM_ANGLE = 1.0;
 
   // Drivebase Facts
   public static double TRACK_WIDTH_METERS = 0.7112;
@@ -60,6 +68,10 @@ public final class Constants {
   public static double DRIVE_kP = 0.07;
   public static double DRIVE_kI = 0.0;
   public static double DRIVE_kD = 0.00;
+
+  // PIDs for arm (needs tuning)
+  public static final double BICEP_kP = 0.2;
+  public static final double FOREARM_kP = 0.2;
 
   public static double STEERING_RATIO = 12.8;
   public static double DRIVING_RATIO = 6.12;
