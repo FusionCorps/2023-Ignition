@@ -23,8 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.ShooterTest;
 
-import static frc.robot.Constants.ArmConstants.BASE_GEAR_RATIO;
-import static frc.robot.Constants.ArmConstants.WRIST_GEAR_RATIO;
+import static frc.robot.Constants.ArmConstants.*;
 import static java.lang.Math.PI;
 
 
@@ -63,7 +62,7 @@ RobotContainer {
     m_chassis.comboFL.zero();
     m_chassis.comboBL.zero();
 
-    m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
+    // m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
     m_arm.setDefaultCommand(new ManageArm(m_arm));
 
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
@@ -93,19 +92,25 @@ RobotContainer {
     // m_controller.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
     m_controller.b().onTrue(new InstantCommand(m_chassis::resetGyro));
-    m_controller.x().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
-    m_controller.a().onTrue(m_cameras.runOnce(() -> {m_cameras.togglePipeline();}));
+//    m_controller.x().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
+//    m_controller.a().onTrue(m_cameras.runOnce(() -> {m_cameras.togglePipeline();}));
 
-    m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(-127*PI/180/(PI/1024/BASE_GEAR_RATIO), -90*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+    m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(HIGH_BASE_POS, HIGH_WRIST_POS);}));
+    m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, MID_WRIST_POS);}));
 //    m_controller.y().whileTrue(m_arm.run(() -> {m_arm.passSetpoints(PI/2/(PI/1024/BASE_GEAR_RATIO), 0);}));
-    m_controller.y().onFalse(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, -80*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+//    m_controller.y().onFalse(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 0);}));
 //    m_controller.y().whileTrue(new ManageArm(m_arm));
+
+    m_controller.a().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 0);}));
 
     //m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
     m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
     m_controller.leftBumper().onFalse(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, -80*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
 
     m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
+
+    m_controller.povUp().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(m_arm.baseTalonTarget - 10000, m_arm.wristTalonTarget);}));
+    m_controller.povDown().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(m_arm.baseTalonTarget + 10000, m_arm.wristTalonTarget);}));
   }
 
   /**

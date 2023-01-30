@@ -88,7 +88,7 @@ public class Arm extends SubsystemBase {
     }
 
     public boolean wristStowed() {
-        return (abs(wristTalon.getSelectedSensorPosition() - WRIST_STOWED_POS) < BASE_ERROR_THRESHOLD);
+        return (abs(wristTalon.getSelectedSensorPosition() - WRIST_STOWED_POS) < WRIST_ERROR_THRESHOLD);
     }
 
     public void stowWrist() {

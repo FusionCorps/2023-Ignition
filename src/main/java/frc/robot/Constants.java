@@ -30,18 +30,28 @@ public final class Constants {
     public static final double BASE_kI = 0;
     public static final double BASE_kD = 0;
 
-    public static final double BASE_MAX_V = 256000;
-    public static final double BASE_MAX_A = 19200;
+    public static final double BASE_MAX_V = 20000;
+    public static final double BASE_MAX_A = 102400;
     public static final int BASE_CURVE_STR = 1;
+
+    // slomo testing
+//    public static final double BASE_MAX_V = 2000;
+//    public static final double BASE_MAX_A = 500;
+//    public static final int BASE_CURVE_STR = 1;
 
     public static final double WRIST_kF = 0;
     public static final double WRIST_kP = 0.07;
     public static final double WRIST_kI = 0;
     public static final double WRIST_kD = 0;
 
-    public static final double WRIST_MAX_V = 128000;
-    public static final double WRIST_MAX_A = 51200;
+    public static final double WRIST_MAX_V = 20000;
+    public static final double WRIST_MAX_A = 76800; // could be up to 102400 with good enough intake
     public static final int WRIST_CURVE_STR = 1;
+
+    // slomo testing
+//    public static final double WRIST_MAX_V = 2000;
+//    public static final double WRIST_MAX_A = 500; // could be up to 102400 with good enough intake
+//    public static final int WRIST_CURVE_STR = 1;
 
     public static final double BASE_FF = 0;
     public static final double WRIST_FF = 0.0;
@@ -52,11 +62,16 @@ public final class Constants {
     public static final int BASE_START_POS = 0;
     public static final int WRIST_START_POS = 0;
 
-    public static final int BASE_ERROR_THRESHOLD = 500;
+    public static final int BASE_ERROR_THRESHOLD = 64000;
+    public static final int WRIST_ERROR_THRESHOLD = 12000;
+
     public static final int WRIST_STOWED_POS = 0;
 
     public static final double MID_BASE_POS = -127*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double MID_WRIST_POS = -90*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
+    public static final double HIGH_BASE_POS = -127*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS = -150*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
   }
 
