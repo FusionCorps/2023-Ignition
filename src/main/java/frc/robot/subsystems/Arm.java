@@ -20,6 +20,8 @@ public class Arm extends SubsystemBase {
 
     WPI_TalonFX baseFollower;
 
+    public boolean keepParallel = false;
+
     public Arm() {
         baseTalon = new WPI_TalonFX(BASE_ID);
         wristTalon = new WPI_TalonFX(WRIST_ID);

@@ -30,28 +30,28 @@ public final class Constants {
     public static final double BASE_kI = 0;
     public static final double BASE_kD = 0;
 
-    public static final double BASE_MAX_V = 20000;
-    public static final double BASE_MAX_A = 102400;
-    public static final int BASE_CURVE_STR = 1;
+//    public static final double BASE_MAX_V = 20000;
+//    public static final double BASE_MAX_A = 102400;
+//    public static final int BASE_CURVE_STR = 1;
 
     // slomo testing
-//    public static final double BASE_MAX_V = 2000;
-//    public static final double BASE_MAX_A = 4000;
-//    public static final int BASE_CURVE_STR = 1;
+    public static final double BASE_MAX_V = 2000;
+    public static final double BASE_MAX_A = 4000;
+    public static final int BASE_CURVE_STR = 1;
 
     public static final double WRIST_kF = 0;
     public static final double WRIST_kP = 0.07;
     public static final double WRIST_kI = 0;
     public static final double WRIST_kD = 0;
 
-    public static final double WRIST_MAX_V = 20000;
-    public static final double WRIST_MAX_A = 76800; // could be up to 102400 with good enough intake
-    public static final int WRIST_CURVE_STR = 1;
+//    public static final double WRIST_MAX_V = 20000;
+//    public static final double WRIST_MAX_A = 76800; // could be up to 102400 with good enough intake
+//    public static final int WRIST_CURVE_STR = 1;
 
     // slomo testing
-//    public static final double WRIST_MAX_V = 2000;
-//    public static final double WRIST_MAX_A = 500;
-//    public static final int WRIST_CURVE_STR = 1;
+    public static final double WRIST_MAX_V = 2000;
+    public static final double WRIST_MAX_A = 4000;
+    public static final int WRIST_CURVE_STR = 1;
 
     public static final double BASE_FF = 0;
     public static final double WRIST_FF = 0.0;
