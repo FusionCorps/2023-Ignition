@@ -67,6 +67,10 @@ public class Arm extends SubsystemBase {
         wristTalon.set(TalonFXControlMode.MotionMagic, wristPos);
     }
 
+    public double getBaseTalonPosition() {
+        return baseTalon.getSelectedSensorPosition();
+    }
+
     public void passSetpointsFF(int basePos, int wristPos) {
         double baseAngleRad = baseTalon.getSelectedSensorPosition()*PI/1024/BASE_GEAR_RATIO;
         double wristAngleRad = wristTalon.getSelectedSensorPosition()*PI/1024/WRIST_GEAR_RATIO;
@@ -87,13 +91,18 @@ public class Arm extends SubsystemBase {
         return (abs(baseTalon.getSelectedSensorPosition() - baseTalonTarget) < BASE_ERROR_THRESHOLD);
     }
 
+    public boolean safeForDouble() {
+        return (abs(baseTalon.getSelectedSensorPosition()) > BASE_SAFETY_THRESHOLD);
+    }
+
     public boolean wristStowed() {
         return (abs(wristTalon.getSelectedSensorPosition() - WRIST_STOWED_POS) < WRIST_ERROR_THRESHOLD);
     }
 
     public void stowWrist() {
-        baseTalon.set(0);
+        baseTalon.set(TalonFXControlMode.PercentOutput, 0);
         wristTalon.set(TalonFXControlMode.MotionMagic, WRIST_STOWED_POS);
+        System.out.println("Stowing Wrist");
     }
 
     public void setMotorsBrake() {
