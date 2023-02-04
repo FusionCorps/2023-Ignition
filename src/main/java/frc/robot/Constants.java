@@ -30,39 +30,39 @@ public final class Constants {
     public static final double BASE_kI = 0;
     public static final double BASE_kD = 0;
 
-//    public static final double BASE_MAX_V = 20000;
-//    public static final double BASE_MAX_A = 102400;
-//    public static final int BASE_CURVE_STR = 1;
+    public static final double BASE_MAX_V = 20000;
+    public static final double BASE_MAX_A = 12800;
+    public static final int BASE_CURVE_STR = 1;
 
     // slomo testing
-    public static final double BASE_MAX_V = 2000;
-    public static final double BASE_MAX_A = 4000;
-    public static final int BASE_CURVE_STR = 1;
+//    public static final double BASE_MAX_V = 2000;
+//    public static final double BASE_MAX_A = 4000;
+//    public static final int BASE_CURVE_STR = 1;
 
     public static final double WRIST_kF = 0;
     public static final double WRIST_kP = 0.07;
     public static final double WRIST_kI = 0;
     public static final double WRIST_kD = 0;
 
-//    public static final double WRIST_MAX_V = 20000;
-//    public static final double WRIST_MAX_A = 76800; // could be up to 102400 with good enough intake
-//    public static final int WRIST_CURVE_STR = 1;
+    public static final double WRIST_MAX_V = 16000;
+    public static final double WRIST_MAX_A = 32000; // could be up to 102400 with good enough intake
+    public static final int WRIST_CURVE_STR = 1;
 
     // slomo testing
-    public static final double WRIST_MAX_V = 2000;
-    public static final double WRIST_MAX_A = 4000;
-    public static final int WRIST_CURVE_STR = 1;
+//    public static final double WRIST_MAX_V = 2000;
+//    public static final double WRIST_MAX_A = 4000;
+//    public static final int WRIST_CURVE_STR = 1;
 
     public static final double BASE_FF = 0;
     public static final double WRIST_FF = 0.0;
 
-    public static final double BASE_GEAR_RATIO = 58.286*3;
+    public static final double BASE_GEAR_RATIO = 58.286*3/36*20;
     public static final double WRIST_GEAR_RATIO = 60;
 
     public static final int BASE_START_POS = 0;
     public static final int WRIST_START_POS = 0;
 
-    public static final int BASE_ERROR_THRESHOLD = 48000;
+    public static final int BASE_ERROR_THRESHOLD = 12000;
     public static final int WRIST_ERROR_THRESHOLD = 12000;
 
     public static final double BASE_SAFETY_THRESHOLD = 60*PI/180/(PI/1024/BASE_GEAR_RATIO);
@@ -73,7 +73,7 @@ public final class Constants {
     public static final double MID_WRIST_POS = -90*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double HIGH_BASE_POS = -127*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_WRIST_POS = -150*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS = -120*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
   }
 

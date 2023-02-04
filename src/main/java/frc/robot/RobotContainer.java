@@ -97,6 +97,7 @@ RobotContainer {
 
     m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(HIGH_BASE_POS, HIGH_WRIST_POS);}));
     m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, MID_WRIST_POS);}));
+//    m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, 0);}));
 //    m_controller.y().whileTrue(m_arm.run(() -> {m_arm.passSetpoints(PI/2/(PI/1024/BASE_GEAR_RATIO), 0);}));
 //    m_controller.y().onFalse(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 0);}));
 //    m_controller.y().whileTrue(new ManageArm(m_arm));
@@ -105,12 +106,12 @@ RobotContainer {
 
     //m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
-    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, -80*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, -60*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
 
 //    m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
 
-    m_controller.povUp().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(m_arm.baseTalonTarget - 10000, m_arm.wristTalonTarget);}));
-    m_controller.povDown().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(m_arm.baseTalonTarget + 10000, m_arm.wristTalonTarget);}));
+    m_controller.povUp().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(m_arm.baseTalonTarget - 5000, m_arm.wristTalonTarget);}));
+    m_controller.povDown().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(m_arm.baseTalonTarget + 5000, m_arm.wristTalonTarget);}));
 
     m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(30*PI/180/(PI/1024/BASE_GEAR_RATIO), -50*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
   }
