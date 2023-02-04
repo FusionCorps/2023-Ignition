@@ -36,7 +36,7 @@ public class RelaxArm extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-
+        mArm.setMotorsBrake();
     }
 
 }
