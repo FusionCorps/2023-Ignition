@@ -103,13 +103,17 @@ public class Arm extends SubsystemBase {
 
     public void stowWrist() {
         baseTalon.set(TalonFXControlMode.PercentOutput, 0);
-        wristTalon.set(TalonFXControlMode.MotionMagic, WRIST_STOWED_POS);
-        System.out.println("Stowing Wrist");
     }
 
     public void setMotorsBrake() {
         baseTalon.set(0);
         wristTalon.set(0);
+    }
+
+    public void setHoldCurrentPos() {
+        baseTalonTarget = baseTalon.getSelectedSensorPosition();
+        wristTalonTarget = wristTalon.getSelectedSensorPosition();
+        System.out.println("Braking Arms");
     }
 
 }

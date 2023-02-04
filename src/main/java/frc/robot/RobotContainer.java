@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.ManageArm;
+import frc.robot.commands.arm.RelaxArm;
 import frc.robot.commands.cameras.UpdateOdometryBotpose;
 import frc.robot.commands.chassis.ChassisAltAutoBalance;
 import frc.robot.commands.chassis.ChassisDriveFC;
@@ -51,6 +52,8 @@ RobotContainer {
   public Command autoOne;
   public Command autoTwo;
 
+  public Command relaxArm;
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -62,7 +65,7 @@ RobotContainer {
     m_chassis.comboFL.zero();
     m_chassis.comboBL.zero();
 
-    // m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
+    m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
     m_arm.setDefaultCommand(new ManageArm(m_arm));
 
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
@@ -71,6 +74,9 @@ RobotContainer {
     PathPlannerTrajectory examplePathTwo = PathPlanner.loadPath("2piececombo", new PathConstraints(4, 3));
     autoTwo = new SequentialCommandGroup(m_chassis.runOnce(() -> {m_chassis.setGyroAngle(180);}),
             m_chassis.followTrajectoryCommand(examplePathTwo, true));
+
+    relaxArm = new RelaxArm(m_arm);
+
   }
 
   /**
@@ -106,7 +112,8 @@ RobotContainer {
 
     //m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
-    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, -60*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+    m_controller.rightBumper().onFalse(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, -60*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
 
 //    m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
 

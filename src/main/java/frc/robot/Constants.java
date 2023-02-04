@@ -105,8 +105,8 @@ public final class Constants {
   public static double TRACK_WIDTH_METERS = 0.7112;
   public static double TRACK_LENGTH_METERS = 0.7112;
 
-  public static double SWERVE_FORWARD_SPEED_MAX = 5.2;
-  public static double SWERVE_STRAFE_SPEED_MAX = 5.2;
+  public static double SWERVE_FORWARD_SPEED_MAX = 4.2;
+  public static double SWERVE_STRAFE_SPEED_MAX = 4.2;
   public static double SWERVE_ROT_SPEED_MAX = 6.0;
 
   public static double MAX_SPEED = 9.2;
