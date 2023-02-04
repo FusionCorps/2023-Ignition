@@ -10,11 +10,14 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;*/
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.data.CSVManager;
 import frc.robot.math.Tilt;
 
 import static frc.robot.RobotContainer.m_chassis;
@@ -35,6 +38,8 @@ public class Robot extends TimedRobot {
   // to add auton to auton selection, initiate auton variable here:
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  CSVManager logs;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -52,8 +57,7 @@ public class Robot extends TimedRobot {
 
     // adds the auton selection to ShuffleBoard
     SmartDashboard.putData(m_chooser);
-    
-    CameraServer.startAutomaticCapture();
+
   }
 
   /**
@@ -74,7 +78,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    if (logs != null) logs.close();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -104,6 +110,9 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+
+    logs = new CSVManager("rotations");
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -112,9 +121,9 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    double yaw = m_chassis.ahrs.getYaw();
     double tilt = Tilt.calculate(m_chassis.ahrs.getPitch(), m_chassis.ahrs.getRoll());
-
-    System.out.println(tilt);
+    logs.logDataPoint(yaw, tilt);
   }
 
   @Override
@@ -129,9 +138,12 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when the robot is first started up. */
   @Override
-  public void simulationInit() {}
+  public void simulationInit() {
+    Shuffleboard.getTab("Hello").add("Toast",2);
+  }
 
   /** This function is called periodically whilst in simulation. */
   @Override
-  public void simulationPeriodic() {}
+  public void simulationPeriodic() {
+  }
 }
