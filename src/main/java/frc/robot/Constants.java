@@ -94,6 +94,10 @@ public final class Constants {
   public static int CODER_FR_ID = 13;
   public static int CODER_BR_ID = 11;
 
+  // INTAKE MOTOR ID (NOT REALLY. FIND OUT WHAT IT IS)
+
+  public static final int INTAKE_ID = 23;
+
   // Indexer Output
   public static double INDEXER_TARGET = 0.8;
 
