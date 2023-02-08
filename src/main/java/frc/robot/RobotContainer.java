@@ -110,8 +110,10 @@ RobotContainer {
 
     //m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
-    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
-    m_controller.rightBumper().onFalse(m_arm.runOnce(() -> {m_arm.setTalonTargets(30*PI/180/(PI/1024/BASE_GEAR_RATIO), -110*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+    // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+    m_controller.rightBumper().whileTrue(mIntake.run(() -> {mIntake.set(-0.9);}));
+    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE);}));
+    m_controller.rightBumper().onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
 
 //    m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
 
@@ -123,7 +125,15 @@ RobotContainer {
     m_controller.povLeft().whileTrue(mIntake.run(() -> {mIntake.set(-0.9);}));
     m_controller.povLeft().onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
 
-    m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(30*PI/180/(PI/1024/BASE_GEAR_RATIO), -50*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+//    m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(30*PI/180/(PI/1024/BASE_GEAR_RATIO), -50*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+    m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE);}));
+    m_controller.rightTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.set(-0.9);}));
+    m_controller.rightTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
+
+    m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.set(0.9);}));
+    m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
+
+    m_controller.back().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(CHUTE_BASE_POS, CHUTE_WRIST_POS);}));
   }
 
   /**

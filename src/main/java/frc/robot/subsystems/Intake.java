@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -20,6 +21,8 @@ public class Intake extends SubsystemBase {
         //intakeMotor.restoreFactoryDefaults();
         // Do we want to invert it?
         // intakeMotor.setInverted(true);
+
+        intakeMotor.setNeutralMode(NeutralMode.Brake);
     }
 //
     // sets the motor percent

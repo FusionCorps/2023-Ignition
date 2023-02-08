@@ -36,7 +36,7 @@ public final class Constants {
     public static final double BASE_kD = 0;
 
 //    public static final double BASE_MAX_V = 20000;
-//    public static final double BASE_MAX_A = 12800;
+//    public static final double BASE_MAX_A = 8000;
 //    public static final int BASE_CURVE_STR = 1;
 
     // slomo testing
@@ -50,7 +50,7 @@ public final class Constants {
     public static final double WRIST_kD = 0;
 
 //    public static final double WRIST_MAX_V = 16000;
-//    public static final double WRIST_MAX_A = 32000; // could be up to 102400 with good enough intake
+//    public static final double WRIST_MAX_A = 8000; // could be up to 102400 with good enough intake
 //    public static final int WRIST_CURVE_STR = 1;
 
     // slomo testing
@@ -67,18 +67,27 @@ public final class Constants {
     public static final int BASE_START_POS = 0;
     public static final int WRIST_START_POS = 0;
 
-    public static final int BASE_ERROR_THRESHOLD = 12000;
-    public static final int WRIST_ERROR_THRESHOLD = 12000;
+    public static final int BASE_ERROR_THRESHOLD = 8000;
+    public static final int WRIST_ERROR_THRESHOLD = 4000;
 
-    public static final double BASE_SAFETY_THRESHOLD = 60*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double BASE_SAFETY_THRESHOLD = 70*PI/180/(PI/1024/BASE_GEAR_RATIO);
 
     public static final int WRIST_STOWED_POS = 0;
 
     public static final double MID_BASE_POS = -127*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double MID_WRIST_POS = -90*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
-    public static final double HIGH_BASE_POS = -127*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_WRIST_POS = -120*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double HIGH_BASE_POS = -130*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS = -135*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
+    public static final double INTAKE_BASE_POS_CONE = 25*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double INTAKE_WRIST_POS_CONE = -135*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
+    public static final double INTAKE_BASE_POS_CUBE = 35*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double INTAKE_WRIST_POS_CUBE = -135*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
+    public static final double CHUTE_BASE_POS = 30*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double CHUTE_WRIST_POS = -53*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
   }
 
