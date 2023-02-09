@@ -102,19 +102,29 @@ public class SwerveCombo {
             dTheta = 2*PI + dTheta;
         }
 
+        // wheel optimization
+        double invertK = 1;
+        if (dTheta > PI/2) {
+            dTheta = dTheta - PI;
+            invertK = -1;
+        } else if (dTheta < -PI/2) {
+            dTheta = dTheta + PI;
+            invertK = -1;
+        }
+
         // convert to final position target
         double angleFinal = encAngle + dTheta;
         angleFinal *= angleConstant;
 
         // set some deadzones
-        this.driveMotor.set(ControlMode.Velocity, speed);
+//        this.driveMotor.set(ControlMode.Velocity, speed);
         if (speed < 120) {
             this.axisMotor.set(ControlMode.Velocity, 0);
             this.driveMotor.set(ControlMode.Velocity, 0);
         // push values to PID controllers
         } else {
             this.axisMotor.set(ControlMode.Position, angleFinal);
-            this.driveMotor.set(ControlMode.Velocity, speed);
+            this.driveMotor.set(ControlMode.Velocity, invertK*speed);
         }
     }
 
