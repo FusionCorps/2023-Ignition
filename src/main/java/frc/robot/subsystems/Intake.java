@@ -29,4 +29,9 @@ public class Intake extends SubsystemBase {
     public void set(double pct) {
         intakeMotor.set(pct);
     }
+
+    // added voltage comp for consistency
+    public void setVolts(double volts) {
+        intakeMotor.setVoltage(volts);
+    }
 }

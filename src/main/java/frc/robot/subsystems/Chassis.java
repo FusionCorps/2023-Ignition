@@ -54,6 +54,8 @@ public class Chassis extends SubsystemBase {
 
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
+    boolean isPrecision = false;
+
     // odometry set-up (import - Ri3D Redux)
     private final Translation2d m_frontLeftLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_frontRightLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, -TRACK_LENGTH_METERS / 2.0);
@@ -97,6 +99,10 @@ public class Chassis extends SubsystemBase {
 
         // driving ratio to tweak or go "Turbo Mode"
         double ratio = 1.0;
+
+        if (isPrecision) {
+            ratio = 0.3;
+        }
 
         // assign new calc values
         double speedFL = 0;
@@ -263,6 +269,10 @@ public class Chassis extends SubsystemBase {
     public void setGyroAngle(double angle) {
         ahrs.reset();
         ahrs.setAngleAdjustment(angle);
+    }
+
+    public void togglePrecision() {
+        isPrecision = !isPrecision;
     }
 
 }

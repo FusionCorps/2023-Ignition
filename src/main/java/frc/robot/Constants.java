@@ -118,7 +118,7 @@ public final class Constants {
 
   public static double SWERVE_FORWARD_SPEED_MAX = 4.2;
   public static double SWERVE_STRAFE_SPEED_MAX = 4.2;
-  public static double SWERVE_ROT_SPEED_MAX = 6.0;
+  public static double SWERVE_ROT_SPEED_MAX = 4.0;
 
   public static double MAX_SPEED = 9.2;
 
