@@ -101,7 +101,7 @@ public class Chassis extends SubsystemBase {
         double ratio = 1.0;
 
         if (isPrecision) {
-            ratio = 0.3;
+            ratio = 0.15;
         }
 
         // assign new calc values

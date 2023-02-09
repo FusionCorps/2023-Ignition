@@ -48,34 +48,36 @@ public class ManageArm extends CommandBase {
         }
 
         // speedener if arm is same side and moving out ONLY
-//        if (mArm.baseTalonTarget * mArm.getBaseTalonPosition() >= 0 && abs(mArm.baseTalonTarget) >= abs(mArm.getBaseTalonPosition())) {
-//            if (mArm.armAtTarget() || mArm.safeForDouble()) {
-//                mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
-//            } else if (mArm.wristStowed()) {
-//                mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);
-//            } else {
-//                mArm.stowWrist();
-//            }
-//        } else {
-//            if (mArm.armAtTarget()) {
-//                mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
-//                System.out.println("Arm at target");
-//            } else if (mArm.wristStowed()) {
-//                mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);
-//            } else {
-//                mArm.stowWrist();
-//            }
-//        }
+        if (mArm.baseTalonTarget * mArm.getBaseTalonPosition() >= 0 && abs(mArm.baseTalonTarget) >= abs(mArm.getBaseTalonPosition())) {
+            if (mArm.armAtTarget() || mArm.safeForDouble()) {
+                mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
+                if (mArm.safeForDouble()) {
+                    System.out.println("doubling");
+                }
+            } else if (mArm.wristStowed()) {
+                mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);
+            } else {
+                mArm.stowWrist();
+            }
+        } else {
+            if (mArm.armAtTarget()) {
+                mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
+            } else if (mArm.wristStowed()) {
+                mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);
+            } else {
+                mArm.stowWrist();
+            }
+        }
 
         // speedener was too fast
-        if (mArm.armAtTarget()) {
-            mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
-            System.out.println("Arm at target");
-        } else if (mArm.wristStowed()) {
-            mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);
-        } else {
-            mArm.stowWrist();
-        }
+//        if (mArm.armAtTarget()) {
+//            mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
+//            System.out.println("Arm at target");
+//        } else if (mArm.wristStowed()) {
+//            mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);
+//        } else {
+//            mArm.stowWrist();
+//        }
 
         if (mArm.keepParallel) {
             mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);

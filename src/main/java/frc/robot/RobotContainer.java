@@ -64,7 +64,7 @@ RobotContainer {
     m_chassis.comboBL.zero();
 
     m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
-    m_arm.setDefaultCommand(new ManageArm(m_arm));
+    // m_arm.setDefaultCommand(new ManageArm(m_arm));
 
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
     autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
@@ -132,7 +132,7 @@ RobotContainer {
     m_controller.rightTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.set(-0.9);}));
     m_controller.rightTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
 
-    m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.setVolts(6.0);}));
+     m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.setVolts(9.0);}));
     m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
 
     m_controller.back().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(CHUTE_BASE_POS, CHUTE_WRIST_POS);}));
