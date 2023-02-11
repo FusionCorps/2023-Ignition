@@ -34,7 +34,7 @@ public class ChassisDriveFCFlickStick extends CommandBase {
 
         addRequirements(mChassis);
 
-        rotController.enableContinuousInput(0, 360);
+        rotController.enableContinuousInput(-180, 180);
     }
 
     @Override
@@ -57,15 +57,7 @@ public class ChassisDriveFCFlickStick extends CommandBase {
         double axis4 = m_controller.getRawAxis(4);
 
 
-        if (!Double.isNaN(atan(m_controller.getRightY() / m_controller.getRightX()))) {
-            desiredHeading = 180 / PI * atan(m_controller.getRightY() / m_controller.getRightX()) + 90;
-
-            if (m_controller.getRightX() > 0) {
-                desiredHeading += 180;
-            }
-        }
-
-
+        desiredHeading = Math.atan2(m_controller.getRightX(), m_controller.getRightY());
         System.out.println(desiredHeading);
 
         // skew correction
