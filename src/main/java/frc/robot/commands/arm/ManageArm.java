@@ -11,9 +11,6 @@ public class ManageArm extends CommandBase {
 
     Arm mArm;
 
-    // note to self - VERY DANGEROUS
-    double baseFudge;
-
     public ManageArm(Arm arm) {
         mArm = arm;
 
@@ -48,7 +45,7 @@ public class ManageArm extends CommandBase {
         }
 
         // speedener if arm is same side and moving out ONLY
-        if (mArm.baseTalonTarget * mArm.getBaseTalonPosition() >= 0 && abs(mArm.baseTalonTarget) >= abs(mArm.getBaseTalonPosition())) {
+        if (mArm.baseTalonTarget * mArm.getBaseTalonPosition() > 0 && abs(mArm.baseTalonTarget) >= abs(mArm.getBaseTalonPosition())) {
             if (mArm.armAtTarget() || mArm.safeForDouble()) {
                 mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
                 if (mArm.safeForDouble()) {

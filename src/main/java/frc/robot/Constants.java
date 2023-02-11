@@ -35,9 +35,9 @@ public final class Constants {
     public static final double BASE_kI = 0;
     public static final double BASE_kD = 0;
 
-    public static final double BASE_MAX_V = 20000;
-    public static final double BASE_MAX_A = 32000;
-    public static final int BASE_CURVE_STR = 1;
+    public static final double BASE_MAX_V = 20000; // ticks / 100ms
+    public static final double BASE_MAX_A = 32000; // ticks / 100ms / s
+    public static final int BASE_CURVE_STR = 1; // smoothness
 
     // slomo testing
 //    public static final double BASE_MAX_V = 2000;

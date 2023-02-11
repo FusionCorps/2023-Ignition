@@ -10,19 +10,15 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.arm.ManageArm;
 import frc.robot.commands.arm.RelaxArm;
-import frc.robot.commands.cameras.UpdateOdometryBotpose;
-import frc.robot.commands.chassis.ChassisAltAutoBalance;
 import frc.robot.commands.chassis.ChassisDriveFC;
-import frc.robot.commands.chassis.ChassisTargetToCone;
+import frc.robot.commands.chassis.ChassisDriveFCFlickStick;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import static frc.robot.Constants.ArmConstants.*;
-import static java.lang.Math.PI;
 
 
 /**
@@ -48,7 +44,7 @@ RobotContainer {
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   public Command autoOne;
-  public Command autoTwo;
+  public Command twoPieceLoadSide;
 
   public Command relaxArm;
 
@@ -69,9 +65,9 @@ RobotContainer {
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
     autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
 
-    PathPlannerTrajectory examplePathTwo = PathPlanner.loadPath("2piececombo", new PathConstraints(4, 3));
-    autoTwo = new SequentialCommandGroup(m_chassis.runOnce(() -> {m_chassis.setGyroAngle(180);}),
-            m_chassis.followTrajectoryCommand(examplePathTwo, true));
+    PathPlannerTrajectory twoPieceLoadSide = PathPlanner.loadPath("1+1_masterpath", new PathConstraints(4, 3));
+    this.twoPieceLoadSide = new SequentialCommandGroup(m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0);}),
+            m_chassis.followTrajectoryCommand(twoPieceLoadSide, true));
 
     relaxArm = new RelaxArm(m_arm);
 

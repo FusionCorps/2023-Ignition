@@ -207,6 +207,8 @@ public class Chassis extends SubsystemBase {
 
         m_field.setRobotPose(m_odometry.getPoseMeters());
 
+//        System.out.println(m_odometry.getPoseMeters().getX() + " meters");
+
         feedAll();
     }
 

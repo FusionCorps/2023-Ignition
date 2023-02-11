@@ -20,6 +20,7 @@ public class Arm extends SubsystemBase {
 
     WPI_TalonFX baseFollower;
 
+    // keep false please - testing ONLY
     public boolean keepParallel = false;
 
     public Arm() {
@@ -73,6 +74,8 @@ public class Arm extends SubsystemBase {
         return baseTalon.getSelectedSensorPosition();
     }
 
+    // might be something to investigate?
+    // see WPILib arm tutorial for how to calc FF.
     public void passSetpointsFF(int basePos, int wristPos) {
         double baseAngleRad = baseTalon.getSelectedSensorPosition()*PI/1024/BASE_GEAR_RATIO;
         double wristAngleRad = wristTalon.getSelectedSensorPosition()*PI/1024/WRIST_GEAR_RATIO;
@@ -84,6 +87,7 @@ public class Arm extends SubsystemBase {
         wristTalon.set(TalonFXControlMode.Position, wristPos, DemandType.ArbitraryFeedForward, wristFFAdj);
     }
 
+    // path target
     public void setTalonTargets(double baseTarget, double wristTarget) {
         baseTalonTarget = baseTarget;
         wristTalonTarget = wristTarget;
@@ -93,10 +97,12 @@ public class Arm extends SubsystemBase {
         return (abs(baseTalon.getSelectedSensorPosition() - baseTalonTarget) < BASE_ERROR_THRESHOLD);
     }
 
+    // check if ok to move both arms at once
     public boolean safeForDouble() {
         return (abs(baseTalon.getSelectedSensorPosition()) > BASE_SAFETY_THRESHOLD);
     }
 
+    // checks if wrist is in the arm or not
     public boolean wristStowed() {
         return (abs(wristTalon.getSelectedSensorPosition() - WRIST_STOWED_POS) < WRIST_ERROR_THRESHOLD);
     }

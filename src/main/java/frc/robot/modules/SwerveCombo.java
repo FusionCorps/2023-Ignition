@@ -187,7 +187,7 @@ public class SwerveCombo {
 
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-                -driveMotor.getSelectedSensorPosition()/2048*2*PI*WHEEL_RADIUS_METERS/DRIVING_RATIO,
+                -driveMotor.getSelectedSensorPosition()/1024*PI*WHEEL_RADIUS_METERS/DRIVING_RATIO,
                 new Rotation2d(coder.getAbsolutePosition()/180*PI)
         );
     }

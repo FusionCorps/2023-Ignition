@@ -4,11 +4,7 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -48,9 +44,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     m_chooser.addOption("Test Line", m_robotContainer.autoOne);
-    m_chooser.addOption("Two Piece Left", m_robotContainer.autoTwo);
+    m_chooser.addOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
 
-    m_chooser.setDefaultOption("Two Piece Left", m_robotContainer.autoTwo);
+    m_chooser.setDefaultOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
 
     // adds the auton selection to ShuffleBoard
     SmartDashboard.putData(m_chooser);
