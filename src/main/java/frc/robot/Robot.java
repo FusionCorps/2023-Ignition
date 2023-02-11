@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.data.CSVManager;
-import frc.robot.math.Tilt;
+import frc.robot.math.*;
 
 import static frc.robot.RobotContainer.m_chassis;
 
@@ -112,6 +112,8 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
 
     logs = new CSVManager("rotations");
+    m_chassis.resetTimer();
+    m_chassis.startTimer();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -122,8 +124,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     double yaw = m_chassis.ahrs.getYaw();
-    double tilt = Tilt.calculate(m_chassis.ahrs.getPitch(), m_chassis.ahrs.getRoll());
-    logs.logDataPoint(yaw, tilt);
+    m_robotContainer.periodic();
   }
 
   @Override
@@ -145,5 +146,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {
+    
   }
 }

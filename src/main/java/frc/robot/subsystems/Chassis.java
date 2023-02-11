@@ -8,11 +8,15 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,6 +34,14 @@ import static java.lang.Double.max;
 import static java.lang.Math.PI;
 
 public class Chassis extends SubsystemBase {
+
+    // used for calculating dt
+    Timer dtTimer = new Timer();
+
+    private Pose2d simPose = new Pose2d();
+
+
+    private ChassisSpeeds simSpeeds = new ChassisSpeeds(0, 0, 0);
 
     // swerve motor + coder init
     private static WPI_TalonFX drive0 = new WPI_TalonFX(DRIVE_FL_ID);
@@ -74,10 +86,10 @@ public class Chassis extends SubsystemBase {
             },
             new Pose2d(5, 5, ahrs.getRotation2d()));
 
-    Field2d m_field;
+    public Field2d m_field = new Field2d();
 
     public Chassis() {
-        m_field = new Field2d();
+
 
         SmartDashboard.putData("Field", m_field);
 
@@ -87,6 +99,17 @@ public class Chassis extends SubsystemBase {
 
     // ported from last year
     public void runSwerve(double fwd, double str, double rot_temp) {
+        
+        // updates Chassis Speeds for simulation
+        ChassisSpeeds speeds = new ChassisSpeeds(fwd, str, rot_temp);
+
+        SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(speeds);
+        for (int i = 0; i < states.length; i++) {
+            SmartDashboard.putNumber("angle " + i, states[i].angle.getDegrees());
+        }
+    
+        if (RobotBase.isSimulation()) 
+            simSpeeds = speeds;
 
         // convenience for negating
         double rot = rot_temp;
@@ -192,6 +215,7 @@ public class Chassis extends SubsystemBase {
 
     @Override
     public void periodic() {
+        double dt = dtTimer.get();
         m_odometry.update(ahrs.getRotation2d(),
                 new SwerveModulePosition[] {
                         comboFL.getPosition(),
@@ -199,10 +223,18 @@ public class Chassis extends SubsystemBase {
                         comboFR.getPosition(),
                         comboBR.getPosition()
                 });
-
-        m_field.setRobotPose(m_odometry.getPoseMeters());
-
+        if (RobotBase.isSimulation()) {
+            simPose = simPose.exp(new Twist2d(
+                -simSpeeds.vxMetersPerSecond * dt,
+                simSpeeds.vyMetersPerSecond * dt,
+                -simSpeeds.omegaRadiansPerSecond * dt
+            ));
+            m_field.setRobotPose(simPose);
+        } else
+            m_field.setRobotPose(m_odometry.getPoseMeters());
         feedAll();
+        dtTimer.reset();
+        dtTimer.start();
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -250,6 +282,16 @@ public class Chassis extends SubsystemBase {
 
     public void resetGyro() {
         ahrs.reset();
+    }
+
+    // starts dtTimer
+    public void startTimer() {
+        dtTimer.start();
+    }
+
+    // resets dtTimer
+    public void resetTimer() {
+        dtTimer.reset();
     }
 
 }

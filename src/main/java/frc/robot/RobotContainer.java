@@ -81,8 +81,11 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  /*public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return Autos.AutonLine(m_chassis);
+  }*/
+  public void periodic() {
+    m_chassis.periodic();
   }
 }

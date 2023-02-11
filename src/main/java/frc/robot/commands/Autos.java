@@ -19,10 +19,11 @@ public final class Autos {
     return Commands.sequence(subsystem.exampleMethodCommand(), new ExampleCommand(subsystem));
   }
   
+  /* 
   public static CommandBase AutonLine(Chassis chassis) {
     return Commands.sequence(new ChassisDriveAuton(chassis, 0.3, 0.0, 0.0, 0.5));
   }
-
+*/
   private Autos() {
     throw new UnsupportedOperationException("This is a utility class!");
   }
