@@ -45,8 +45,8 @@ RobotContainer {
   public static CommandXboxController m_controller =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-//   public Command autoOne;
-//   public Command twoPieceLoadSide;
+   public Command autoOne;
+   public Command twoPieceLoadSide;
 
 //   public Command relaxArm;
 
@@ -64,12 +64,12 @@ RobotContainer {
     m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
     // m_arm.setDefaultCommand(new ManageArm(m_arm));
 
-    // PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
-    // autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
+     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
+     autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
 
-    // PathPlannerTrajectory twoPieceLoadSide = PathPlanner.loadPath("1+1_masterpath", new PathConstraints(4, 3));
-    // this.twoPieceLoadSide = new SequentialCommandGroup(m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0);}),
-    //         m_chassis.followTrajectoryCommand(twoPieceLoadSide, true));
+     PathPlannerTrajectory twoPieceLoadSide = PathPlanner.loadPath("1+1_masterpath", new PathConstraints(4, 3));
+     this.twoPieceLoadSide = new SequentialCommandGroup(m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0);}),
+             m_chassis.followTrajectoryCommand(twoPieceLoadSide, true));
 
     // relaxArm = new RelaxArm(m_arm);
 
