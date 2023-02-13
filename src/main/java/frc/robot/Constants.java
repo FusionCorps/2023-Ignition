@@ -124,7 +124,7 @@ public final class Constants {
 
   // PIDs (potentially very wack) (olds can be found in 2022 code)
   public static double AXIS_kF = 0.0;
-  public static double AXIS_kP = 0.15;
+  public static double AXIS_kP = 0.07;
   public static double AXIS_kI = 0.0;
   public static double AXIS_kD = 0.1;
 
@@ -134,7 +134,7 @@ public final class Constants {
   public static double DRIVE_kF = 0.0;
   public static double DRIVE_kP = 0.07;
   public static double DRIVE_kI = 0.0;
-  public static double DRIVE_kD = 0.00;
+  public static double DRIVE_kD = 0.0;
 
   public static double STEERING_RATIO = 12.8;
   public static double DRIVING_RATIO = 6.75;
