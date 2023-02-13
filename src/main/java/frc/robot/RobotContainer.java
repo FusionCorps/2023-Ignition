@@ -59,7 +59,7 @@ RobotContainer {
     m_chassis.comboFL.zero();
     m_chassis.comboBL.zero();
 
-    m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
+    m_chassis.setDefaultCommand(new ChassisDriveFCFlickStick(m_chassis));
     // m_arm.setDefaultCommand(new ManageArm(m_arm));
 
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));

@@ -54,6 +54,8 @@ public class Chassis extends SubsystemBase {
 
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
+    public double desiredHeading = 0;
+
     boolean isPrecision = false;
 
     // odometry set-up (import - Ri3D Redux)
@@ -266,6 +268,7 @@ public class Chassis extends SubsystemBase {
     public void resetGyro() {
         ahrs.reset();
         ahrs.setAngleAdjustment(0);
+        desiredHeading = 0;
     }
 
     public void setGyroAngle(double angle) {
