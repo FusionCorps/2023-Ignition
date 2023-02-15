@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -48,6 +45,7 @@ public class Arm extends SubsystemBase {
 
         wristTalon.setSelectedSensorPosition(WRIST_START_POS);
 
+        wristTalon.setInverted(TalonFXInvertType.Clockwise);
         wristTalon.setNeutralMode(NeutralMode.Brake);
 
         wristTalon.config_kF(0, WRIST_kF);

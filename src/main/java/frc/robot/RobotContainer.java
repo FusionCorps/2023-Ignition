@@ -10,6 +10,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.arm.ManageArm;
 import frc.robot.commands.arm.RelaxArm;
 import frc.robot.commands.chassis.ChassisDriveFC;
 import frc.robot.commands.chassis.ChassisDriveFCFlickStick;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import static frc.robot.Constants.ArmConstants.*;
+import static frc.robot.Constants.IntakeConstants.INTAKE_PCT;
 
 
 /**
@@ -59,8 +61,8 @@ RobotContainer {
     m_chassis.comboFL.zero();
     m_chassis.comboBL.zero();
 
-    m_chassis.setDefaultCommand(new ChassisDriveFCFlickStick(m_chassis));
-    // m_arm.setDefaultCommand(new ManageArm(m_arm));
+    m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
+    m_arm.setDefaultCommand(new ManageArm(m_arm));
 
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
     autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
@@ -109,7 +111,7 @@ RobotContainer {
     //m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
     // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
-    m_controller.rightBumper().whileTrue(mIntake.run(() -> {mIntake.set(-0.9);}));
+    m_controller.rightBumper().whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
     m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE);}));
     m_controller.rightBumper().onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
 
@@ -118,17 +120,17 @@ RobotContainer {
     m_controller.povUp().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(m_arm.baseTalonTarget - 5000, m_arm.wristTalonTarget);}));
     m_controller.povDown().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(m_arm.baseTalonTarget + 5000, m_arm.wristTalonTarget);}));
 
-    m_controller.povRight().whileTrue(mIntake.run(() -> {mIntake.set(0.9);}));
+    m_controller.povRight().whileTrue(mIntake.run(() -> {mIntake.set(-1*INTAKE_PCT);}));
     m_controller.povRight().onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
-    m_controller.povLeft().whileTrue(mIntake.run(() -> {mIntake.set(-0.9);}));
+    m_controller.povLeft().whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
     m_controller.povLeft().onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
 
 //    m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(30*PI/180/(PI/1024/BASE_GEAR_RATIO), -50*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
     m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE);}));
-    m_controller.rightTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.set(-0.9);}));
-    m_controller.rightTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
+    m_controller.rightTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
+    m_controller.rightTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(-0.2);}));
 
-     m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.setVolts(9.0);}));
+    m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.setVolts(9.0);}));
     m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
 
     m_controller.back().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(CHUTE_BASE_POS, CHUTE_WRIST_POS);}));
