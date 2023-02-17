@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,6 +23,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+  // For enabling the cargo LEDs
+  private NetworkTableEntry isCubeEntry;
+  private NetworkTableEntry isEnabledEntry;
+
   private RobotContainer m_robotContainer;
 
   // -----AUTON SELECTION INSTRUCTIONS--------
@@ -35,6 +40,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+
+    // initialises the LED stuffs
+    NetworkTableInstance instance = NetworkTableInstance.getDefault();
+    NetworkTable ledTable = instance.getTable("led");
+
+    isEnabledEntry = ledTable.getEntry("isEnabled");
+    isEnabledEntry.setBoolean(false);
+    isCubeEntry = ledTable.getEntry("isCube");
+    isCubeEntry.setBoolean(false);
+
     // autonomous chooser on the dashboard.
 
     // -----AUTON SELECTION INSTRUCTIONS--------
@@ -68,6 +83,10 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    if (m_robotContainer != null) {
+      m_robotContainer.ledPeriodic(isCubeEntry.getBoolean(false), isEnabledEntry.getBoolean(false));
+    }
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -111,7 +130,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+
+  }
 
   @Override
   public void testInit() {

@@ -29,11 +29,7 @@ import static frc.robot.Constants.IntakeConstants.INTAKE_PCT;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-public class
-
-
-
-RobotContainer {
+public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Chassis m_chassis = new Chassis();
   private final Cameras m_cameras = new Cameras();
@@ -49,6 +45,8 @@ RobotContainer {
   public Command twoPieceLoadSide;
 
   public Command relaxArm;
+
+  private Leds leds = new Leds();
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -73,6 +71,11 @@ RobotContainer {
 
     relaxArm = new RelaxArm(m_arm);
 
+  }
+
+  public void ledPeriodic(boolean isCube, boolean isEnabled) {
+    leds.setLedColor(isCube);
+    leds.setLedEnabled(isEnabled);
   }
 
   /**
