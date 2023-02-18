@@ -8,12 +8,16 @@ import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.arm.ArmToPosition;
 import frc.robot.commands.arm.ManageArm;
 import frc.robot.commands.arm.RelaxArm;
 import frc.robot.commands.chassis.ChassisDriveFC;
 import frc.robot.commands.chassis.ChassisDriveFCFlickStick;
+import frc.robot.commands.chassis.ChassisDriveToNearestTarget;
+import frc.robot.commands.intake.RunVoltsTime;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -67,9 +71,22 @@ RobotContainer {
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
     autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
 
-    PathPlannerTrajectory twoPieceLoadSide = PathPlanner.loadPath("1+1_masterpath", new PathConstraints(4, 3));
-    this.twoPieceLoadSide = new SequentialCommandGroup(m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0);}),
-            m_chassis.followTrajectoryCommand(twoPieceLoadSide, true));
+    PathPlannerTrajectory twoPieceLoadSideA = PathPlanner.loadPath("1+1_path1", new PathConstraints(4, 3));
+//    this.twoPieceLoadSide = new SequentialCommandGroup(m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0);}),
+//            m_chassis.followTrajectoryCommand(twoPieceLoadSide, true));
+    PathPlannerTrajectory twoPieceLoadSideB = PathPlanner.loadPath("1+1_path2", new PathConstraints(4, 3));
+
+    twoPieceLoadSide = new SequentialCommandGroup(
+            m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
+            new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+            new RunVoltsTime(mIntake, 9.0, 0.5),
+//            new ArmToPosition(m_arm, 0, 0),
+            new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
+            new ParallelCommandGroup(m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true),
+                    new RunVoltsTime(mIntake, -4.0, twoPieceLoadSideA.getTotalTimeSeconds())),
+            new ArmToPosition(m_arm, 0, 0),
+            m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)
+         );
 
     relaxArm = new RelaxArm(m_arm);
 
@@ -134,6 +151,8 @@ RobotContainer {
     m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
 
     m_controller.back().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(CHUTE_BASE_POS, CHUTE_WRIST_POS);}));
+
+    m_controller.start().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
   }
 
   /**

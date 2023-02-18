@@ -6,6 +6,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -67,7 +68,7 @@ public class Chassis extends SubsystemBase {
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
             m_frontLeftLocation, m_backLeftLocation, m_frontRightLocation, m_backRightLocation);
 
-    private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+    private final SwerveDrivePoseEstimator m_odometry = new SwerveDrivePoseEstimator(
             m_kinematics,
             ahrs.getRotation2d(),
             new SwerveModulePosition[] {
@@ -207,7 +208,7 @@ public class Chassis extends SubsystemBase {
                         comboBR.getPosition()
                 });
 
-        m_field.setRobotPose(m_odometry.getPoseMeters());
+        m_field.setRobotPose(m_odometry.getEstimatedPosition());
 
 //        System.out.println(m_odometry.getPoseMeters().getX() + " meters");
 
@@ -225,7 +226,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public Pose2d getPose() {
-        return m_odometry.getPoseMeters();
+        return m_odometry.getEstimatedPosition();
     }
 
     public void setModuleStates(SwerveModuleState[] desired) {
@@ -250,7 +251,8 @@ public class Chassis extends SubsystemBase {
                         new PIDController(10, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
                         new PIDController(10, 0, 0), // Y controller (usually the same values as X controller)
                         new PIDController(5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        this::setModuleStates, // Module states consumer
+                        this::setModuleStates,
+                        true, // Module states consumer
                         this // Requires this drive subsystem
                 )
         );

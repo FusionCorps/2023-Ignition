@@ -95,6 +95,10 @@ public class Arm extends SubsystemBase {
         return (abs(baseTalon.getSelectedSensorPosition() - baseTalonTarget) < BASE_ERROR_THRESHOLD);
     }
 
+    public boolean wristAtTarget() {
+        return (abs(wristTalon.getSelectedSensorPosition() - wristTalonTarget) < BASE_ERROR_THRESHOLD);
+    }
+
     // check if ok to move both arms at once
     public boolean safeForDouble() {
         return (abs(baseTalon.getSelectedSensorPosition()) > BASE_SAFETY_THRESHOLD);

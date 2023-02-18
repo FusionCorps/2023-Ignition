@@ -72,21 +72,21 @@ public final class Constants {
     public static final int BASE_ERROR_THRESHOLD = 8000;
     public static final int WRIST_ERROR_THRESHOLD = 20000;
 
-    public static final double BASE_SAFETY_THRESHOLD = 45*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double BASE_SAFETY_THRESHOLD = 75*PI/180/(PI/1024/BASE_GEAR_RATIO);
 
     public static final int WRIST_STOWED_POS = 0;
 
     public static final double MID_BASE_POS = -127*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double MID_WRIST_POS = -90*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
-    public static final double HIGH_BASE_POS = -138*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_WRIST_POS = -115*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double HIGH_BASE_POS = -128*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS = -133*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double INTAKE_BASE_POS_CONE = 25*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double INTAKE_WRIST_POS_CONE = -138*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double INTAKE_WRIST_POS_CONE = -142*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double INTAKE_BASE_POS_CUBE = 46*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double INTAKE_WRIST_POS_CUBE = -155*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double INTAKE_WRIST_POS_CUBE = -158*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double CHUTE_BASE_POS = 33*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double CHUTE_WRIST_POS = -53*PI/180/(PI/1024/WRIST_GEAR_RATIO);
