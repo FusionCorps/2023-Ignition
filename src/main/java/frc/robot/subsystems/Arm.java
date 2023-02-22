@@ -2,6 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.ArmConstants.*;
@@ -19,6 +23,21 @@ public class Arm extends SubsystemBase {
 
     // keep false please - testing ONLY
     public boolean keepParallel = false;
+
+    private ShuffleboardTab tab = Shuffleboard.getTab("General");
+
+    public GenericEntry midBaseFudgeTab = tab.add("Mid Score Bicep (Degrees)", 0.0).getEntry();
+    public GenericEntry midWristFudgeTab = tab.add("Mid Score Forearm (Degrees)", 0.0).getEntry();
+
+    public GenericEntry highBaseFudgeTab = tab.add("High Score Bicep (Degrees)", 0.0).getEntry();
+    public GenericEntry highWristFudgeTab = tab.add("High Score Forearm (Degrees)", 0.0).getEntry();
+
+    public GenericEntry coneBaseFudgeTab = tab.add("Cone Intake Bicep (Degrees)", 0.0).getEntry();
+    public GenericEntry coneWristFudgeTab = tab.add("Cone Intake Forearm (Degrees)", 0.0).getEntry();
+
+    public GenericEntry cubeBaseFudgeTab = tab.add("Cube Intake Bicep (Degrees)", 0.0).getEntry();
+    public GenericEntry cubeWristFudgeTab = tab.add("Cube Intake Forearm (Degrees)", 0.0).getEntry();
+
 
     public Arm() {
         baseTalon = new WPI_TalonFX(BASE_ID);
@@ -122,6 +141,28 @@ public class Arm extends SubsystemBase {
     public void setHoldCurrentPos() {
         baseTalonTarget = baseTalon.getSelectedSensorPosition();
         wristTalonTarget = wristTalon.getSelectedSensorPosition();
+    }
+
+    // the +/- is different on the fudges because I want positive to mean against gravity which is more intuitive then mapping
+    // one side to be up and other to be down on the fly
+    public void setArmHigh() {
+        baseTalonTarget = HIGH_BASE_POS - highBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
+        wristTalonTarget = HIGH_WRIST_POS - highWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
+    }
+
+    public void setArmMid() {
+        baseTalonTarget = MID_BASE_POS - midBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
+        wristTalonTarget = MID_WRIST_POS - midWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
+    }
+
+    public void setArmConeIntake() {
+        baseTalonTarget = INTAKE_BASE_POS_CONE + coneBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
+        wristTalonTarget = INTAKE_WRIST_POS_CONE + coneWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
+    }
+
+    public void setArmCubeIntake() {
+        baseTalonTarget = INTAKE_BASE_POS_CUBE + cubeBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
+        wristTalonTarget = INTAKE_WRIST_POS_CUBE + cubeWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
     }
 
 }

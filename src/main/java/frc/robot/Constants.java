@@ -76,6 +76,10 @@ public final class Constants {
 
     public static final int WRIST_STOWED_POS = 0;
 
+    // degrees to motor ticks
+    public static final double BASE_CONVERSION_FACTOR = PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double WRIST_CONVERSION_FACTOR = PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
     public static final double MID_BASE_POS = -127*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double MID_WRIST_POS = -90*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
