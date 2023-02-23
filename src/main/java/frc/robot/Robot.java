@@ -41,15 +41,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 
-    // initialises the LED stuffs
-    NetworkTableInstance instance = NetworkTableInstance.getDefault();
-    NetworkTable ledTable = instance.getTable("led");
-
-    isEnabledEntry = ledTable.getEntry("isEnabled");
-    isEnabledEntry.setBoolean(false);
-    isCubeEntry = ledTable.getEntry("isCube");
-    isCubeEntry.setBoolean(false);
-
     // autonomous chooser on the dashboard.
 
     // -----AUTON SELECTION INSTRUCTIONS--------
@@ -85,7 +76,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     if (m_robotContainer != null) {
-      m_robotContainer.ledPeriodic(isCubeEntry.getBoolean(false), isEnabledEntry.getBoolean(false));
     }
   }
 

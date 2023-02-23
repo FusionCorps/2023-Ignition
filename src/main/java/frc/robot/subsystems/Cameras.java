@@ -13,8 +13,6 @@ public class Cameras extends SubsystemBase {
 
     public Cameras() {
         ll_table = NetworkTableInstance.getDefault().getTable("limelight");
-
-        ll_table.getEntry("stream").setNumber(1);
     }
 
     @Override
