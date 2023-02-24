@@ -101,7 +101,7 @@ public class RobotContainer {
     //            new ArmToPosition(m_arm, 0, 0),
           new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
           new ParallelCommandGroup(m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true),
-                new RunVoltsTime(mIntake, -4.0, twoPieceLoadSideA.getTotalTimeSeconds())),
+                new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())),
           new ArmToPosition(m_arm, 0, 0),
           m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false),
           new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),

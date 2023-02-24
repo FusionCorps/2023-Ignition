@@ -41,6 +41,15 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 
+    // initialises the LED stuffs
+    NetworkTableInstance instance = NetworkTableInstance.getDefault();
+    NetworkTable ledTable = instance.getTable("led");
+
+    isEnabledEntry = ledTable.getEntry("isEnabled");
+    isEnabledEntry.setBoolean(false);
+    isCubeEntry = ledTable.getEntry("isCube");
+    isCubeEntry.setBoolean(false);
+
     // autonomous chooser on the dashboard.
 
     // -----AUTON SELECTION INSTRUCTIONS--------
@@ -51,6 +60,7 @@ public class Robot extends TimedRobot {
 
     m_chooser.addOption("Test Line", m_robotContainer.autoOne);
     m_chooser.addOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
+    m_chooser.addOption("Three Piece Left", m_robotContainer.threePieceLoadSide);
 
     m_chooser.setDefaultOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
 
@@ -76,6 +86,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     if (m_robotContainer != null) {
+      m_robotContainer.ledPeriodic(isCubeEntry.getBoolean(false), isEnabledEntry.getBoolean(false));
     }
   }
 
@@ -93,7 +104,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     // returns the selected auton
-    m_autonomousCommand = m_chooser.getSelected();
+    // m_autonomousCommand = m_chooser.getSelected();
+    m_autonomousCommand = m_robotContainer.threePieceLoadSide;
 
 
     if (m_autonomousCommand != null) {
