@@ -1,6 +1,7 @@
 package frc.robot.commands.Chassis;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.math.Tilt;
 import frc.robot.subsystems.Chassis;
 
 import static java.lang.Math.max;
@@ -30,13 +31,21 @@ public class ChassisAutoBalance extends CommandBase {
 
     @Override
     public void initialize() {
-        priorPitch = mChassis.ahrs.getPitch();
+        double yaw = mChassis.ahrs.getYaw();
+        double pitch = mChassis.ahrs.getPitch();
+        double roll = mChassis.ahrs.getRoll();
+        priorPitch = Tilt.calculate(yaw, pitch, roll);
+        //priorPitch = mChassis.ahrs.getPitch();
     }
 
     @Override
     public void execute() {
+        double yaw = mChassis.ahrs.getYaw();
+        double pitch = mChassis.ahrs.getPitch();
+        double roll = mChassis.ahrs.getRoll();
+
         // alternate idea: start tilted up, then trigger on going underneath a certain thresh
-        if (mChassis.ahrs.getPitch() < priorPitch) {
+        if (Tilt.calculate(yaw, pitch, roll) < priorPitch) {//(mChassis.ahrs.getPitch() < priorPitch) {
             triggerCounter++;
         } else {
             triggerCounter--;
@@ -52,7 +61,7 @@ public class ChassisAutoBalance extends CommandBase {
         if (isTriggered) {
             mChassis.crossWheels();
         } else {
-            mChassis.runSwerve(0.2, 0, 0);
+            mChassis.runSwerve(-0.2, 0, 0);
         }
     }
 

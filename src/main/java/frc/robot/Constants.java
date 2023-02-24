@@ -78,4 +78,8 @@ public final class Constants {
 
   public static double WHEEL_RADIUS_METERS = 0.0508;
 
+  public static final double AUTON_DRIVE_kP = 0.6;
+  public static double CHARGE_STATION_BALANCE_ANGLE_GOAL = 3.25;
+  public static double CHARGE_STATION_STABILIZE_SECONDS = .1;
+
 }

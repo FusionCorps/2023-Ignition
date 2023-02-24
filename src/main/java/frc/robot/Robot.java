@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.data.CSVManager;
 import frc.robot.math.*;
+import static java.lang.Math.*;
 
 import static frc.robot.RobotContainer.m_chassis;
 
@@ -114,9 +115,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    logs = new CSVManager("rotations");
-    m_chassis.resetTimer();
-    m_chassis.startTimer();
+
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -127,6 +126,13 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     double yaw = m_chassis.ahrs.getYaw();
+    double pitch = m_chassis.ahrs.getPitch();
+    double roll = m_chassis.ahrs.getRoll();
+
+    yaw = (yaw + 360) % 360;
+
+    System.out.println(Tilt.calculate(yaw, pitch, roll));
+    //System.out.println(Tilt.calculate(yaw, pitch, roll));
     m_robotContainer.periodic();
   }
 
