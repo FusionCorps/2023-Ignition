@@ -47,6 +47,7 @@ public class RobotContainer {
 
   public Command autoOne;
   public Command twoPieceLoadSide;
+  public Command threePieceLoadSide;
 
   public Command relaxArm;
 
@@ -74,6 +75,13 @@ public class RobotContainer {
 //            m_chassis.followTrajectoryCommand(twoPieceLoadSide, true));
     PathPlannerTrajectory twoPieceLoadSideB = PathPlanner.loadPath("1+1_path2", new PathConstraints(4, 3));
 
+
+    
+ PathPlannerTrajectory threePieceLoadSideA = PathPlanner.loadPath("1+1_path1", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideB = PathPlanner.loadPath("1+1_path2", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideC = PathPlanner.loadPath("3 Piece Third Intake", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideD = PathPlanner.loadPath("3 Piece Third Placement",new PathConstraints(4, 3));
+    
     twoPieceLoadSide = new SequentialCommandGroup(
             m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
             new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
@@ -90,10 +98,35 @@ public class RobotContainer {
             new RunVoltsTime(mIntake, 9.0, 0.5)
          );
 
+    threePieceLoadSide = new SequentialCommandGroup(
+          m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
+          new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+          new RunVoltsTime(mIntake, 9.0, 0.5),
+    //            new ArmToPosition(m_arm, 0, 0),
+          new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
+          new ParallelCommandGroup(m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true),
+                new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())),
+          new ArmToPosition(m_arm, 0, 0),
+          m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false),
+          new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+          new RunVoltsTime(mIntake, 9, 0.5),
+          new ArmToPosition(m_arm, INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE),
+          new ParallelCommandGroup(m_chassis.followTrajectoryCommand(threePieceLoadSideC, false),
+            new RunVoltsTime(mIntake, -4, threePieceLoadSideC.getTotalTimeSeconds())),
+          new ArmToPosition(m_arm, 0, 0),
+          m_chassis.followTrajectoryCommand(threePieceLoadSideD, false),
+          new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+          new RunVoltsTime(mIntake, 9, 0.5) );
+    
+
     relaxArm = new RelaxArm(m_arm);
 
   }
 
+  public void ledPeriodic(boolean isCube, boolean isEnabled) {
+    leds.setLedColor(isCube);
+    leds.setLedEnabled(isEnabled);
+  }
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -117,9 +150,9 @@ public class RobotContainer {
 //    m_controller.x().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
 //    m_controller.a().onTrue(m_cameras.runOnce(() -> {m_cameras.togglePipeline();}));
 
-//    m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(HIGH_BASE_POS, HIGH_WRIST_POS);}));
+    // m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(HIGH_BASE_POS, HIGH_WRIST_POS);}));
     m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setArmHigh();}));
-//    m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, MID_WRIST_POS);}));
+    // m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, MID_WRIST_POS);}));
     m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setArmMid();}));
 //    m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, 0);}));
 //    m_controller.y().whileTrue(m_arm.run(() -> {m_arm.passSetpoints(PI/2/(PI/1024/BASE_GEAR_RATIO), 0);}));
@@ -134,8 +167,8 @@ public class RobotContainer {
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
     // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
     m_controller.rightBumper().whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
-//    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE);}));
-    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setArmConeIntake();}));
+    // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE);}));
+    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setArmConeIntake();;}));
     m_controller.rightBumper().onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
 
 //    m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
@@ -149,8 +182,8 @@ public class RobotContainer {
     m_controller.povLeft().onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
 
 //    m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(30*PI/180/(PI/1024/BASE_GEAR_RATIO), -50*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
-//    m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE);}));
-    m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setArmCubeIntake();}));
+    // m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE);}));
+    m_controller.rightTrigger().onTrue(m_arm.runOnce(() -> {m_arm.setArmCubeIntake();}));
     m_controller.rightTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
     m_controller.rightTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(-0.2);}));
 
