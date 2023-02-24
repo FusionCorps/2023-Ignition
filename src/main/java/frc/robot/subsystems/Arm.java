@@ -31,31 +31,31 @@ public class Arm extends SubsystemBase {
 
     public GenericEntry midBaseFudgeTab = tab.add("Mid Score Bicep (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -10, "max", 10)).getEntry();
+            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
     public GenericEntry midWristFudgeTab = tab.add("Mid Score Forearm (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -10, "max", 10)).getEntry();
+            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
 
     public GenericEntry highBaseFudgeTab = tab.add("High Score Bicep (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -10, "max", 10)).getEntry();
+            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
     public GenericEntry highWristFudgeTab = tab.add("High Score Forearm (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -10, "max", 10)).getEntry();
+            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
 
     public GenericEntry coneBaseFudgeTab = tab.add("Cone Intake Bicep (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -10, "max", 10)).getEntry();
+            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
     public GenericEntry coneWristFudgeTab = tab.add("Cone Intake Forearm (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -10, "max", 10)).getEntry();
+            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
 
     public GenericEntry cubeBaseFudgeTab = tab.add("Cube Intake Bicep (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -10, "max", 10)).getEntry();
+            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
     public GenericEntry cubeWristFudgeTab = tab.add("Cube Intake Forearm (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -10, "max", 10)).getEntry();
+            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
 
 
     public Arm() {
@@ -94,6 +94,18 @@ public class Arm extends SubsystemBase {
         wristTalon.configMotionCruiseVelocity(WRIST_MAX_V);
         wristTalon.configMotionAcceleration(WRIST_MAX_A);
         wristTalon.configMotionSCurveStrength(WRIST_CURVE_STR);
+
+        highBaseFudgeTab.setDouble(0.0);
+        highWristFudgeTab.setDouble(0.0);
+
+        midBaseFudgeTab.setDouble(0.0);
+        midWristFudgeTab.setDouble(0.0);
+
+        coneBaseFudgeTab.setDouble(0.0);
+        coneWristFudgeTab.setDouble(0.0);
+
+        cubeBaseFudgeTab.setDouble(0.0);
+        cubeWristFudgeTab.setDouble(0.0);
     }
 
 //    @Override

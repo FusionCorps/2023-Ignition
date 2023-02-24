@@ -46,19 +46,19 @@ public class ChassisDriveToNearestTarget extends CommandBase {
         double angle = mChassis.ahrs.getAngle() % 360;
 
 
-        double tx = mCameras.tx();
+        double tx = -1*mCameras.tx();
 
         System.out.println(tx);
 
         // deadzone/min error
-        if (abs(tx) <= 0.8) {
+        if (abs(tx) <= 2.0) {
             tx = 0;
         }
 
         if (tx == 0) {
             try {
-                mChassis.runSwerve(0.1,
-                        str_controller.calculate(tx, 0),
+                mChassis.runSwerve(0.3,
+                        clamp(str_controller.calculate(tx, 0), -0.5, 0.5),
                         clamp(rot_controller.calculate(angle, 0), -0.75, 0.75));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -66,7 +66,7 @@ public class ChassisDriveToNearestTarget extends CommandBase {
         } else if (abs((angle + 180) % 360 - 180) < 3) {
             try {
                 mChassis.runSwerve(0,
-                        str_controller.calculate(tx, 0),
+                        clamp(str_controller.calculate(tx, 0), -0.5, 0.5),
                         clamp(rot_controller.calculate(angle, 0), -0.75, 0.75));
             } catch (Exception e) {
                 e.printStackTrace();

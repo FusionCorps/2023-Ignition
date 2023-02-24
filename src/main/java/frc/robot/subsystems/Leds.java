@@ -23,10 +23,10 @@ public class Leds extends SubsystemBase {
     ShuffleboardTab tab = Shuffleboard.getTab("General");
 
     GenericEntry isEnabledEntry = tab.add("LEDs Enabled", false)
-            .withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+            .withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
     GenericEntry isCubeEntry = tab.add("Cube Mode", false)
-            .withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+            .withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
     private final int LED_COUNT = 66;
 
