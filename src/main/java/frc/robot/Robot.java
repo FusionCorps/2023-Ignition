@@ -62,6 +62,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
     m_chooser.addOption("Three Piece Left", m_robotContainer.threePieceLoadSide);
     m_chooser.addOption("One Piece Balance", m_robotContainer.onePieceBalance);
+    m_chooser.addOption("Three Piece Left Cube", m_robotContainer.threePieceLoadSideCube);
 
     m_chooser.setDefaultOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
 
@@ -87,7 +88,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     if (m_robotContainer != null) {
-      // m_robotContainer.ledPeriodic(isCubeEntry.getBoolean(false), isEnabledEntry.getBoolean(false));
+      m_robotContainer.ledPeriodic(isCubeEntry.getBoolean(false), isEnabledEntry.getBoolean(false));
     }
   }
 
@@ -106,7 +107,7 @@ public class Robot extends TimedRobot {
 
     // returns the selected auton
      m_autonomousCommand = m_chooser.getSelected();
-//    m_autonomousCommand = m_robotContainer.threePieceLoadSide;
+    //m_autonomousCommand = m_robotContainer.threePieceLoadSideCube;
 
 
     if (m_autonomousCommand != null) {

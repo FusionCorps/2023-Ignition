@@ -47,6 +47,7 @@ public class RobotContainer {
   public Command twoPieceLoadSide;
   public Command threePieceLoadSide;
   public Command onePieceBalance;
+  public Command threePieceLoadSideCube;
 
   public Command relaxArm;
 
@@ -76,10 +77,14 @@ public class RobotContainer {
 
 
     
- PathPlannerTrajectory threePieceLoadSideA = PathPlanner.loadPath("1+1_path1", new PathConstraints(4, 3));
- PathPlannerTrajectory threePieceLoadSideB = PathPlanner.loadPath("1+1_path2", new PathConstraints(4, 3));
- PathPlannerTrajectory threePieceLoadSideC = PathPlanner.loadPath("3 Piece Third Intake", new PathConstraints(4, 3));
- PathPlannerTrajectory threePieceLoadSideD = PathPlanner.loadPath("3 Piece Third Placement",new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideB = PathPlanner.loadPath("1+1_path2R", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideC = PathPlanner.loadPath("1+2_path2R", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideD = PathPlanner.loadPath("1+2_path3R",new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideCubeB = PathPlanner.loadPath("1+2_pathCube_2R", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideCubeC = PathPlanner.loadPath("1+2_pathCube_3R", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideCubeD = PathPlanner.loadPath("1+2_pathCube_4R", new PathConstraints(4, 3));
+ 
     
     twoPieceLoadSide = new SequentialCommandGroup(
             m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
@@ -92,8 +97,7 @@ public class RobotContainer {
                     new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())),
             new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
                     m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)),
-//            new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2),
-            new ChassisDriveAuton(m_chassis, 0.3, 0, 0, 0.2),
+            new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2),
             new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
             new RunVoltsTime(mIntake, 9.0, 0.5)
          );
@@ -113,20 +117,46 @@ public class RobotContainer {
           new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
           new RunVoltsTime(mIntake, 9.0, 0.5),
     //            new ArmToPosition(m_arm, 0, 0),
-          new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
-          new ParallelCommandGroup(m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true),
+          
+          new ParallelCommandGroup(m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true), 
+                new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
                 new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())),
-          new ArmToPosition(m_arm, 0, 0),
-          m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false),
+          new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
+                m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)),
+          new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2),
           new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
           new RunVoltsTime(mIntake, 9, 0.5),
-          new ArmToPosition(m_arm, INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE),
+          
           new ParallelCommandGroup(m_chassis.followTrajectoryCommand(threePieceLoadSideC, false),
+            new ArmToPosition(m_arm, INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE),
             new RunVoltsTime(mIntake, -4, threePieceLoadSideC.getTotalTimeSeconds())),
-          new ArmToPosition(m_arm, 0, 0),
-          m_chassis.followTrajectoryCommand(threePieceLoadSideD, false),
-          new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+          new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
+          m_chassis.followTrajectoryCommand(threePieceLoadSideD, false)),
+          new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS),
           new RunVoltsTime(mIntake, 9, 0.5) );
+    
+      threePieceLoadSideCube = new SequentialCommandGroup(
+            m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
+            new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+            new RunVoltsTime(mIntake, 9.0, 0.5),
+      //            new ArmToPosition(m_arm, 0, 0),
+            
+            new ParallelCommandGroup(m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true), 
+                  new ArmToPosition(m_arm, INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE),
+                  new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())),
+            new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
+                  m_chassis.followTrajectoryCommand(threePieceLoadSideCubeB, false)),
+            new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2),
+            new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+            new RunVoltsTime(mIntake, 9, 0.5),
+            
+            new ParallelCommandGroup(m_chassis.followTrajectoryCommand(threePieceLoadSideCubeC, false),
+              new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
+              new RunVoltsTime(mIntake, -4, threePieceLoadSideCubeC.getTotalTimeSeconds())),
+            new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
+            m_chassis.followTrajectoryCommand(threePieceLoadSideCubeD, false)),
+            new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+            new RunVoltsTime(mIntake, 9, 0.5) );
     
 
     relaxArm = new RelaxArm(m_arm);
