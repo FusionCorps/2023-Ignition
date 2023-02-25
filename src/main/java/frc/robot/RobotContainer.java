@@ -209,7 +209,7 @@ public class RobotContainer {
     m_controller.rightBumper().whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
     // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE);}));
     m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setArmConeIntake();;}));
-    m_controller.rightBumper().onFalse(mIntake.runOnce(() -> {mIntake.set(-0.05);}));
+    m_controller.rightBumper().onFalse(mIntake.runOnce(() -> {mIntake.set(-0.1);}));
 
 //    m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
 
