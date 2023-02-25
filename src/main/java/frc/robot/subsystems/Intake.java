@@ -6,13 +6,25 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.util.Map;
 
 import static frc.robot.Constants.IntakeConstants.*;
 
 public class Intake extends SubsystemBase {
     //CANSparkMax intakeMotor;
     WPI_TalonFX intakeMotor;
+
+    private ShuffleboardTab tab = Shuffleboard.getTab("General");
+
+    public GenericEntry voltageFudgeTab = tab.add("Outtake Voltage K", 1.0)
+            .withWidget(BuiltInWidgets.kNumberSlider)
+            .withProperties(Map.of("min", 0, "max", 2)).getEntry();
 
     public Intake() {
         //intakeMotor = new CANSparkMax(Constants.INTAKE_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -35,6 +47,6 @@ public class Intake extends SubsystemBase {
 
     // added voltage comp for consistency
     public void setVolts(double volts) {
-        intakeMotor.setVoltage(volts);
+        intakeMotor.setVoltage(volts*voltageFudgeTab.getDouble(1.0));
     }
 }

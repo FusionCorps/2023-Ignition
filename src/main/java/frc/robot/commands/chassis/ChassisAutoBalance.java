@@ -36,7 +36,9 @@ public class ChassisAutoBalance extends CommandBase {
         // alternate idea: start tilted up, then trigger on going underneath a certain thresh
         // this worked better, continue researching
 
-        if (mChassis.ahrs.getRoll() < 13) {
+        System.out.println(mChassis.ahrs.getPitch());
+
+        if (mChassis.ahrs.getPitch() < 12.25) {
 
             if (!isTriggered) {
                 backupTimer.reset();
@@ -47,7 +49,7 @@ public class ChassisAutoBalance extends CommandBase {
         }
 
         // don't want to end command, so keep holding wheels locked
-        if (isTriggered && backupTimer.hasElapsed(1)) {
+        if (isTriggered && backupTimer.hasElapsed(0.1)) {
             mChassis.crossWheels();
         } else if (isTriggered) {
             mChassis.runSwerve(0.2, 0, 0);

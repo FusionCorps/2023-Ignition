@@ -14,9 +14,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.ArmToPosition;
 import frc.robot.commands.arm.ManageArm;
 import frc.robot.commands.arm.RelaxArm;
-import frc.robot.commands.chassis.ChassisDriveFC;
-import frc.robot.commands.chassis.ChassisDriveFCFlickStick;
-import frc.robot.commands.chassis.ChassisDriveToNearestTarget;
+import frc.robot.commands.chassis.*;
 import frc.robot.commands.intake.RunVoltsTime;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -48,6 +46,7 @@ public class RobotContainer {
   public Command autoOne;
   public Command twoPieceLoadSide;
   public Command threePieceLoadSide;
+  public Command onePieceBalance;
 
   public Command relaxArm;
 
@@ -70,10 +69,10 @@ public class RobotContainer {
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
     autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
 
-    PathPlannerTrajectory twoPieceLoadSideA = PathPlanner.loadPath("1+1_path1", new PathConstraints(4, 3));
+    PathPlannerTrajectory twoPieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4, 3));
 //    this.twoPieceLoadSide = new SequentialCommandGroup(m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0);}),
 //            m_chassis.followTrajectoryCommand(twoPieceLoadSide, true));
-    PathPlannerTrajectory twoPieceLoadSideB = PathPlanner.loadPath("1+1_path2", new PathConstraints(4, 3));
+    PathPlannerTrajectory twoPieceLoadSideB = PathPlanner.loadPath("1+1_path2R", new PathConstraints(4, 3));
 
 
     
@@ -91,12 +90,22 @@ public class RobotContainer {
             new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
                     m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true),
                     new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())),
-            new ArmToPosition(m_arm, 0, 0),
-            m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false),
-            new ChassisDriveToNearestTarget(m_chassis, m_cameras, 1.0),
+            new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
+                    m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)),
+            new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2),
             new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
             new RunVoltsTime(mIntake, 9.0, 0.5)
          );
+
+      onePieceBalance = new SequentialCommandGroup(
+              m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
+              new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+              new RunVoltsTime(mIntake, 10.5, 0.5),
+//            new ArmToPosition(m_arm, 0, 0),
+              new ArmToPosition(m_arm, 0, 0),
+              new ChassisDriveAuton(m_chassis, -0.2, 0.0, 0.0, 3.0),
+              new ChassisAutoBalance(m_chassis)
+      );
 
     threePieceLoadSide = new SequentialCommandGroup(
           m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
@@ -162,14 +171,14 @@ public class RobotContainer {
     m_controller.a().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 0);}));
 
 
-    m_controller.leftBumper().onTrue(m_chassis.runOnce(() -> {m_chassis.togglePrecision();}));
-    //m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
+//    m_controller.leftBumper().onTrue(m_chassis.runOnce(() -> {m_chassis.togglePrecision();}));
+    m_controller.leftBumper().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
     // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
     m_controller.rightBumper().whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
     // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE);}));
     m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setArmConeIntake();;}));
-    m_controller.rightBumper().onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
+    m_controller.rightBumper().onFalse(mIntake.runOnce(() -> {mIntake.set(-0.05);}));
 
 //    m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
 
@@ -179,7 +188,7 @@ public class RobotContainer {
     m_controller.povRight().whileTrue(mIntake.run(() -> {mIntake.set(-1*INTAKE_PCT);}));
     m_controller.povRight().onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
     m_controller.povLeft().whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
-    m_controller.povLeft().onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
+    m_controller.povLeft().onFalse(mIntake.runOnce(() -> {mIntake.set(-0.1);}));
 
 //    m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(30*PI/180/(PI/1024/BASE_GEAR_RATIO), -50*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
     // m_controller.rightTrigger(0.7).onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE);}));
@@ -187,8 +196,8 @@ public class RobotContainer {
     m_controller.rightTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
     m_controller.rightTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(-0.2);}));
 
-    m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.setVolts(9.0);}));
-    m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(0.0);}));
+    m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.setVolts(10.5);}));
+    m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(-0.0);}));
 
     m_controller.back().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(CHUTE_BASE_POS, CHUTE_WRIST_POS);}));
 

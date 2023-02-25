@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Test Line", m_robotContainer.autoOne);
     m_chooser.addOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
     m_chooser.addOption("Three Piece Left", m_robotContainer.threePieceLoadSide);
+    m_chooser.addOption("One Piece Balance", m_robotContainer.onePieceBalance);
 
     m_chooser.setDefaultOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
 
@@ -104,8 +105,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     // returns the selected auton
-    // m_autonomousCommand = m_chooser.getSelected();
-    m_autonomousCommand = m_robotContainer.threePieceLoadSide;
+     m_autonomousCommand = m_chooser.getSelected();
+//    m_autonomousCommand = m_robotContainer.threePieceLoadSide;
 
 
     if (m_autonomousCommand != null) {

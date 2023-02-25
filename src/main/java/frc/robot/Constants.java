@@ -52,7 +52,7 @@ public final class Constants {
     public static final double WRIST_kD = 0;
 
     public static final double WRIST_MAX_V = 16000;
-    public static final double WRIST_MAX_A = 8000; // could be up to 102400 with good enough intake
+    public static final double WRIST_MAX_A = 12000; // could be up to 102400 with good enough intake
     public static final int WRIST_CURVE_STR = 2;
 
     // slomo testing
@@ -84,13 +84,13 @@ public final class Constants {
     public static final double MID_WRIST_POS = -85*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double HIGH_BASE_POS = -131.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_WRIST_POS = -124*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS = -129*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double INTAKE_BASE_POS_CONE = 25*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double INTAKE_WRIST_POS_CONE = -152*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
-    public static final double INTAKE_BASE_POS_CUBE = 46*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double INTAKE_WRIST_POS_CUBE = -168*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double INTAKE_BASE_POS_CUBE = 45.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double INTAKE_WRIST_POS_CUBE = -175*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double CHUTE_BASE_POS = 15*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double CHUTE_WRIST_POS = -55*PI/180/(PI/1024/WRIST_GEAR_RATIO);
@@ -122,8 +122,8 @@ public final class Constants {
   public static double TRACK_WIDTH_METERS = 0.7112;
   public static double TRACK_LENGTH_METERS = 0.7112;
 
-  public static double SWERVE_FORWARD_SPEED_MAX = 4.2;
-  public static double SWERVE_STRAFE_SPEED_MAX = 4.2;
+  public static double SWERVE_FORWARD_SPEED_MAX = 5.4;
+  public static double SWERVE_STRAFE_SPEED_MAX = 5.4;
   public static double SWERVE_ROT_SPEED_MAX = 4.0;
 
   public static double MAX_SPEED = 9.2;
