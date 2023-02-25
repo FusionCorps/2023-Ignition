@@ -15,7 +15,7 @@ public class Leds extends SubsystemBase {
     private final int[] coneRGB = new int[]{255, 255, 0};
     private final int[] cubeRGB = new int[]{255, 0, 255};
 
-    private final double MAX_BRIGHTNESS = 0.5;
+    private final double MAX_BRIGHTNESS = 1.0;
     CANdle candle;
     CANdleConfiguration configs;
 
@@ -63,6 +63,6 @@ public class Leds extends SubsystemBase {
     @Override
     public void periodic() {
         this.setLedColor(isCubeEntry.getBoolean(false));
-        this.setLedEnabled(isEnabledEntry.getBoolean(false));
+        this.setLedEnabled(true);
     }
 }

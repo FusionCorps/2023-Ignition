@@ -92,7 +92,8 @@ public class RobotContainer {
                     new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())),
             new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
                     m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)),
-            new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2),
+//            new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2),
+            new ChassisDriveAuton(m_chassis, 0.3, 0, 0, 0.2),
             new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
             new RunVoltsTime(mIntake, 9.0, 0.5)
          );
