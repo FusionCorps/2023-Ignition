@@ -46,6 +46,7 @@ public class RobotContainer {
   public Command autoOne;
   public Command twoPieceLoadSide;
   public Command threePieceLoadSide;
+  public Command threePieceLoadSideNested;
   public Command onePieceBalance;
   public Command threePieceLoadSideCube;
 
@@ -87,37 +88,35 @@ public class RobotContainer {
  
     // TODO: Standardize autonomous outtake voltage
     twoPieceLoadSide = new SequentialCommandGroup(
-            m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
-            new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
-            new RunVoltsTime(mIntake, 9.0, 0.5),
-//            new ArmToPosition(m_arm, 0, 0),
-            new ArmToPosition(m_arm, 0, 0, 0.0),
-            new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
-                    m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true),
-                    new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())),
-            new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
-                    m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)),
-            new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2),
-            new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
-            new RunVoltsTime(mIntake, 9.0, 0.5)
+            m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}), // reset gyro
+            new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS), // arm to high
+            new RunVoltsTime(mIntake, 9.0, 0.5), // outtake
+            new ArmToPosition(m_arm, 0, 0, 0.0), // return to stow
+            new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE), // deploy intake
+                    m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true), // drive to piece
+                    new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())), // intake
+            new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0), // stow arm
+                    m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)), // return to scoring
+            // new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2), // drive forward to align
+            new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.2), // drive forward to align
+            new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS), // arm to high
+            new RunVoltsTime(mIntake, 9.0, 0.5) // outtake
          );
 
       onePieceBalance = new SequentialCommandGroup(
-              m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
-              new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
-              new RunVoltsTime(mIntake, 10.5, 0.5),
+              m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}), // reset gyro
+              new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS), // arm to high
+              new RunVoltsTime(mIntake, 10.5, 0.5), // outtake
 //            new ArmToPosition(m_arm, 0, 0),
-              new ArmToPosition(m_arm, 0, 0),
-              new ChassisDriveAuton(m_chassis, -0.2, 0.0, 0.0, 3.0),
-              new ChassisAutoBalance(m_chassis)
+              new ArmToPosition(m_arm, 0, 0), // stow
+              new ChassisDriveAuton(m_chassis, -0.2, 0.0, 0.0, 3.0), // drive forward
+              new ChassisAutoBalance(m_chassis) // balance
       );
 
     threePieceLoadSide = new SequentialCommandGroup(
-          m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
-          new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+          m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}), // reset gyro
+          new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS), // arm to high
           new RunVoltsTime(mIntake, 9.0, 0.5),
-    //            new ArmToPosition(m_arm, 0, 0),
-          
           new ParallelCommandGroup(m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true), 
                 new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
                 new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())),
@@ -134,6 +133,19 @@ public class RobotContainer {
           m_chassis.followTrajectoryCommand(threePieceLoadSideD, false)),
           new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS),
           new RunVoltsTime(mIntake, 9, 0.5) );
+
+    // REMEMBER THE OTHER AUTOS ARE COMMANDS TOO - AO
+      threePieceLoadSideNested = new SequentialCommandGroup(
+              twoPieceLoadSide,
+              new ArmToPosition(m_arm, 0.0, 0.0, 0.0), // stow before you move
+              new ParallelCommandGroup(m_chassis.followTrajectoryCommand(threePieceLoadSideC, false),
+                      new ArmToPosition(m_arm, INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE),
+                      new RunVoltsTime(mIntake, -9, threePieceLoadSideC.getTotalTimeSeconds())),
+              mIntake.runOnce(() -> {mIntake.set(-0.2);}), // remember cube needs to be held in
+              new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
+                      m_chassis.followTrajectoryCommand(threePieceLoadSideD, false)),
+              new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS),
+              new RunVoltsTime(mIntake, 9, 0.5) );
     
       threePieceLoadSideCube = new SequentialCommandGroup(
             m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
