@@ -89,6 +89,10 @@ public final class Constants {
     public static final double HIGH_BASE_POS = -134.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS = -123*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
+    // testing to get cone very close to high node
+    public static final double HIGH_BASE_POS_ALT = -124.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS_ALT = 200*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
     public static final double INTAKE_BASE_POS_CONE = 22.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double INTAKE_WRIST_POS_CONE = -155*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 

@@ -85,13 +85,13 @@ public class RobotContainer {
  PathPlannerTrajectory threePieceLoadSideCubeC = PathPlanner.loadPath("1+2_pathCube_3R", new PathConstraints(4, 3));
  PathPlannerTrajectory threePieceLoadSideCubeD = PathPlanner.loadPath("1+2_pathCube_4R", new PathConstraints(4, 3));
  
-    
+    // TODO: Standardize autonomous outtake voltage
     twoPieceLoadSide = new SequentialCommandGroup(
             m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
             new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
             new RunVoltsTime(mIntake, 9.0, 0.5),
 //            new ArmToPosition(m_arm, 0, 0),
-            new ArmToPosition(m_arm, 0, 0),
+            new ArmToPosition(m_arm, 0, 0, 0.0),
             new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
                     m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true),
                     new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())),

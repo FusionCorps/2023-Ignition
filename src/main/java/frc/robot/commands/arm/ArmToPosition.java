@@ -14,11 +14,24 @@ public class ArmToPosition extends CommandBase {
     Timer timer = new Timer();
     boolean timerStarted = false;
 
+    double delay;
+
     public ArmToPosition(Arm arm, double basePos, double wristPos) {
         mArm = arm;
 
         baseTarget = basePos;
         wristTarget = wristPos;
+
+        delay = 0.25;
+    }
+
+    public ArmToPosition(Arm arm, double basePos, double wristPos, double delayTime) {
+        mArm = arm;
+
+        baseTarget = basePos;
+        wristTarget = wristPos;
+
+        delay = delayTime;
     }
 
     @Override
@@ -40,7 +53,7 @@ public class ArmToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(0.25);
+        return timer.hasElapsed(delay);
     }
 
 }
