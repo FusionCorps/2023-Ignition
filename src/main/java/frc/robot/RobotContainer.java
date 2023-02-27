@@ -208,7 +208,7 @@ public class RobotContainer {
     // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
     m_controller.rightBumper().whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
     // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE);}));
-    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setArmConeIntake();;}));
+    m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setArmConeIntake();}));
     m_controller.rightBumper().onFalse(mIntake.runOnce(() -> {mIntake.set(-0.1);}));
 
 //    m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
@@ -231,6 +231,7 @@ public class RobotContainer {
     m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(-0.0);}));
 
     m_controller.back().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(CHUTE_BASE_POS, CHUTE_WRIST_POS);}));
+    m_controller.back().onTrue(m_arm.runOnce(() -> {m_arm.hasCone = true;}));
 
     m_controller.start().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
   }

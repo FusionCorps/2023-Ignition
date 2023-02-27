@@ -27,6 +27,8 @@ public class Arm extends SubsystemBase {
     // keep false please - testing ONLY
     public boolean keepParallel = false;
 
+    public boolean hasCone = true;
+
     private ShuffleboardTab tab = Shuffleboard.getTab("General");
 
     public GenericEntry midBaseFudgeTab = tab.add("Mid Score Bicep (Degrees)", 0.0)
@@ -182,18 +184,27 @@ public class Arm extends SubsystemBase {
     }
 
     public void setArmMid() {
-        baseTalonTarget = MID_BASE_POS - midBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
-        wristTalonTarget = MID_WRIST_POS - midWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
+        if (hasCone) {
+            baseTalonTarget = MID_BASE_POS - midBaseFudgeTab.getDouble(0.0) * BASE_CONVERSION_FACTOR;
+            wristTalonTarget = MID_WRIST_POS - midWristFudgeTab.getDouble(0.0) * WRIST_CONVERSION_FACTOR;
+        } else {
+            baseTalonTarget = MID_BASE_POS_CUBE - midBaseFudgeTab.getDouble(0.0) * BASE_CONVERSION_FACTOR;
+            wristTalonTarget = MID_WRIST_POS_CUBE - midWristFudgeTab.getDouble(0.0) * WRIST_CONVERSION_FACTOR;
+        }
     }
 
     public void setArmConeIntake() {
         baseTalonTarget = INTAKE_BASE_POS_CONE + coneBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
         wristTalonTarget = INTAKE_WRIST_POS_CONE + coneWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
+
+        hasCone = true;
     }
 
     public void setArmCubeIntake() {
         baseTalonTarget = INTAKE_BASE_POS_CUBE + cubeBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
         wristTalonTarget = INTAKE_WRIST_POS_CUBE + cubeWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
+
+        hasCone = false;
     }
 
 }
