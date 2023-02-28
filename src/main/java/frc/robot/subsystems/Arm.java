@@ -29,6 +29,8 @@ public class Arm extends SubsystemBase {
 
     public boolean hasCone = true;
 
+    public boolean overriding = false;
+
     private ShuffleboardTab tab = Shuffleboard.getTab("General");
 
     public GenericEntry midBaseFudgeTab = tab.add("Mid Score Bicep (Degrees)", 0.0)
@@ -179,11 +181,13 @@ public class Arm extends SubsystemBase {
     // the +/- is different on the fudges because I want positive to mean against gravity which is more intuitive then mapping
     // one side to be up and other to be down on the fly
     public void setArmHigh() {
-        baseTalonTarget = HIGH_BASE_POS - highBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
-        wristTalonTarget = HIGH_WRIST_POS - highWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
+        overriding = false;
+        baseTalonTarget = HIGH_BASE_POS_ALT - highBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
+        wristTalonTarget = HIGH_WRIST_POS_ALT - highWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
     }
 
     public void setArmMid() {
+        overriding = false;
         if (hasCone) {
             baseTalonTarget = MID_BASE_POS - midBaseFudgeTab.getDouble(0.0) * BASE_CONVERSION_FACTOR;
             wristTalonTarget = MID_WRIST_POS - midWristFudgeTab.getDouble(0.0) * WRIST_CONVERSION_FACTOR;
@@ -194,6 +198,7 @@ public class Arm extends SubsystemBase {
     }
 
     public void setArmConeIntake() {
+        overriding = false;
         baseTalonTarget = INTAKE_BASE_POS_CONE + coneBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
         wristTalonTarget = INTAKE_WRIST_POS_CONE + coneWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
 
@@ -201,10 +206,17 @@ public class Arm extends SubsystemBase {
     }
 
     public void setArmCubeIntake() {
+        overriding = false;
         baseTalonTarget = INTAKE_BASE_POS_CUBE + cubeBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
         wristTalonTarget = INTAKE_WRIST_POS_CUBE + cubeWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
 
         hasCone = false;
+    }
+
+    public void setArmStow() {
+        overriding = false;
+        baseTalonTarget = 0;
+        wristTalonTarget = 0;
     }
 
 }

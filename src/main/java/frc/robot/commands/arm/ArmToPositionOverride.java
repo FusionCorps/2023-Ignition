@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
-public class ArmToPosition extends CommandBase {
+public class ArmToPositionOverride extends CommandBase {
 
     Arm mArm;
 
@@ -16,7 +16,7 @@ public class ArmToPosition extends CommandBase {
 
     double delay;
 
-    public ArmToPosition(Arm arm, double basePos, double wristPos) {
+    public ArmToPositionOverride(Arm arm, double basePos, double wristPos) {
         mArm = arm;
 
         baseTarget = basePos;
@@ -25,7 +25,7 @@ public class ArmToPosition extends CommandBase {
         delay = 0.25;
     }
 
-    public ArmToPosition(Arm arm, double basePos, double wristPos, double delayTime) {
+    public ArmToPositionOverride(Arm arm, double basePos, double wristPos, double delayTime) {
         mArm = arm;
 
         baseTarget = basePos;
@@ -40,6 +40,8 @@ public class ArmToPosition extends CommandBase {
         timer.reset();
         timer.stop();
         timerStarted = false;
+
+        mArm.overriding = true;
     }
 
     @Override
@@ -53,12 +55,13 @@ public class ArmToPosition extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(delay);
+        return timer.hasElapsed(delay) || mArm.baseTalonTarget != baseTarget || mArm.wristTalonTarget != wristTarget;
     }
 
     @Override
     public void end(boolean isFinished) {
         System.out.println("ArmToPosition Finished");
+        mArm.overriding = false;
     }
 
 }

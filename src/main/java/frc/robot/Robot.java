@@ -88,7 +88,6 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     if (m_robotContainer != null) {
-      m_robotContainer.ledPeriodic(isCubeEntry.getBoolean(false), isEnabledEntry.getBoolean(false));
     }
   }
 

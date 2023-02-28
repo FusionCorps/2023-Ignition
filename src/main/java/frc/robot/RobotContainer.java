@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.ArmToPosition;
+import frc.robot.commands.arm.ArmToPositionOverride;
 import frc.robot.commands.arm.ManageArm;
 import frc.robot.commands.arm.RelaxArm;
 import frc.robot.commands.chassis.*;
@@ -65,7 +66,7 @@ public class RobotContainer {
     m_chassis.comboFL.zero();
     m_chassis.comboBL.zero();
 
-    m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
+    // m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
     m_arm.setDefaultCommand(new ManageArm(m_arm));
 
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
@@ -82,9 +83,9 @@ public class RobotContainer {
  PathPlannerTrajectory threePieceLoadSideB = PathPlanner.loadPath("1+1_path2R", new PathConstraints(4, 3));
  PathPlannerTrajectory threePieceLoadSideC = PathPlanner.loadPath("1+2_path2R", new PathConstraints(4, 3));
  PathPlannerTrajectory threePieceLoadSideD = PathPlanner.loadPath("1+2_path3R",new PathConstraints(4, 3));
- PathPlannerTrajectory threePieceLoadSideCubeB = PathPlanner.loadPath("1+2_pathCube_2R", new PathConstraints(4, 3));
- PathPlannerTrajectory threePieceLoadSideCubeC = PathPlanner.loadPath("1+2_pathCube_3R", new PathConstraints(4, 3));
- PathPlannerTrajectory threePieceLoadSideCubeD = PathPlanner.loadPath("1+2_pathCube_4R", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideCubeB = PathPlanner.loadPath("1+2Cube_2R", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideCubeC = PathPlanner.loadPath("1+2Cube_3R", new PathConstraints(4, 3));
+ PathPlannerTrajectory threePieceLoadSideCubeD = PathPlanner.loadPath("1+2Cube_4R", new PathConstraints(4, 3));
  
     // TODO: Standardize autonomous outtake voltage
     twoPieceLoadSide = new SequentialCommandGroup(
@@ -206,6 +207,10 @@ public class RobotContainer {
 
     // m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(HIGH_BASE_POS, HIGH_WRIST_POS);}));
     m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setArmHigh();}));
+//      m_controller.y().onTrue(new SequentialCommandGroup(
+//              new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_PREP, HIGH_WRIST_POS_ALT, 0.05),
+//              new ArmToPositionOverride(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT, 0.05)
+//      ));
     // m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, MID_WRIST_POS);}));
     m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setArmMid();}));
 //    m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, 0);}));
@@ -213,7 +218,7 @@ public class RobotContainer {
 //    m_controller.y().onFalse(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 0);}));
 //    m_controller.y().whileTrue(new ManageArm(m_arm));
 
-    m_controller.a().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 0);}));
+    m_controller.a().onTrue(m_arm.runOnce(() -> {m_arm.setArmStow();}));
 
 
 //    m_controller.leftBumper().onTrue(m_chassis.runOnce(() -> {m_chassis.togglePrecision();}));
