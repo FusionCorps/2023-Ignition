@@ -87,7 +87,7 @@ public final class Constants {
     public static final double MID_WRIST_POS_CUBE = 55*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double HIGH_BASE_POS = -134.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_WRIST_POS = -123*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS = -121.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     // testing to get cone very close to high
     public static final double HIGH_BASE_POS_ALT_PREP = -134.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
@@ -130,8 +130,8 @@ public final class Constants {
   public static double TRACK_WIDTH_METERS = 0.7112;
   public static double TRACK_LENGTH_METERS = 0.7112;
 
-  public static double SWERVE_FORWARD_SPEED_MAX = 5.4;
-  public static double SWERVE_STRAFE_SPEED_MAX = 5.4;
+  public static double SWERVE_FORWARD_SPEED_MAX = 6.0;
+  public static double SWERVE_STRAFE_SPEED_MAX = 6.0;
   public static double SWERVE_ROT_SPEED_MAX = 4.0;
 
   public static double MAX_SPEED = 9.2;
