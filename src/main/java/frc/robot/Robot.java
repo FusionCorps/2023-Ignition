@@ -33,7 +33,8 @@ import static frc.robot.RobotContainer.m_chassis;
  */
 public class Robot extends TimedRobot {
 
-  
+
+  private CommandXboxController m_controller = new CommandXboxController(0);
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
@@ -58,6 +59,8 @@ public class Robot extends TimedRobot {
     // m_chooser.addOption("Auton_Name", auton_variable)
     // if it is the first auton in the list, use m_chooser.setDefaultOption("Auton_Name", auton_variable)
     m_robotContainer = new RobotContainer();
+
+    m_robotContainer.chassisDrive.setAutoDrive(.1, 0, 0, -1);
 
     // adds the auton selection to ShuffleBoard
     SmartDashboard.putData(m_chooser);
@@ -129,9 +132,12 @@ public class Robot extends TimedRobot {
     double pitch = m_chassis.ahrs.getPitch();
     double roll = m_chassis.ahrs.getRoll();
 
+
+
+
     yaw = (yaw + 360) % 360;
 
-    System.out.println(Tilt.calculate(yaw, pitch, roll));
+    //System.out.println(Tilt.calculate(yaw, pitch, roll));
     //System.out.println(Tilt.calculate(yaw, pitch, roll));
     m_robotContainer.periodic();
   }

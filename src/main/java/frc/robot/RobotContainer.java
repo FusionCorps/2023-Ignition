@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.Chassis.*;
+import frc.robot.commands.ChassisDriveAuton;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.Cameras;
 import frc.robot.subsystems.Chassis;
@@ -32,6 +33,8 @@ public class RobotContainer {
   private final Cameras m_cameras = new Cameras();
   private final ShooterTest m_shooter = new ShooterTest();
 
+  public ChassisDriveFC chassisDrive;
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   public static CommandXboxController m_controller =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -47,7 +50,9 @@ public class RobotContainer {
     m_chassis.comboFL.zero();
     m_chassis.comboBL.zero();
 
-    m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
+    chassisDrive = new ChassisDriveFC(m_chassis);
+
+    m_chassis.setDefaultCommand(chassisDrive);
   }
 
   /**
@@ -71,8 +76,7 @@ public class RobotContainer {
     m_controller.b().whileTrue(new InstantCommand(m_chassis::resetGyro));
     m_controller.a().onTrue(m_cameras.runOnce(() -> {m_cameras.togglePipeline();}));
 
-    m_controller.x().whileTrue(new ChassisAltAutoBalance(m_chassis));
-
+    m_controller.x().whileTrue(new ChassisAltAutoBalance(null));
     m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
   }
 
@@ -88,5 +92,6 @@ public class RobotContainer {
   public void periodic() {
     //System.out.println(m_controller.getLeftX() + " "+m_controller.getRightY());
     //m_chassis.periodic();
+    //System.out.println(m_controller.x());
   }
 }

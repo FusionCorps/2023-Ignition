@@ -9,6 +9,21 @@ public class ChassisDrive extends CommandBase {
 
     Chassis mChassis;
 
+    boolean isController = true;
+
+    double fwd = 0;
+    double rot = 0;
+    double str = 0;
+    double time = 0;
+
+
+    public void setAutoDrive(double f, double r, double s, double t) {
+        fwd = f;
+        rot = r;
+        str = s;
+        time = t;
+    }
+
     public ChassisDrive(Chassis chassis) {
         mChassis = chassis;
 
@@ -18,12 +33,16 @@ public class ChassisDrive extends CommandBase {
     @Override
     public void execute() {
         // pass args to swerve modules
-        try {
-            mChassis.runSwerve(m_controller.getRawAxis(1),
-                    -m_controller.getRawAxis(0),
-                    m_controller.getRawAxis(4));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (isController) {
+            try {
+                mChassis.runSwerve(m_controller.getRawAxis(1),
+                        -m_controller.getRawAxis(0),
+                        m_controller.getRawAxis(4));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+
         }
     }
 

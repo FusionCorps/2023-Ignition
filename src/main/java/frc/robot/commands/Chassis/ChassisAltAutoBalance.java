@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.math.Tilt;
 import frc.robot.subsystems.Chassis;
+import static frc.robot.RobotContainer.m_chassis;
 
 public class ChassisAltAutoBalance extends CommandBase {
 
@@ -14,10 +15,10 @@ public class ChassisAltAutoBalance extends CommandBase {
      * It plugs that value into the chassis to make it drive.
      * If the angle is within a certain margin of error of the target angle, a stopwatch starts.
      * If the robot stays within the margin of error for x number of seconds, the command terminates.*/
-    Chassis mChassis;
 
     Timer endTimer;
 
+    private double maxSpeed = .1;
     private double error;
     private double drivePower;
     private double currentAngle;
@@ -26,11 +27,13 @@ public class ChassisAltAutoBalance extends CommandBase {
 
     boolean timerStarted;
 
+    RunSwerve runSwerve;
+
     public ChassisAltAutoBalance(Chassis chassis){
-        mChassis = chassis;
+        runSwerve = new RunSwerve(0, 0, 0);
         endTimer = new Timer();
 
-        addRequirements(mChassis);
+        addRequirements(m_chassis);
     }
 
     @Override
@@ -40,26 +43,32 @@ public class ChassisAltAutoBalance extends CommandBase {
 
     @Override
     public void execute(){
-        double yaw = mChassis.ahrs.getYaw();
-        double pitch = mChassis.ahrs.getPitch();
-        double roll = mChassis.ahrs.getRoll();
+        double yaw = m_chassis.ahrs.getYaw();
+        double pitch = m_chassis.ahrs.getPitch();
+        double roll = m_chassis.ahrs.getRoll();
         currentAngle = Tilt.calculate(yaw, pitch, roll);
 
-        error = -currentAngle + 11.75;
+        System.out.println(currentAngle);
+
+        error = -currentAngle +  11.75;
         drivePower = Math.min(error* Constants.AUTON_DRIVE_kP,1);
 
         //System.out.println(error + ", " + drivePower + ", " + currentAngle);
 
 
-        if (Math.abs(drivePower) > 0.1) {
-            drivePower = Math.copySign(0.1, drivePower);
+        if (Math.abs(drivePower) > maxSpeed) {
+            drivePower = Math.copySign(maxSpeed, drivePower);
         }
-        mChassis.runSwerve(.1,0,0);
+
+        runSwerve.changeSpeeds(drivePower, 0, 0);
+
+        runSwerve.run();
+
     }
 
     @Override
     public void end(boolean interrupted){
-        mChassis.crossWheels();
+        m_chassis.crossWheels();
     }
 
     @Override
@@ -76,7 +85,7 @@ public class ChassisAltAutoBalance extends CommandBase {
         } else if (inMarginofError && endTimer.hasElapsed(Constants.CHARGE_STATION_STABILIZE_SECONDS)) {
             endTimer.stop();
             endTimer.reset();
-            mChassis.crossWheels();
+            m_chassis.crossWheels();
             finished = true;
         }
 
