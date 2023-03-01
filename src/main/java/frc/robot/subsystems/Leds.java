@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Leds extends SubsystemBase {
     // RGB colors for the LED strip
-    private final int[] coneRGB = new int[]{255, 255, 0};
+    private final int[] coneRGB = new int[]{255, 200, 0};
     private final int[] cubeRGB = new int[]{255, 0, 255};
 
     private final double MAX_BRIGHTNESS = 1.0;
