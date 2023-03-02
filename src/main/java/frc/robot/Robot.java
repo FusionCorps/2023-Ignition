@@ -58,11 +58,12 @@ public class Robot extends TimedRobot {
     // if it is the first auton in the list, use m_chooser.setDefaultOption("Auton_Name", auton_variable)
     m_robotContainer = new RobotContainer();
 
-    m_chooser.addOption("Test Line", m_robotContainer.autoOne);
-    m_chooser.addOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
-    m_chooser.addOption("Three Piece Left", m_robotContainer.threePieceLoadSide);
+    // m_chooser.addOption("Test Line", m_robotContainer.autoOne);
+    m_chooser.addOption("Two Piece Loadside", m_robotContainer.twoPieceLoadSide);
+    // m_chooser.addOption("Three Piece Left", m_robotContainer.threePieceLoadSide);
     m_chooser.addOption("One Piece Balance", m_robotContainer.onePieceBalance);
-    m_chooser.addOption("Three Piece Left Cube", m_robotContainer.threePieceLoadSideCube);
+    m_chooser.addOption("One Piece Farside", m_robotContainer.oneMidFarSide);
+    // m_chooser.addOption("Three Piece Left Cube", m_robotContainer.threePieceLoadSideCube);
 
     m_chooser.setDefaultOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
 
