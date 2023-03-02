@@ -13,7 +13,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -54,6 +58,10 @@ public class Chassis extends SubsystemBase {
     public SwerveCombo comboBR = new SwerveCombo(axis3, drive3, coder3, 3);
 
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
+
+    ShuffleboardTab tab = Shuffleboard.getTab("Chassis Locked");
+
+    GenericEntry isLocked = tab.add("Locked", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
     public double desiredHeading = 0;
 
@@ -146,6 +154,12 @@ public class Chassis extends SubsystemBase {
         this.comboBR.passArgsNoDeadzone(0, -PI/4);
     }
 
+    public void setLockedWheels(boolean locked){
+        if(locked){
+            crossWheels();
+        }
+    }
+
 
 
     // does the same calcs but passes a velocity of 0
@@ -213,6 +227,8 @@ public class Chassis extends SubsystemBase {
 //        System.out.println(m_odometry.getPoseMeters().getX() + " meters");
 
         feedAll();
+
+        setLockedWheels(isLocked.getBoolean(false));
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -256,6 +272,7 @@ public class Chassis extends SubsystemBase {
                         this // Requires this drive subsystem
                 )
         );
+
 
     }
 
