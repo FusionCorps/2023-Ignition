@@ -41,6 +41,7 @@ public class RobotContainer {
 
   public Command autoOne;
   public Command twoPieceLoadSide;
+  public Command twoPieceLoadSideMid;
   public Command twoPieceLoadSideVikes;
   public Command threePieceLoadSide;
   public Command threePieceLoadSideNested;
@@ -105,6 +106,26 @@ public class RobotContainer {
             new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS_AUTO), // arm to high
             new RunVoltsTime(mIntake, 5.6, 1.0) // outtake
          );
+
+      // TODO: Standardize autonomous outtake voltage
+      twoPieceLoadSideMid = new SequentialCommandGroup(
+              m_cameras.runOnce(() -> {System.out.println("Running two piece loader side");}),
+              m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
+              new ParallelCommandGroup(
+                      m_chassis.runOnce(() -> {m_chassis.crossWheels();}),
+                      new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS)), // arm to high
+              new RunVoltsTime(mIntake, 5.6, 1.0), // outtake
+              new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
+              new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE), // deploy intake
+                      m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true), // drive to piece
+                      new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())), // intake
+              new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0), // stow arm
+                      m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)), // return to scoring
+              // new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2), // drive forward to align
+              new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.2), // drive forward to align
+              new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS), // arm to high
+              new RunVoltsTime(mIntake, 5.6, 1.0) // outtake
+      );
 
       twoPieceLoadSideVikes = new SequentialCommandGroup(
               m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
