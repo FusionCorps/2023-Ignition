@@ -24,6 +24,8 @@ public final class Constants {
     public static final int INTAKE_ID = 25;
 
     public static final double INTAKE_PCT = -0.45;
+
+    public static final double OUTTAKE_VOLTS = 4.2;
   }
 
   public static class ArmConstants {
@@ -88,6 +90,10 @@ public final class Constants {
 
     public static final double HIGH_BASE_POS = -142*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS = -109.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
+    public static final double HIGH_BASE_POS_VIKES = -131.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS_VIKES = -129*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
 
     public static final double HIGH_WRIST_POS_AUTO = -113.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 

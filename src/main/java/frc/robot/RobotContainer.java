@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.IntakeConstants.INTAKE_PCT;
+import static frc.robot.Constants.IntakeConstants.OUTTAKE_VOLTS;
 
 
 /**
@@ -40,6 +41,7 @@ public class RobotContainer {
 
   public Command autoOne;
   public Command twoPieceLoadSide;
+  public Command twoPieceLoadSideVikes;
   public Command threePieceLoadSide;
   public Command threePieceLoadSideNested;
   public Command onePieceBalance;
@@ -66,10 +68,14 @@ public class RobotContainer {
     PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
     autoOne = m_chassis.followTrajectoryCommand(examplePath, true);
 
-    PathPlannerTrajectory twoPieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4, 3));
-//    this.twoPieceLoadSide = new SequentialCommandGroup(m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0);}),
-//            m_chassis.followTrajectoryCommand(twoPieceLoadSide, true));
-    PathPlannerTrajectory twoPieceLoadSideB = PathPlanner.loadPath("1+1_path2R", new PathConstraints(4, 3));
+      PathPlannerTrajectory twoPieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4, 3));
+      PathPlannerTrajectory twoPieceLoadSideB = PathPlanner.loadPath("1+1_path2R", new PathConstraints(4, 3));
+
+
+      PathPlannerTrajectory twoPieceLoadSideAVikes = PathPlanner.loadPath("1+1_path1RVikes", new PathConstraints(4, 3));
+      PathPlannerTrajectory twoPieceLoadSideBVikes = PathPlanner.loadPath("1+1_path2RVikes", new PathConstraints(4, 3));
+
+
 
 
     
@@ -100,9 +106,25 @@ public class RobotContainer {
             new RunVoltsTime(mIntake, 5.6, 1.0) // outtake
          );
 
+      twoPieceLoadSideVikes = new SequentialCommandGroup(
+              m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}),
+              new ArmToPosition(m_arm, HIGH_BASE_POS_VIKES, HIGH_WRIST_POS_VIKES),
+              new RunVoltsTime(mIntake, 9.0, 0.5),
+//            new ArmToPosition(m_arm, 0, 0),
+              new ArmToPosition(m_arm, 0, 0),
+              new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE),
+                      m_chassis.followTrajectoryCommand(twoPieceLoadSideAVikes, true),
+                      new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideAVikes.getTotalTimeSeconds())),
+              new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
+                      m_chassis.followTrajectoryCommand(twoPieceLoadSideBVikes, false)),
+              new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2),
+              new ArmToPosition(m_arm, HIGH_BASE_POS_VIKES, HIGH_WRIST_POS_VIKES),
+              new RunVoltsTime(mIntake, 9.0, 0.5)
+      );
+
       onePieceBalance = new SequentialCommandGroup(
               m_chassis.runOnce(() -> {m_chassis.setGyroAngle(0.0);}), // reset gyro
-              new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS), // arm to high
+              new ArmToPosition(m_arm, HIGH_BASE_POS_VIKES, HIGH_WRIST_POS_VIKES), // arm to high
               new RunVoltsTime(mIntake, 10.5, 0.5), // outtake
 //            new ArmToPosition(m_arm, 0, 0),
               new ArmToPosition(m_arm, 0, 0), // stow
@@ -239,7 +261,7 @@ public class RobotContainer {
     m_controller.rightTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.set(INTAKE_PCT);}));
     m_controller.rightTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(-0.2);}));
 
-    m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.setVolts(4.2);}));
+    m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {mIntake.setVolts(OUTTAKE_VOLTS);}));
     m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {mIntake.set(-0.0);}));
 
     m_controller.back().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(CHUTE_BASE_POS, CHUTE_WRIST_POS);}));
