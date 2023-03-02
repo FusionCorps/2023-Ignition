@@ -219,4 +219,16 @@ public class Arm extends SubsystemBase {
         wristTalonTarget = 0;
     }
 
+    public double getBasePos() {
+        return baseTalon.getSelectedSensorPosition();
+    }
+
+    public double getWristPos() {
+        return wristTalon.getSelectedSensorPosition();
+    }
+
+    public void configBaseAccel(double accelLimit) {
+        baseTalon.configMotionAcceleration(accelLimit);
+    }
+
 }

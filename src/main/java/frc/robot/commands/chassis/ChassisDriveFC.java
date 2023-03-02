@@ -14,8 +14,8 @@ public class ChassisDriveFC extends CommandBase {
     Chassis mChassis;
 
     // limit stick accel
-    private SlewRateLimiter fwdLimiter = new SlewRateLimiter(4.5);
-    private SlewRateLimiter strLimiter = new SlewRateLimiter(4.5);
+    private SlewRateLimiter fwdLimiter = new SlewRateLimiter(2.5);
+    private SlewRateLimiter strLimiter = new SlewRateLimiter(2.5);
     private SlewRateLimiter rotLimiter = new SlewRateLimiter(4.5);
 
     public ChassisDriveFC(Chassis chassis) {
