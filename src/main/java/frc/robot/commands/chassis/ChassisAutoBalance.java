@@ -49,7 +49,7 @@ public class ChassisAutoBalance extends CommandBase {
         }
 
         // don't want to end command, so keep holding wheels locked
-        if (isTriggered && backupTimer.hasElapsed(0.1)) {
+        if (isTriggered && backupTimer.hasElapsed(0.75)) {
             mChassis.crossWheels();
         } else if (isTriggered) {
             mChassis.runSwerve(0.2, 0, 0);

@@ -44,13 +44,16 @@ public class ChassisDriveFC extends CommandBase {
         // skew correction
         angle -= 40*axis4;
 
+        if (!mChassis.isLocked.getBoolean(false)) {
+            try {
+                mChassis.runSwerve(fwdLimiter.calculate(axis1 * cos(angle / 360 * (2 * PI)) + axis0 * sin(angle / 360 * (2 * PI))),
+                        strLimiter.calculate(axis1 * sin(angle / 360 * (2 * PI)) - axis0 * cos(angle / 360 * (2 * PI))),
+                        rotLimiter.calculate(axis4));
+            } catch (Exception e) {
 
-        try {
-            mChassis.runSwerve(fwdLimiter.calculate(axis1*cos(angle/360*(2*PI)) + axis0*sin(angle/360*(2*PI))),
-                    strLimiter.calculate(axis1*sin(angle/360*(2*PI)) - axis0*cos(angle/360*(2*PI))),
-                    rotLimiter.calculate(axis4));
-        } catch (Exception e) {
-
+            }
+        } else {
+            mChassis.crossWheels();
         }
     }
 

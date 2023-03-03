@@ -54,8 +54,7 @@ public class Robot extends TimedRobot {
     isCubeEntry = ledTable.getEntry("isCube");
     isCubeEntry.setBoolean(false);
 
-    isLocked = lockedTable.getEntry("isLocked");
-    isLocked.setBoolean(false);
+
 
     // autonomous chooser on the dashboard.
 

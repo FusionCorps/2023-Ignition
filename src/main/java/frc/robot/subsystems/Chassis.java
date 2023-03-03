@@ -61,7 +61,7 @@ public class Chassis extends SubsystemBase {
 
     ShuffleboardTab tab = Shuffleboard.getTab("Chassis Locked");
 
-    GenericEntry isLocked = tab.add("Locked", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+    public GenericEntry isLocked = tab.add("Locked", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
     public double desiredHeading = 0;
 
@@ -96,6 +96,8 @@ public class Chassis extends SubsystemBase {
 
         // TODO: Make sure this doesn't break anything
         ahrs.calibrate();
+
+        isLocked.setBoolean(false);
     }
 
     // ported from last year
@@ -154,11 +156,11 @@ public class Chassis extends SubsystemBase {
         this.comboBR.passArgsNoDeadzone(0, -PI/4);
     }
 
-    public void setLockedWheels(boolean locked){
-        if(locked){
-            crossWheels();
-        }
-    }
+//    public void setLockedWheels(boolean locked){
+//        if(locked){
+//            crossWheels();
+//        }
+//    }
 
 
 
@@ -228,7 +230,6 @@ public class Chassis extends SubsystemBase {
 
         feedAll();
 
-        setLockedWheels(isLocked.getBoolean(false));
     }
 
     public void resetOdometry(Pose2d pose) {

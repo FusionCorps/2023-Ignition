@@ -25,7 +25,7 @@ public final class Constants {
 
     public static final double INTAKE_PCT = -0.45;
 
-    public static final double OUTTAKE_VOLTS = 4.2;
+    public static final double OUTTAKE_VOLTS = 6.3;
   }
 
   public static class ArmConstants {
@@ -99,8 +99,8 @@ public final class Constants {
 
     // testing to get cone very close to high
     public static final double HIGH_BASE_POS_ALT_PREP = -134.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_BASE_POS_ALT = -125*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_WRIST_POS_ALT = -132*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double HIGH_BASE_POS_ALT = -118*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS_ALT = -152*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double INTAKE_BASE_POS_CONE = 22.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double INTAKE_WRIST_POS_CONE = -155*PI/180/(PI/1024/WRIST_GEAR_RATIO);

@@ -93,10 +93,9 @@ public class RobotContainer {
         twoPieceLoadSide = new SequentialCommandGroup(
                 m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
-                new ParallelCommandGroup(
-                        m_chassis.runOnce(() -> { m_chassis.crossWheels(); }),
-                        new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS_AUTO)), // arm to high
-                new RunVoltsTime(mIntake, 5.6, 1.0), // outtake
+                new TwoPartHigh(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25),
                 new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
                 new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE), // deploy intake
                         m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true), // drive to piece
@@ -105,15 +104,17 @@ public class RobotContainer {
                         m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)), // return to scoring
                 // new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2), // drive forward to align
                 new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.2), // drive forward to align
-                new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS_AUTO), // arm to high
-                new RunVoltsTime(mIntake, 5.6, 1.0) // outtake
+                new TwoPartHigh(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25)
         );
 
         // TODO: Standardize autonomous outtake voltage
         oneMidFarSide = new SequentialCommandGroup(
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
-                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS), // arm to high
-                new RunVoltsTime(mIntake, 5.6, 0.5), // outtake
+                new TwoPartHigh(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25),
                 new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
                 new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE), // deploy intake
                         m_chassis.followTrajectoryCommand(onePieceFarSide, true), // drive to piece
@@ -169,9 +170,9 @@ public class RobotContainer {
                 m_chassis.runOnce(() -> {
                     m_chassis.setGyroAngle(0.0);
                 }), // reset gyro
-                new ArmToPosition(m_arm, HIGH_BASE_POS_VIKES, HIGH_WRIST_POS_VIKES), // arm to high
-                new RunVoltsTime(mIntake, 10.5, 0.5), // outtake
-//            new ArmToPosition(m_arm, 0, 0),
+                new TwoPartHigh(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25), // outtake
                 new ArmToPosition(m_arm, 0, 0), // stow
                 new ChassisDriveAuton(m_chassis, -0.2, 0.0, 0.0, 3.0), // drive forward
                 new ChassisAutoBalance(m_chassis) // balance
@@ -293,7 +294,7 @@ public class RobotContainer {
         }));
 
 
-        m_controller.leftBumper().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
+        m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
 //    m_controller.leftBumper().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
         // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
