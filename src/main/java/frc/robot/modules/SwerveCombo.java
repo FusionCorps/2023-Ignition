@@ -61,6 +61,8 @@ public class SwerveCombo {
         this.driveMotor.config_kD(0, Constants.DRIVE_kD);
         this.driveMotor.setNeutralMode(NeutralMode.Coast);
 
+        this.driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 60,80, 0.75));
+
         this.mPosition = position;
 
         // TODO: in hindsight, probably needed to current limit
