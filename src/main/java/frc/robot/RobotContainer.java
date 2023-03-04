@@ -138,9 +138,9 @@ public class RobotContainer {
         // TODO: Standardize autonomous outtake voltage
         oneMidFarSide = new SequentialCommandGroup(
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
-                new TwoPartHigh(m_arm), // arm to high
-                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
-                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25),
+                new TwoPartHighAuto(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO, 0.75),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.75),
                 new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
                 new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE), // deploy intake
                         m_chassis.followTrajectoryCommand(onePieceFarSide, true), // drive to piece
@@ -197,8 +197,8 @@ public class RobotContainer {
                     m_chassis.setGyroAngle(0.0);
                 }), // reset gyro
                 new TwoPartHighAuto(m_arm), // arm to high
-                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO, 0.5),
-                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25), // outtake
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO, 0.75),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.75), // outtake
                 new ArmToPosition(m_arm, 0, 0), // stow
                 new ChassisDriveAuton(m_chassis, -0.2, 0.0, 0.0, 3.0), // drive forward
                 new ChassisAutoBalanceNew(m_chassis) // balance
@@ -345,7 +345,7 @@ public class RobotContainer {
         }));
 
         m_controller.povRight().whileTrue(mIntake.run(() -> {
-            mIntake.set(-1 * INTAKE_PCT);
+            mIntake.set(-0.2 * INTAKE_PCT);
         }));
         m_controller.povRight().onFalse(mIntake.runOnce(() -> {
             mIntake.set(0.0);

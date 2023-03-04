@@ -1,5 +1,6 @@
 package frc.robot.commands.chassis;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
@@ -18,12 +19,16 @@ public class ChassisAutoBalanceNew extends CommandBase {
     Timer backupTimer;
     Timer checkTimer;
 
+    SlewRateLimiter speedLimit;
+
     public ChassisAutoBalanceNew(Chassis chassis) {
         mChassis = chassis;
         backupTimer = new Timer();
         checkTimer = new Timer();
 
         addRequirements(mChassis);
+
+        speedLimit = new SlewRateLimiter(4.5);
     }
 
     @Override
@@ -40,17 +45,17 @@ public class ChassisAutoBalanceNew extends CommandBase {
 
         System.out.println(backupTimer.get());
 
-        if ((mChassis.ahrs.getPitch() < 5.75 && mChassis.ahrs.getPitch() > -5.75)) {
+        if ((mChassis.ahrs.getPitch() < 6.75 && mChassis.ahrs.getPitch() > -6.75)) {
             mChassis.crossWheels();
             isTriggered = true;
-        } else if (mChassis.ahrs.getPitch() > 5.75) {
-            mChassis.runSwerve(-0.2*speedK, 0, 0);
+        } else if (mChassis.ahrs.getPitch() > 6.75) {
+            mChassis.runSwerve(speedLimit.calculate(-0.2*speedK), 0, 0);
             if (isTriggered) {
                 isTriggered = false;
                 speedK /= 1.6;
             }
-        } else if (mChassis.ahrs.getPitch() < 5.75) {
-            mChassis.runSwerve(0.2*speedK, 0, 0);
+        } else if (mChassis.ahrs.getPitch() < 6.75) {
+            mChassis.runSwerve(speedLimit.calculate(0.2*speedK), 0, 0);
             if (isTriggered) {
                 isTriggered = false;
                 speedK /= 1.6;
