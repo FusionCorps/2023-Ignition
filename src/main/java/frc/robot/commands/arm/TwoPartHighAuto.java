@@ -6,13 +6,13 @@ import frc.robot.subsystems.Arm;
 import static frc.robot.Constants.ArmConstants.*;
 import static java.lang.Math.abs;
 
-public class TwoPartHigh extends CommandBase {
+public class TwoPartHighAuto extends CommandBase {
 
     Arm mArm;
 
     boolean reachedPrep = false;
 
-    public TwoPartHigh(Arm arm) {
+    public TwoPartHighAuto(Arm arm) {
         mArm = arm;
 
         addRequirements(mArm);
@@ -27,7 +27,7 @@ public class TwoPartHigh extends CommandBase {
     public void execute() {
         if (!reachedPrep) {
             mArm.baseTalonTarget = HIGH_BASE_POS_ALT_PREP;
-            mArm.wristTalonTarget = HIGH_WRIST_POS_ALT - mArm.getHighWristFudge();
+            mArm.wristTalonTarget = HIGH_WRIST_POS_ALT_AUTO;
 
             if (mArm.armAtTarget()) {
                 mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
@@ -38,10 +38,10 @@ public class TwoPartHigh extends CommandBase {
             }
         } else {
             if (mArm.getWristPos() < MID_WRIST_POS) {
-                mArm.passSetpoints(HIGH_BASE_POS_ALT - mArm.getHighBaseFudge(), HIGH_WRIST_POS_ALT - mArm.getHighWristFudge());
+                mArm.passSetpoints(HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO);
                 System.out.println("Trying to end");
             } else {
-                mArm.passSetpoints(HIGH_BASE_POS_ALT_PREP, HIGH_WRIST_POS_ALT - mArm.getHighWristFudge());
+                mArm.passSetpoints(HIGH_BASE_POS_ALT_PREP, HIGH_WRIST_POS_ALT_AUTO);
             }
         }
 
@@ -53,8 +53,8 @@ public class TwoPartHigh extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return abs(mArm.getWristPos() - (HIGH_WRIST_POS_ALT - mArm.getHighWristFudge())) < 1000 &&
-                abs(mArm.getBasePos() - (HIGH_BASE_POS_ALT - mArm.getHighBaseFudge())) < 1000;
+        return abs(mArm.getWristPos() - (HIGH_WRIST_POS_ALT_AUTO)) < 1000 &&
+                abs(mArm.getBasePos() - (HIGH_BASE_POS_ALT_AUTO)) < 1000;
     }
 
     @Override

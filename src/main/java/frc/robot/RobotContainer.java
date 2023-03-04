@@ -41,6 +41,7 @@ public class RobotContainer {
 
     public Command autoOne;
     public Command twoPieceLoadSide;
+    public Command twoPieceLoadSideBalance;
     public Command oneMidFarSide;
     public Command twoPieceLoadSideMid;
     public Command twoPieceLoadSideVikes;
@@ -75,6 +76,8 @@ public class RobotContainer {
         PathPlannerTrajectory twoPieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4, 3));
         PathPlannerTrajectory twoPieceLoadSideB = PathPlanner.loadPath("1+1_path2R", new PathConstraints(4, 3));
 
+        PathPlannerTrajectory twoPieceLoadSideBalancePath = PathPlanner.loadPath("1+1_pathToBalance", new PathConstraints(2, 3));
+
         PathPlannerTrajectory onePieceFarSide = PathPlanner.loadPath("taxiAttempt", new PathConstraints(4, 3));
 
         PathPlannerTrajectory twoPieceLoadSideAVikes = PathPlanner.loadPath("1+1_path1RVikes", new PathConstraints(4, 3));
@@ -107,6 +110,29 @@ public class RobotContainer {
                 new TwoPartHigh(m_arm), // arm to high
                 new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
                 new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25)
+        );
+
+        // TODO: Standardize autonomous outtake voltage
+        twoPieceLoadSideBalance = new SequentialCommandGroup(
+                m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
+                m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
+                new TwoPartHigh(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25),
+                new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
+                new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE), // deploy intake
+                        m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true), // drive to piece
+                        new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())), // intake
+                new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0), // stow arm
+                        m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)), // return to scoring
+                // new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2), // drive forward to align
+                new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.2), // drive forward to align
+                new TwoPartHigh(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25),
+                new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
+                m_chassis.followTrajectoryCommand(twoPieceLoadSideBalancePath, true), // drive to piece
+                new ChassisAutoBalance(m_chassis) // balance
         );
 
         // TODO: Standardize autonomous outtake voltage
@@ -170,12 +196,12 @@ public class RobotContainer {
                 m_chassis.runOnce(() -> {
                     m_chassis.setGyroAngle(0.0);
                 }), // reset gyro
-                new TwoPartHigh(m_arm), // arm to high
-                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
+                new TwoPartHighAuto(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO, 0.5),
                 new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25), // outtake
                 new ArmToPosition(m_arm, 0, 0), // stow
                 new ChassisDriveAuton(m_chassis, -0.2, 0.0, 0.0, 3.0), // drive forward
-                new ChassisAutoBalance(m_chassis) // balance
+                new ChassisAutoBalanceNew(m_chassis) // balance
         );
 
         threePieceLoadSide = new SequentialCommandGroup(
@@ -294,7 +320,7 @@ public class RobotContainer {
         }));
 
 
-        m_controller.leftBumper().whileTrue(new ChassisAutoBalance(m_chassis));
+        // m_controller.leftBumper().whileTrue(new ChassisAutoBalanceNew(m_chassis));
 //    m_controller.leftBumper().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
         // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
@@ -312,10 +338,10 @@ public class RobotContainer {
 //    m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
 
         m_controller.povUp().onTrue(m_arm.runOnce(() -> {
-            m_arm.setTalonTargets(m_arm.baseTalonTarget - 2500, m_arm.wristTalonTarget);
+            m_arm.setTalonTargets(m_arm.baseTalonTarget - 1000, m_arm.wristTalonTarget);
         }));
         m_controller.povDown().onTrue(m_arm.runOnce(() -> {
-            m_arm.setTalonTargets(m_arm.baseTalonTarget + 2500, m_arm.wristTalonTarget);
+            m_arm.setTalonTargets(m_arm.baseTalonTarget + 1000, m_arm.wristTalonTarget);
         }));
 
         m_controller.povRight().whileTrue(mIntake.run(() -> {

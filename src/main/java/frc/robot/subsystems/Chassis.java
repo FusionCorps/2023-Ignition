@@ -59,7 +59,7 @@ public class Chassis extends SubsystemBase {
 
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
-    ShuffleboardTab tab = Shuffleboard.getTab("Chassis Locked");
+    ShuffleboardTab tab = Shuffleboard.getTab("General");
 
     public GenericEntry isLocked = tab.add("Locked", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
 

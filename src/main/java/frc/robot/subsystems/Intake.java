@@ -38,6 +38,9 @@ public class Intake extends SubsystemBase {
         intakeMotor.setNeutralMode(NeutralMode.Brake);
 
         intakeMotor.setInverted(TalonFXInvertType.Clockwise);
+
+        voltageFudgeTab.setDouble(1.0);
+
     }
 //
     // sets the motor percent

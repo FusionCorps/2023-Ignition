@@ -38,7 +38,7 @@ public class ChassisAutoBalance extends CommandBase {
 
         System.out.println(mChassis.ahrs.getPitch());
 
-        if (mChassis.ahrs.getPitch() < 12.25) {
+        if (mChassis.ahrs.getPitch() < 12.75) {
 
             if (!isTriggered) {
                 backupTimer.reset();
@@ -52,9 +52,9 @@ public class ChassisAutoBalance extends CommandBase {
         if (isTriggered && backupTimer.hasElapsed(0.75)) {
             mChassis.crossWheels();
         } else if (isTriggered) {
-            mChassis.runSwerve(0.2, 0, 0);
+            mChassis.runSwerve(0.13, 0, 0);
         } else {
-            mChassis.runSwerve(-0.3, 0, 0);
+            mChassis.runSwerve(-0.22, 0, 0);
         }
 
     }

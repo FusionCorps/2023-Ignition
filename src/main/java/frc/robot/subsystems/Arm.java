@@ -186,6 +186,14 @@ public class Arm extends SubsystemBase {
         wristTalonTarget = HIGH_WRIST_POS - highWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
     }
 
+    public double getHighBaseFudge() {
+        return highBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
+    }
+
+    public double getHighWristFudge() {
+        return highBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
+    }
+
     public void setArmMid() {
         overriding = false;
         if (hasCone) {

@@ -66,12 +66,13 @@ public class Robot extends TimedRobot {
 
     // m_chooser.addOption("Test Line", m_robotContainer.autoOne);
     m_chooser.addOption("Two Piece Loadside", m_robotContainer.twoPieceLoadSide);
+    // m_chooser.addOption("Two Piece Loadside and Balance", m_robotContainer.twoPieceLoadSideBalance);
     // m_chooser.addOption("Three Piece Left", m_robotContainer.threePieceLoadSide);
     m_chooser.addOption("One Piece Balance", m_robotContainer.onePieceBalance);
     m_chooser.addOption("One Piece Farside", m_robotContainer.oneMidFarSide);
     // m_chooser.addOption("Three Piece Left Cube", m_robotContainer.threePieceLoadSideCube);
 
-    m_chooser.setDefaultOption("Two Piece Left", m_robotContainer.twoPieceLoadSide);
+    m_chooser.setDefaultOption("Two Piece Loadside", m_robotContainer.twoPieceLoadSide);
 
     // adds the auton selection to ShuffleBoard
     SmartDashboard.putData(m_chooser);
