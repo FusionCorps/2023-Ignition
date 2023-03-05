@@ -50,6 +50,9 @@ public class RobotContainer {
     public Command onePieceBalance;
     public Command threePieceLoadSideCube;
 
+    public Command twoPieceLoadSideCubeBlue;
+    public Command twoPieceLoadSideCubeRed;
+
     public Command relaxArm;
 
     private final Leds leds = new Leds();
@@ -92,13 +95,16 @@ public class RobotContainer {
         PathPlannerTrajectory threePieceLoadSideCubeC = PathPlanner.loadPath("1+2Cube_3R", new PathConstraints(4, 3));
         PathPlannerTrajectory threePieceLoadSideCubeD = PathPlanner.loadPath("1+2Cube_4R", new PathConstraints(4, 3));
 
+        PathPlannerTrajectory twoPieceLoadSideARed = PathPlanner.loadPath("1+1_path1Rred", new PathConstraints(4, 3));
+        PathPlannerTrajectory threePieceLoadSideCubeBRed = PathPlanner.loadPath("1+2Cube_2Rred", new PathConstraints(4, 3));
+
         // TODO: Standardize autonomous outtake voltage
         twoPieceLoadSide = new SequentialCommandGroup(
                 m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
                 new TwoPartHigh(m_arm), // arm to high
                 new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
-                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.5),
                 new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
                 new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE), // deploy intake
                         m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true), // drive to piece
@@ -110,6 +116,51 @@ public class RobotContainer {
                 new TwoPartHigh(m_arm), // arm to high
                 new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
                 new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25)
+        );
+
+
+        twoPieceLoadSideCubeBlue = new SequentialCommandGroup(
+                m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
+                new TwoPartHighAuto(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO, 0.75),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.75), // outtake
+                new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
+                new ParallelCommandGroup(m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true),
+                        new ArmToPosition(m_arm, INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE),
+                        new RunVoltsTime(mIntake, -11.0, twoPieceLoadSideA.getTotalTimeSeconds())),
+                mIntake.runOnce(() -> {
+                    mIntake.set(-0.2);
+                }),// intake
+                new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0), // stow arm
+                        m_chassis.followTrajectoryCommand(threePieceLoadSideCubeB, false)), // return to scoring
+                // new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2), // drive forward to align
+                // new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.2), // drive forward to align
+                new TwoPartHighAuto(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO, 0.75),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.75), // outtake
+                new ArmToPosition(m_arm, 0, 0)
+        );
+
+        twoPieceLoadSideCubeRed = new SequentialCommandGroup(
+                m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
+                new TwoPartHighAuto(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO, 0.75),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.75), // outtake
+                new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
+                new ParallelCommandGroup(m_chassis.followTrajectoryCommand(twoPieceLoadSideARed, true),
+                        new ArmToPosition(m_arm, INTAKE_BASE_POS_CUBE, INTAKE_WRIST_POS_CUBE),
+                        new RunVoltsTime(mIntake, -11.0, twoPieceLoadSideA.getTotalTimeSeconds())),
+                mIntake.runOnce(() -> {
+                    mIntake.set(-0.2);
+                }),// intake
+                new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0), // stow arm
+                        m_chassis.followTrajectoryCommand(threePieceLoadSideCubeBRed, false)), // return to scoring
+                // new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2), // drive forward to align
+                // new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.2), // drive forward to align
+                new TwoPartHighAuto(m_arm), // arm to high
+                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO, 0.75),
+                new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.75), // outtake
+                new ArmToPosition(m_arm, 0, 0)
         );
 
         // TODO: Standardize autonomous outtake voltage
@@ -321,6 +372,8 @@ public class RobotContainer {
 
 
         // m_controller.leftBumper().whileTrue(new ChassisAutoBalanceNew(m_chassis));
+
+        m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(LOW_BASE_POS_CUBE, LOW_WRIST_POS_CUBE);}));
 //    m_controller.leftBumper().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
         // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
