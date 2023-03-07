@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
+import com.ctre.phoenix.led.RainbowAnimation;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -26,6 +28,9 @@ public class Leds extends SubsystemBase {
             .withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
     GenericEntry isCubeEntry = tab.add("Cube Mode", false)
+            .withWidget(BuiltInWidgets.kToggleButton).getEntry();
+
+    GenericEntry rainbowEntry = tab.add("Rainbow Mode", false)
             .withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
     private final int LED_COUNT = 66;
@@ -53,7 +58,9 @@ public class Leds extends SubsystemBase {
 
     // sets the color of led
     public void setLedColor(boolean isCube) {
-        if (isCube) {
+        if (rainbowEntry.getBoolean(false)) {
+            candle.animate(new RainbowAnimation());
+        } else if (isCube) {
             candle.setLEDs(cubeRGB[0], cubeRGB[1], cubeRGB[2]);
         } else {
             candle.setLEDs(coneRGB[0], coneRGB[1], coneRGB[2]);
