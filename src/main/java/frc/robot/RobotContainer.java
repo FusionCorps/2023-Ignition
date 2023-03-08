@@ -295,7 +295,7 @@ public class RobotContainer {
                 m_chassis.runOnce(() -> {
                     m_chassis.setGyroAngle(0.0);
                 }),
-                new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS),
                 new RunVoltsTime(mIntake, 9.0, 0.5),
                 //            new ArmToPosition(m_arm, 0, 0),
                 new ArmToPosition(m_arm, 0, 0, 0.25),
@@ -317,7 +317,7 @@ public class RobotContainer {
                 new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideCubeD, false)),
                 new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.2), // drive forward to align
-                new ArmToPosition(m_arm, HIGH_BASE_POS, HIGH_WRIST_POS),
+                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS),
                 new RunVoltsTime(mIntake, 9, 0.5));
 
 
