@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.IntakeConstants.INTAKE_PCT;
 import static frc.robot.Constants.IntakeConstants.OUTTAKE_VOLTS;
+import static java.lang.Math.PI;
 
 
 /**
@@ -79,12 +80,16 @@ public class RobotContainer {
         PathPlannerTrajectory twoPieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4, 3));
         PathPlannerTrajectory twoPieceLoadSideB = PathPlanner.loadPath("1+1_path2R", new PathConstraints(4, 3));
 
+        PathPlannerTrajectory twoPieceLoadSideASlow = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4.5, 3));
+        PathPlannerTrajectory twoPieceLoadSideBSlow = PathPlanner.loadPath("1+1_path2R", new PathConstraints(5, 2));
+
+
         PathPlannerTrajectory twoPieceLoadSideBalancePath = PathPlanner.loadPath("1+1_pathToBalance", new PathConstraints(2, 3));
 
         PathPlannerTrajectory onePieceFarSide = PathPlanner.loadPath("taxiAttempt", new PathConstraints(4, 3));
 
-        PathPlannerTrajectory twoPieceLoadSideAVikes = PathPlanner.loadPath("1+1_path1RVikes", new PathConstraints(4, 3));
-        PathPlannerTrajectory twoPieceLoadSideBVikes = PathPlanner.loadPath("1+1_path2RVikes", new PathConstraints(4, 3));
+        PathPlannerTrajectory twoPieceLoadSideAVikes = PathPlanner.loadPath("1+1_path1RVikes", new PathConstraints(3, 3));
+        PathPlannerTrajectory twoPieceLoadSideBVikes = PathPlanner.loadPath("1+1_path2RVikes", new PathConstraints(3, 3));
 
 
         PathPlannerTrajectory threePieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4, 3));
@@ -167,19 +172,19 @@ public class RobotContainer {
         twoPieceLoadSideBalance = new SequentialCommandGroup(
                 m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
-                new TwoPartHigh(m_arm), // arm to high
-                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
+                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.5),
                 new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25),
-                new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
                 new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE), // deploy intake
-                        m_chassis.followTrajectoryCommand(twoPieceLoadSideA, true), // drive to piece
-                        new RunVoltsTime(mIntake, -9.0, twoPieceLoadSideA.getTotalTimeSeconds())), // intake
-                new ParallelCommandGroup(new ArmToPosition(m_arm, 0, 0), // stow arm
-                        m_chassis.followTrajectoryCommand(twoPieceLoadSideB, false)), // return to scoring
+                        m_chassis.followTrajectoryCommand(twoPieceLoadSideASlow, true), // drive to piece
+                        new RunVoltsTime(mIntake, -11.0, twoPieceLoadSideASlow.getTotalTimeSeconds())), // intake
+                mIntake.runOnce(() -> {
+                    mIntake.set(-0.2);
+                }),// intake
+                new ParallelCommandGroup(new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS), // stow arm
+                        m_chassis.followTrajectoryCommand(twoPieceLoadSideBSlow, false)), // return to scoring
                 // new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2), // drive forward to align
                 new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.2), // drive forward to align
-                new TwoPartHigh(m_arm), // arm to high
-                new ArmToPosition(m_arm, HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - 2000, 0.5),
+                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.5),
                 new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25),
                 new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
                 m_chassis.followTrajectoryCommand(twoPieceLoadSideBalancePath, true), // drive to piece
@@ -356,7 +361,12 @@ public class RobotContainer {
 //        m_controller.y().onTrue(m_arm.runOnce(() -> {
 //            m_arm.setArmHigh();
 //        }));
+
+        // m_controller.y().onTrue(new TwoPartHigh(m_arm));
+
         m_controller.y().onTrue(new TwoPartHigh(m_arm));
+        // m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, -190*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
+
         // m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, MID_WRIST_POS);}));
         m_controller.x().onTrue(m_arm.runOnce(() -> {
             m_arm.setArmMid();
