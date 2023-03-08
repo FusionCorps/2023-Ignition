@@ -352,11 +352,11 @@ public class RobotContainer {
 //    m_controller.x().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
 //    m_controller.a().onTrue(m_cameras.runOnce(() -> {m_cameras.togglePipeline();}));
 
-        // m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(HIGH_BASE_POS, HIGH_WRIST_POS);}));
+        // m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(HIGH_BASE_POS_VIKES, HIGH_WRIST_POS_VIKES);}));
 //        m_controller.y().onTrue(m_arm.runOnce(() -> {
 //            m_arm.setArmHigh();
 //        }));
-         m_controller.y().onTrue(new TwoPartHigh(m_arm));
+        m_controller.y().onTrue(new TwoPartHigh(m_arm));
         // m_controller.x().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, MID_WRIST_POS);}));
         m_controller.x().onTrue(m_arm.runOnce(() -> {
             m_arm.setArmMid();
