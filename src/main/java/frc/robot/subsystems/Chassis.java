@@ -14,6 +14,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -67,6 +70,10 @@ public class Chassis extends SubsystemBase {
 
     boolean isPrecision = false;
 
+    DoubleLogEntry xPosLog;
+    DoubleLogEntry yPosLog;
+    DoubleLogEntry rotPosLog;
+
     // odometry set-up (import - Ri3D Redux)
     private final Translation2d m_frontLeftLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_frontRightLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, -TRACK_LENGTH_METERS / 2.0);
@@ -98,6 +105,14 @@ public class Chassis extends SubsystemBase {
         ahrs.calibrate();
 
         isLocked.setBoolean(false);
+
+        if (IS_LOGGING) {
+            DataLog log = DataLogManager.getLog();
+
+            xPosLog = new DoubleLogEntry(log, "/my/xPos");
+            yPosLog = new DoubleLogEntry(log, "/my/yPos");
+            rotPosLog = new DoubleLogEntry(log, "/my/rotation");
+        }
     }
 
     // ported from last year
@@ -229,6 +244,12 @@ public class Chassis extends SubsystemBase {
 //        System.out.println(m_odometry.getPoseMeters().getX() + " meters");
 
         feedAll();
+
+        if (IS_LOGGING) {
+            xPosLog.append(m_odometry.getEstimatedPosition().getX());
+            yPosLog.append(m_odometry.getEstimatedPosition().getY());
+            rotPosLog.append(m_odometry.getEstimatedPosition().getRotation().getDegrees());
+        }
 
     }
 

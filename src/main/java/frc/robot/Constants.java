@@ -179,4 +179,6 @@ public final class Constants {
   public static double AUTON_DRIVE_kP = 0.6;
 
   public static double CHARGE_STATION_STABILIZE_SECONDS = .1;
+
+  public static boolean IS_LOGGING = false;
 }
