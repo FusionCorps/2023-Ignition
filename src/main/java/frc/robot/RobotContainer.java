@@ -80,8 +80,8 @@ public class RobotContainer {
         PathPlannerTrajectory twoPieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4, 3));
         PathPlannerTrajectory twoPieceLoadSideB = PathPlanner.loadPath("1+1_path2R", new PathConstraints(4, 3));
 
-        PathPlannerTrajectory twoPieceLoadSideASlow = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4.5, 3));
-        PathPlannerTrajectory twoPieceLoadSideBSlow = PathPlanner.loadPath("1+1_path2R", new PathConstraints(5, 2));
+        PathPlannerTrajectory twoPieceLoadSideASlow = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4.5, 3)); // 4.5, 3
+        PathPlannerTrajectory twoPieceLoadSideBSlow = PathPlanner.loadPath("1+1_path2R", new PathConstraints(5, 2)); // 5, 2
 
 
         PathPlannerTrajectory twoPieceLoadSideBalancePath = PathPlanner.loadPath("1+1_pathToBalance", new PathConstraints(2, 3));
@@ -172,7 +172,7 @@ public class RobotContainer {
         twoPieceLoadSideBalance = new SequentialCommandGroup(
                 m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
-                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.5),
+                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.1),
                 new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25),
                 new ParallelCommandGroup(new ArmToPosition(m_arm, INTAKE_BASE_POS_CONE, INTAKE_WRIST_POS_CONE), // deploy intake
                         m_chassis.followTrajectoryCommand(twoPieceLoadSideASlow, true), // drive to piece
@@ -183,8 +183,8 @@ public class RobotContainer {
                 new ParallelCommandGroup(new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS), // stow arm
                         m_chassis.followTrajectoryCommand(twoPieceLoadSideBSlow, false)), // return to scoring
                 // new ChassisDriveToNearestTarget(m_chassis, m_cameras, 0.2), // drive forward to align
-                new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.2), // drive forward to align
-                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.5),
+                new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.1), // drive forward to align
+                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.02),
                 new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.25),
                 new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
                 m_chassis.followTrajectoryCommand(twoPieceLoadSideBalancePath, true), // drive to piece

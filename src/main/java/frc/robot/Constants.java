@@ -108,14 +108,15 @@ public final class Constants {
     public static final double HIGH_BASE_POS_ALT_AUTO = -118*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS_ALT_AUTO = -152*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
-    public static final double INTAKE_BASE_POS_CONE = 22.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double INTAKE_WRIST_POS_CONE = -155*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double INTAKE_BASE_POS_CONE = 23.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double INTAKE_WRIST_POS_CONE = -157*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double INTAKE_BASE_POS_CUBE = 45.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double INTAKE_WRIST_POS_CUBE = -175*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double CHUTE_BASE_POS = 15*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double CHUTE_WRIST_POS = -55*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double CHUTE_WRIST_POS = -58
+              *PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double LOW_BASE_POS_CUBE = 0;
     public static final double LOW_WRIST_POS_CUBE = 70*PI/180/(PI/1024/WRIST_GEAR_RATIO);
@@ -147,8 +148,8 @@ public final class Constants {
   public static double TRACK_WIDTH_METERS = 0.7112;
   public static double TRACK_LENGTH_METERS = 0.7112;
 
-  public static double SWERVE_FORWARD_SPEED_MAX = 6.0;
-  public static double SWERVE_STRAFE_SPEED_MAX = 6.0;
+  public static double SWERVE_FORWARD_SPEED_MAX = 6.6;
+  public static double SWERVE_STRAFE_SPEED_MAX = 6.6;
   public static double SWERVE_ROT_SPEED_MAX = 4.0;
 
   public static double MAX_SPEED = 9.2;
