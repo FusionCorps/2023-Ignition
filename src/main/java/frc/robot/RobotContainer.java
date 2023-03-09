@@ -10,6 +10,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.*;
+import frc.robot.commands.autos.ThreePieceMid;
 import frc.robot.commands.autos.TwoPieceMidBalance;
 import frc.robot.commands.chassis.*;
 import frc.robot.commands.intake.RunVoltsTime;
@@ -55,6 +56,9 @@ public class RobotContainer {
 
     public Command twoPieceLoadSideCubeBlue;
     public Command twoPieceLoadSideCubeRed;
+
+    public Command threePieceLoadSideMidBlue;
+    public Command threePieceLoadSideMidRed;
 
     public Command relaxArm;
 
@@ -195,6 +199,9 @@ public class RobotContainer {
         twoPieceLoadSideBalance = new TwoPieceMidBalance(m_cameras, m_chassis, m_arm, mIntake, false);
         twoPieceLoadSideBalanceRed = new TwoPieceMidBalance(m_cameras, m_chassis, m_arm, mIntake, true);
 
+        threePieceLoadSideMidBlue = new ThreePieceMid(m_cameras,m_chassis,m_arm,mIntake,false);
+        threePieceLoadSideMidRed = new ThreePieceMid(m_cameras,m_chassis,m_arm,mIntake,true);
+
         // TODO: Standardize autonomous outtake voltage
         oneMidFarSide = new SequentialCommandGroup(
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
@@ -333,6 +340,8 @@ public class RobotContainer {
         relaxArm = new RelaxArm(m_arm);
 
     }
+
+
 
     public void ledPeriodic(boolean isCube, boolean isEnabled) {
         leds.setLedColor(isCube);
