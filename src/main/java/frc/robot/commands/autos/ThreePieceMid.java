@@ -38,8 +38,8 @@ public class ThreePieceMid extends SequentialCommandGroup {
         m_arm = arm;
         m_intake = intake;
 
-        threePieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4, 3));
-        threePieceLoadSideB = PathPlanner.loadPath("1+2Cube_2R Copy", new PathConstraints(4, 3));
+        threePieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(5, 2.25));
+        threePieceLoadSideB = PathPlanner.loadPath("1+2Cube_2R Copy", new PathConstraints(5, 3));
         threePieceLoadSideC = PathPlanner.loadPath("1+2Cube_3R", new PathConstraints(4, 3));
         threePieceLoadSideD = PathPlanner.loadPath("1+2Cube_4R", new PathConstraints(4, 3));
 
@@ -58,7 +58,7 @@ public class ThreePieceMid extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideA,true),
-                        new RunVoltsTime(m_intake,-11,threePieceLoadSideA.getTotalTimeSeconds())
+                        new RunVoltsTime(m_intake,-6,threePieceLoadSideA.getTotalTimeSeconds())
                 ),
                 m_chassis.runOnce(() -> {m_intake.set(-0.2);}),
                 new ParallelCommandGroup(
