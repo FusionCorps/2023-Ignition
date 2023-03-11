@@ -7,11 +7,14 @@ public class ChassisAutoBalanceFast extends CommandBase {
 
     Chassis mChassis;
     double tilt;
+    boolean isStopped;
 
     public ChassisAutoBalanceFast(Chassis chassis){
         mChassis = chassis;
 
         addRequirements(mChassis);
+
+        isStopped = false;
     }
 
     @Override
@@ -22,12 +25,21 @@ public class ChassisAutoBalanceFast extends CommandBase {
             tilt = -Math.sqrt(mChassis.getPitch()*mChassis.getPitch()+mChassis.getRoll()*mChassis.getRoll());
         }
 
-        if(tilt<8 && tilt>-8){
+        if(isStopped){
             mChassis.crossWheels();
         } else if(tilt>8){
-            mChassis.runSwerve(0.2,0,0);
-        } else if (tilt < -8){
-            mChassis.runSwerve(-0.2,0,0);
+            mChassis.runSwerve(-.1,0,0);
+        } else{
+            isStopped = true;
+            mChassis.crossWheels();
         }
+
+//        if(tilt<8 && tilt>-8){
+//            mChassis.crossWheels();
+//        } else if(tilt>8){
+//            mChassis.runSwerve(-0.2,0,0);
+//        } else if (tilt < -8){
+//            mChassis.runSwerve(0.2,0,0);
+//        }
     }
 }
