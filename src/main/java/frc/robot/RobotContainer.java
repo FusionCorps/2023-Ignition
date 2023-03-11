@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.*;
 import frc.robot.commands.autos.ThreePieceMid;
+import frc.robot.commands.autos.TwoPieceHighWire;
 import frc.robot.commands.autos.TwoPieceMidBalance;
 import frc.robot.commands.chassis.*;
 import frc.robot.commands.intake.RunVoltsTime;
@@ -59,6 +60,9 @@ public class RobotContainer {
 
     public Command threePieceLoadSideMidBlue;
     public Command threePieceLoadSideMidRed;
+
+    public Command twoPieceWireSideHighBlue;
+    public Command twoPieceWireSideHighRed;
 
     public Command relaxArm;
 
@@ -201,6 +205,10 @@ public class RobotContainer {
 
         threePieceLoadSideMidBlue = new ThreePieceMid(m_cameras,m_chassis,m_arm,mIntake,false);
         threePieceLoadSideMidRed = new ThreePieceMid(m_cameras,m_chassis,m_arm,mIntake,true);
+
+        twoPieceWireSideHighBlue = new TwoPieceHighWire(m_chassis,m_arm,m_cameras,mIntake,false);
+        twoPieceWireSideHighBlue = new TwoPieceHighWire(m_chassis,m_arm,m_cameras,mIntake,true);
+
 
         // TODO: Standardize autonomous outtake voltage
         oneMidFarSide = new SequentialCommandGroup(

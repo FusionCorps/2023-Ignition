@@ -70,7 +70,8 @@ public class TwoPieceMidBalance extends SequentialCommandGroup {
                 new RunVoltsTime(m_Intake, OUTTAKE_VOLTS, 0.25),
                 new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
                 m_chassis.followTrajectoryCommand(twoPieceLoadSideBalancePath, true), // drive to piece
-                new ChassisAutoBalance(m_chassis) // balance
+                new ChassisAutoBalance(m_chassis)// balance
+                // new ChassisAutoBalanceFast(m_chassis)
         );
     }
 

@@ -75,6 +75,9 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Three Piece Loadside Mid Blue", m_robotContainer.threePieceLoadSideMidBlue);
     m_chooser.addOption("Three Piece Loadside Mid Red", m_robotContainer.threePieceLoadSideMidRed);
 
+    m_chooser.addOption("Two Piece Wireside High Blue",m_robotContainer.twoPieceWireSideHighBlue);
+    m_chooser.addOption("Two Piece WireSide High Red",m_robotContainer.twoPieceWireSideHighRed);
+
     // m_chooser.addOption("Three Piece Left", m_robotContainer.threePieceLoadSide);
     m_chooser.addOption("One Piece Balance", m_robotContainer.onePieceBalance);
     m_chooser.addOption("One Piece Farside", m_robotContainer.oneMidFarSide);
@@ -82,6 +85,8 @@ public class Robot extends TimedRobot {
 
     m_chooser.addOption("Cone/Cube Loadside Blue", m_robotContainer.twoPieceLoadSideCubeBlue);
     m_chooser.addOption("Cone/Cube Loadside Red", m_robotContainer.twoPieceLoadSideCubeRed);
+
+
 
     m_chooser.setDefaultOption("Two Piece Loadside and Balance", m_robotContainer.twoPieceLoadSideBalance);
 
