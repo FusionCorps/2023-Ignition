@@ -26,7 +26,7 @@ public class ChassisAutoBalanceFast extends CommandBase {
             mChassis.crossWheels();
         } else if(tilt>8){
             mChassis.runSwerve(0.2,0,0);
-        } else if (tilt < 8){
+        } else if (tilt < -8){
             mChassis.runSwerve(-0.2,0,0);
         }
     }

@@ -180,5 +180,5 @@ public final class Constants {
 
   public static double CHARGE_STATION_STABILIZE_SECONDS = .1;
 
-  public static boolean IS_LOGGING = false;
+  public static boolean IS_LOGGING = true;
 }
