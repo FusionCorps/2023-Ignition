@@ -18,6 +18,11 @@ public class ChassisAutoBalanceFast extends CommandBase {
     }
 
     @Override
+    public void initialize(){
+        isStopped = false;
+    }
+
+    @Override
     public void execute(){
         if(mChassis.getPitch()+mChassis.getRoll()>=0) {
             tilt = Math.sqrt(mChassis.getPitch()*mChassis.getPitch()+mChassis.getRoll()*mChassis.getRoll());
@@ -28,7 +33,7 @@ public class ChassisAutoBalanceFast extends CommandBase {
         if(isStopped){
             mChassis.crossWheels();
         } else if(tilt>8){
-            mChassis.runSwerve(-.1,0,0);
+            mChassis.runSwerve(-.15,0,0);
         } else{
             isStopped = true;
             mChassis.crossWheels();

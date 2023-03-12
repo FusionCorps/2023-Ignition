@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.*;
 import frc.robot.commands.autos.ThreePieceMid;
+import frc.robot.commands.autos.TwoPieceCubeBalance;
 import frc.robot.commands.autos.TwoPieceHighWire;
 import frc.robot.commands.autos.TwoPieceMidBalance;
 import frc.robot.commands.chassis.*;
@@ -63,6 +64,9 @@ public class RobotContainer {
 
     public Command twoPieceWireSideHighBlue;
     public Command twoPieceWireSideHighRed;
+
+    public Command twoPieceCubeLoadSideBalanceBlue;
+    public Command twoPieceCubeLoadSideBalanceRed;
 
     public Command relaxArm;
 
@@ -207,7 +211,10 @@ public class RobotContainer {
         threePieceLoadSideMidRed = new ThreePieceMid(m_cameras,m_chassis,m_arm,mIntake,true);
 
         twoPieceWireSideHighBlue = new TwoPieceHighWire(m_chassis,m_arm,m_cameras,mIntake,false);
-        twoPieceWireSideHighBlue = new TwoPieceHighWire(m_chassis,m_arm,m_cameras,mIntake,true);
+        twoPieceWireSideHighRed = new TwoPieceHighWire(m_chassis,m_arm,m_cameras,mIntake,true);
+
+        twoPieceCubeLoadSideBalanceBlue = new TwoPieceCubeBalance(m_cameras, m_chassis, m_arm, mIntake,false);
+        twoPieceCubeLoadSideBalanceRed = new TwoPieceCubeBalance(m_cameras, m_chassis, m_arm, mIntake,true);
 
 
         // TODO: Standardize autonomous outtake voltage
@@ -402,8 +409,8 @@ public class RobotContainer {
         }));
 
 
-        // m_controller.leftBumper().whileTrue(new ChassisAutoBalanceNew(m_chassis));
-
+        //m_controller.leftBumper().whileTrue(new ChassisAutoBalanceNew(m_chassis));
+        //m_controller.leftBumper().whileTrue(new ChassisAutoBalanceFast(m_chassis));
         m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(LOW_BASE_POS_CUBE, LOW_WRIST_POS_CUBE);}));
 //    m_controller.leftBumper().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));

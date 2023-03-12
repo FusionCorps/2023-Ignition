@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.arm.ArmToPosition;
 import frc.robot.commands.chassis.ChassisAutoBalance;
+import frc.robot.commands.chassis.ChassisAutoBalanceFast;
 import frc.robot.commands.chassis.ChassisDriveAuton;
 import frc.robot.commands.intake.RunVoltsTime;
 import frc.robot.subsystems.Arm;
@@ -38,7 +39,7 @@ public class TwoPieceMidBalance extends SequentialCommandGroup {
         m_arm = arm;
         m_Intake = intake;
 
-        twoPieceLoadSideASlow = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4.5, 3)); // 4.5, 3
+        twoPieceLoadSideASlow = PathPlanner.loadPath("1+1_path1R", new PathConstraints(4.5, 2.5)); // 4.5, 3
         twoPieceLoadSideBSlow = PathPlanner.loadPath("1+1_path2R", new PathConstraints(5, 2)); // 5, 2
 
         twoPieceLoadSideBalancePath = PathPlanner.loadPath("1+1_pathToBalance", new PathConstraints(2, 3));
@@ -70,7 +71,7 @@ public class TwoPieceMidBalance extends SequentialCommandGroup {
                 new RunVoltsTime(m_Intake, OUTTAKE_VOLTS, 0.25),
                 new ArmToPosition(m_arm, 0, 0, 0.25), // return to stow
                 m_chassis.followTrajectoryCommand(twoPieceLoadSideBalancePath, true), // drive to piece
-                new ChassisAutoBalance(m_chassis)// balance
+                new ChassisAutoBalanceFast(m_chassis)// balance
                 // new ChassisAutoBalanceFast(m_chassis)
         );
     }

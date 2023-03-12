@@ -69,8 +69,8 @@ public class Robot extends TimedRobot {
     // m_chooser.addOption("Test Line", m_robotContainer.autoOne);
     m_chooser.addOption("Two Piece Loadside", m_robotContainer.twoPieceLoadSide);
 
-    m_chooser.addOption("Two Piece Loadside and Balance Blue", m_robotContainer.twoPieceLoadSideBalance);
-    m_chooser.addOption("Two Piece Loadside and Balance Red", m_robotContainer.twoPieceLoadSideBalanceRed);
+//    m_chooser.addOption("Two Piece Loadside and Balance Blue", m_robotContainer.twoPieceLoadSideBalance);
+//    m_chooser.addOption("Two Piece Loadside and Balance Red", m_robotContainer.twoPieceLoadSideBalanceRed);
 
     m_chooser.addOption("Three Piece Loadside Mid Blue", m_robotContainer.threePieceLoadSideMidBlue);
     m_chooser.addOption("Three Piece Loadside Mid Red", m_robotContainer.threePieceLoadSideMidRed);
@@ -85,6 +85,9 @@ public class Robot extends TimedRobot {
 
     m_chooser.addOption("Cone/Cube Loadside Blue", m_robotContainer.twoPieceLoadSideCubeBlue);
     m_chooser.addOption("Cone/Cube Loadside Red", m_robotContainer.twoPieceLoadSideCubeRed);
+
+    m_chooser.addOption("Two Piece Cube Loadside Balance Blue",m_robotContainer.twoPieceCubeLoadSideBalanceBlue);
+    m_chooser.addOption("Two Piece Cube Loadside Balance Red",m_robotContainer.twoPieceCubeLoadSideBalanceRed);
 
 
 

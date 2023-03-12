@@ -38,10 +38,10 @@ public class ThreePieceMid extends SequentialCommandGroup {
         m_arm = arm;
         m_intake = intake;
 
-        threePieceLoadSideA = PathPlanner.loadPath("1+1_path1R", new PathConstraints(5, 2.25));
+        threePieceLoadSideA = PathPlanner.loadPath("1+1_path1R_NP", new PathConstraints(5, 2.25));
         threePieceLoadSideB = PathPlanner.loadPath("1+2Cube_2R Copy", new PathConstraints(5, 3));
         threePieceLoadSideC = PathPlanner.loadPath("1+2Cube_3R", new PathConstraints(4, 3));
-        threePieceLoadSideD = PathPlanner.loadPath("1+2Cube_4R", new PathConstraints(4, 3));
+        threePieceLoadSideD = PathPlanner.loadPath("1+2Cube_4R_NP", new PathConstraints(4, 3));
 
         if(isRed){
             threePieceLoadSideA = PathPlannerTrajectory.transformTrajectoryForAlliance(threePieceLoadSideA, DriverStation.Alliance.Red);
@@ -65,8 +65,8 @@ public class ThreePieceMid extends SequentialCommandGroup {
                         new ArmToPosition(m_arm, MID_BASE_POS_CUBE, MID_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideB,false)
                 ),
-                new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.1),
-                new RunVoltsTime(m_intake,11,0.3),
+                new ChassisDriveAuton(m_chassis, 0.25, 0.0, 0.0, 0.1),
+                new RunVoltsTime(m_intake,3.5,0.3),
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CONE,INTAKE_WRIST_POS_CONE),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideC,false),
@@ -77,9 +77,8 @@ public class ThreePieceMid extends SequentialCommandGroup {
                         new ArmToPosition(m_arm,MID_BASE_POS,MID_WRIST_POS),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideD,false)
                 ),
-                new ChassisDriveAuton(m_chassis,0.2,0,0,0.1),
-                new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.25),
-                new ChassisDriveAuton(m_chassis,-0.2,0,0,0.1)
+                new ChassisDriveAuton(m_chassis,0.2,0,0,0.23),
+                new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.25)
 
 
         );
