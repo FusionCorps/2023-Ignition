@@ -89,7 +89,11 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Two Piece Cube Loadside Balance Blue",m_robotContainer.twoPieceCubeLoadSideBalanceBlue);
     m_chooser.addOption("Two Piece Cube Loadside Balance Red",m_robotContainer.twoPieceCubeLoadSideBalanceRed);
 
+    m_chooser.addOption("Two Piece And Intake And Balance Blue",m_robotContainer.twoPieceIntakeLoadSideBalanceBlue);
+    m_chooser.addOption("Two Piece And Intake And Balance Red",m_robotContainer.twoPieceIntakeLoadSideBalanceRed);
 
+    m_chooser.addOption("Two Piece Center and Balance Blue", m_robotContainer.twoPieceCenterBalanceBlue);
+    m_chooser.addOption("Two Piece Center and Balance Red", m_robotContainer.twoPieceCenterBalanceRed);
 
     m_chooser.setDefaultOption("Two Piece Loadside and Balance", m_robotContainer.twoPieceLoadSideBalance);
 

@@ -10,10 +10,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.*;
-import frc.robot.commands.autos.ThreePieceMid;
-import frc.robot.commands.autos.TwoPieceCubeBalance;
-import frc.robot.commands.autos.TwoPieceHighWire;
-import frc.robot.commands.autos.TwoPieceMidBalance;
+import frc.robot.commands.autos.*;
 import frc.robot.commands.chassis.*;
 import frc.robot.commands.intake.RunVoltsTime;
 import frc.robot.subsystems.*;
@@ -69,6 +66,12 @@ public class RobotContainer {
     public Command twoPieceCubeLoadSideBalanceRed;
 
     public Command relaxArm;
+
+    public Command twoPieceIntakeLoadSideBalanceBlue;
+    public Command twoPieceIntakeLoadSideBalanceRed;
+
+    public Command twoPieceCenterBalanceBlue;
+    public Command twoPieceCenterBalanceRed;
 
     private final Leds leds = new Leds();
 
@@ -215,6 +218,12 @@ public class RobotContainer {
 
         twoPieceCubeLoadSideBalanceBlue = new TwoPieceCubeBalance(m_cameras, m_chassis, m_arm, mIntake,false);
         twoPieceCubeLoadSideBalanceRed = new TwoPieceCubeBalance(m_cameras, m_chassis, m_arm, mIntake,true);
+
+        twoPieceIntakeLoadSideBalanceBlue = new TwoPieceIntakeBalance(m_chassis,m_arm,mIntake,m_cameras,false);
+        twoPieceIntakeLoadSideBalanceRed = new TwoPieceIntakeBalance(m_chassis,m_arm,mIntake,m_cameras,true);
+
+        twoPieceCenterBalanceBlue = new OnePieceTaxiBalance(m_chassis,m_arm,m_cameras,mIntake,false);
+        twoPieceCenterBalanceRed = new OnePieceTaxiBalance(m_chassis,m_arm,m_cameras,mIntake,true);
 
 
         // TODO: Standardize autonomous outtake voltage
