@@ -35,6 +35,7 @@ public class ChassisAutoBalanceFast extends CommandBase {
                 mChassis.crossWheels();
             } else if (tilt > 8) {
                 mChassis.runSwerve(-.15, 0, 0);
+                isStopped = false;
             } else {
                 isStopped = true;
                 mChassis.crossWheels();
@@ -44,6 +45,7 @@ public class ChassisAutoBalanceFast extends CommandBase {
                 mChassis.crossWheels();
             } else if(tilt < -8){
                 mChassis.runSwerve(.15,0,0);
+                isStopped = false;
             } else{
                 isStopped = true;
                 mChassis.crossWheels();

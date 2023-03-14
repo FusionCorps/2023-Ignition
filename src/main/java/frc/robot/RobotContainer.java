@@ -367,8 +367,8 @@ public class RobotContainer {
 
 
 
-    public void ledPeriodic(boolean isCube, boolean isEnabled) {
-        leds.setLedColor(isCube);
+    public void ledPeriodic(boolean isCube, boolean isEnabled, boolean isRainbow) {
+        leds.setLedColor(isCube, isRainbow);
         leds.setLedEnabled(isEnabled);
     }
 

@@ -57,19 +57,23 @@ public class Leds extends SubsystemBase {
     }
 
     // sets the color of led
-    public void setLedColor(boolean isCube) {
-        if (rainbowEntry.getBoolean(false)) {
-            candle.animate(new RainbowAnimation(1, 5, LED_COUNT));
-        } else if (isCube) {
+    public void setLedColor(boolean isCube, boolean isRainbow) {
+        if(!isCube) {
+            if (rainbowEntry.getBoolean(false)) {
+                candle.animate(new RainbowAnimation(1, 5, LED_COUNT));
+            } else{
+                candle.setLEDs(coneRGB[0], coneRGB[1], coneRGB[2]);
+            }
+        }else {
             candle.setLEDs(cubeRGB[0], cubeRGB[1], cubeRGB[2]);
-        } else {
-            candle.setLEDs(coneRGB[0], coneRGB[1], coneRGB[2]);
         }
     }
 
+
+
     @Override
     public void periodic() {
-        this.setLedColor(isCubeEntry.getBoolean(false));
+        this.setLedColor(isCubeEntry.getBoolean(false), rainbowEntry.getBoolean(false));
         this.setLedEnabled(true);
     }
 }
