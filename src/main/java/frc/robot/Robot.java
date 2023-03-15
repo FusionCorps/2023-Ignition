@@ -43,7 +43,11 @@ public class Robot extends TimedRobot {
   // to add auton to auton selection, initiate auton variable here:
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+<<<<<<< Updated upstream
   CSVManager logs;
+=======
+  SendableChooser<Boolean> colorChooser = new SendableChooser<>();
+>>>>>>> Stashed changes
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -51,6 +55,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
+    colorChooser.addOption("Red", true);
+    colorChooser.addOption("Blue", false);
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
 
