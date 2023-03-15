@@ -59,10 +59,11 @@ public class Leds extends SubsystemBase {
     // sets the color of led
     public void setLedColor(boolean isCube, boolean isRainbow) {
         if(!isCube) {
-            if (rainbowEntry.getBoolean(false)) {
+            if (isRainbow) {
                 candle.animate(new RainbowAnimation(1, 1, LED_COUNT));
             } else{
-                candle.setLEDs(coneRGB[0], coneRGB[1], coneRGB[2]);
+                candle.setLEDs(0,0,0);
+                //candle.setLEDs(coneRGB[0], coneRGB[1], coneRGB[2]);
             }
         }else {
             candle.setLEDs(cubeRGB[0], cubeRGB[1], cubeRGB[2]);

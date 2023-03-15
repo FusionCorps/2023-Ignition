@@ -470,7 +470,11 @@ public class RobotContainer {
         }));
 
         m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {
-            mIntake.setVolts(OUTTAKE_VOLTS);
+            if(m_arm.hasCone) {
+                mIntake.setVolts(OUTTAKE_VOLTS);
+            }else{
+                mIntake.setVolts(.09);
+            }
         }));
         m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {
             mIntake.set(-0.0);
