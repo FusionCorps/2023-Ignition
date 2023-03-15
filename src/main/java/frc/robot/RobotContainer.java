@@ -12,14 +12,14 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.arm.*;
 import frc.robot.commands.autos.*;
 import frc.robot.commands.chassis.*;
+import frc.robot.commands.intake.IntakeCube;
 import frc.robot.commands.intake.RunVoltsTime;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import static frc.robot.Constants.ArmConstants.*;
-import static frc.robot.Constants.IntakeConstants.INTAKE_PCT;
-import static frc.robot.Constants.IntakeConstants.OUTTAKE_VOLTS;
+import static frc.robot.Constants.IntakeConstants.*;
 import static java.lang.Math.PI;
 
 
@@ -462,9 +462,10 @@ public class RobotContainer {
         m_controller.rightTrigger().onTrue(m_arm.runOnce(() -> {
             m_arm.setArmCubeIntake();
         }));
-        m_controller.rightTrigger(0.7).whileTrue(mIntake.run(() -> {
-            mIntake.set(INTAKE_PCT);
-        }));
+//        m_controller.rightTrigger(0.7).whileTrue(mIntake.run(() -> {
+//            mIntake.set(INTAKE_PCT);
+//        }));
+        m_controller.rightTrigger(0.7).whileTrue(new IntakeCube(mIntake, INTAKE_PCT));
         m_controller.rightTrigger(0.7).onFalse(mIntake.runOnce(() -> {
             mIntake.set(-0.2);
         }));
@@ -473,7 +474,7 @@ public class RobotContainer {
             if(m_arm.hasCone) {
                 mIntake.setVolts(OUTTAKE_VOLTS);
             }else{
-                mIntake.setVolts(.09);
+                mIntake.setVolts(OUTTAKE_VOLTS_CUBE);
             }
         }));
         m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {

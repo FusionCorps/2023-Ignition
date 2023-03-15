@@ -26,6 +26,7 @@ public final class Constants {
     public static final double INTAKE_PCT = -0.45;
 
     public static final double OUTTAKE_VOLTS = 6.3;
+    public static final double OUTTAKE_VOLTS_CUBE = 4.2;
   }
 
   public static class ArmConstants {

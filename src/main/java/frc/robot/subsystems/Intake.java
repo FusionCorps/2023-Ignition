@@ -20,6 +20,8 @@ public class Intake extends SubsystemBase {
     //CANSparkMax intakeMotor;
     WPI_TalonFX intakeMotor;
 
+    public boolean isStalling;
+
     private ShuffleboardTab tab = Shuffleboard.getTab("General");
 
     public GenericEntry voltageFudgeTab = tab.add("Outtake Voltage K", 1.0)
@@ -51,5 +53,9 @@ public class Intake extends SubsystemBase {
     // added voltage comp for consistency
     public void setVolts(double volts) {
         intakeMotor.setVoltage(volts*voltageFudgeTab.getDouble(1.0));
+    }
+
+    public double getSpeed() {
+        return intakeMotor.getSelectedSensorVelocity();
     }
 }
