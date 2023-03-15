@@ -53,12 +53,13 @@ public class TwoPieceHighWire extends SequentialCommandGroup {
                         m_chassis.followTrajectoryCommand(twoPieceWireSideA,true),
                         new RunVoltsTime(m_intake,-6,twoPieceWireSideA.getTotalTimeSeconds())
                 ),
+                m_intake.runOnce(() -> {m_intake.set(-0.2);}),
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,BASE_START_POS,WRIST_START_POS),
                         m_chassis.followTrajectoryCommand(twoPieceWireSideB,false)
                 ),
                 new ArmToPosition(m_arm,HIGH_BASE_POS,HIGH_WRIST_POS),
-                new ChassisDriveAuton(m_chassis,0.2,0,0,0.2),
+                new ChassisDriveAuton(m_chassis,0.2,0,0,0.4),
                 new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.2),
                 new ChassisDriveAuton(m_chassis,-0.2,0,0,0.1),
                 new ArmToPosition(m_arm,BASE_START_POS,WRIST_START_POS)
