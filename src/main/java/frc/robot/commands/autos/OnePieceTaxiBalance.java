@@ -36,7 +36,7 @@ public class OnePieceTaxiBalance extends SequentialCommandGroup {
         m_camera = camera;
         m_chassis = chassis;
 
-        twoPieceHighBalanceA = PathPlanner.loadPath("1+taxi+balance1",new PathConstraints(4,3));
+        twoPieceHighBalanceA = PathPlanner.loadPath("1+taxi+balance1",new PathConstraints(1.5,2));
         twoPieceHighBalanceB = PathPlanner.loadPath("1+taxi+balance2",new PathConstraints(4,3));
         balance = PathPlanner.loadPath("1+taxi+balance3",new PathConstraints(4,3));
 
@@ -51,24 +51,25 @@ public class OnePieceTaxiBalance extends SequentialCommandGroup {
                 new TwoPartHighAuto(m_arm),
                 new ArmToPosition(m_arm,HIGH_BASE_POS_ALT_AUTO,HIGH_WRIST_POS_ALT_AUTO),
                 new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.5),
+                new ArmToPosition(m_arm,BASE_START_POS, WRIST_START_POS),
                 new ParallelCommandGroup(
-                        new RunVoltsTime(m_intake,-6,twoPieceHighBalanceA.getTotalTimeSeconds()),
-                        m_chassis.followTrajectoryCommand(twoPieceHighBalanceA,true),
-                        new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE,2.3)
+                        //new RunVoltsTime(m_intake,-6,twoPieceHighBalanceA.getTotalTimeSeconds()),
+                        m_chassis.followTrajectoryCommand(twoPieceHighBalanceA,true)
+                        // new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE,2.3)
                 ),
-                m_chassis.runOnce(() -> {m_intake.set(-0.2);}),
-                new ParallelCommandGroup(
-                        m_chassis.followTrajectoryCommand(twoPieceHighBalanceB,false),
-                        new ArmToPosition(m_arm,BASE_START_POS,WRIST_START_POS)
-                ),
-                new ArmToPosition(m_arm,HIGH_BASE_POS,HIGH_WRIST_POS),
-                new ChassisDriveAuton(m_chassis,0.2,0,0,0.15),
-                new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.2),
-                new ParallelCommandGroup(
-                        m_chassis.followTrajectoryCommand(balance,false),
-                        new ArmToPosition(m_arm,BASE_START_POS,WRIST_START_POS,0.2)
-                ),
-                new ChassisAutoBalanceFast(m_chassis)
+                new ChassisDriveAuton(m_chassis,0.3,0,0,2.0)
+//                new ParallelCommandGroup(
+//                        m_chassis.followTrajectoryCommand(twoPieceHighBalanceB,false),
+//                        new ArmToPosition(m_arm,BASE_START_POS,WRIST_START_POS)
+//                ),
+                // new ArmToPosition(m_arm,HIGH_BASE_POS,HIGH_WRIST_POS),
+//                new ChassisDriveAuton(m_chassis,0.2,0,0,0.15),
+//                new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.2),
+//                new ParallelCommandGroup(
+//                        m_chassis.followTrajectoryCommand(balance,false),
+//                        new ArmToPosition(m_arm,BASE_START_POS,WRIST_START_POS,0.2)
+//                ),
+//                new ChassisAutoBalanceFast(m_chassis)
         );
     }
 

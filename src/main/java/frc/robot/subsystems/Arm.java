@@ -35,31 +35,39 @@ public class Arm extends SubsystemBase {
 
     public GenericEntry midBaseFudgeTab = tab.add("Mid Score Bicep (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+//            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            .withProperties(Map.of("min", -5, "max", 5)).getEntry();
     public GenericEntry midWristFudgeTab = tab.add("Mid Score Forearm (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            // .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            .withProperties(Map.of("min", -5, "max", 5)).getEntry();
 
     public GenericEntry highBaseFudgeTab = tab.add("High Score Bicep (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+//            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            .withProperties(Map.of("min", -5, "max", 5)).getEntry();
     public GenericEntry highWristFudgeTab = tab.add("High Score Forearm (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            // .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            .withProperties(Map.of("min", -5, "max", 5)).getEntry();
 
     public GenericEntry coneBaseFudgeTab = tab.add("Cone Intake Bicep (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            // .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            .withProperties(Map.of("min", -5, "max", 5)).getEntry();
     public GenericEntry coneWristFudgeTab = tab.add("Cone Intake Forearm (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            // .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            .withProperties(Map.of("min", -5, "max", 5)).getEntry();
 
     public GenericEntry cubeBaseFudgeTab = tab.add("Cube Intake Bicep (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            // .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            .withProperties(Map.of("min", -5, "max", 5)).getEntry();
     public GenericEntry cubeWristFudgeTab = tab.add("Cube Intake Forearm (Degrees)", 0.0)
             .withWidget(BuiltInWidgets.kNumberSlider)
-            .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            // .withProperties(Map.of("min", -30, "max", 30)).getEntry();
+            .withProperties(Map.of("min", -5, "max", 5)).getEntry();
 
 
     public Arm() {
@@ -182,41 +190,43 @@ public class Arm extends SubsystemBase {
     // one side to be up and other to be down on the fly
     public void setArmHigh() {
         overriding = false;
-        baseTalonTarget = HIGH_BASE_POS - highBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
-        wristTalonTarget = HIGH_WRIST_POS - highWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
+
+        // BASE/WRIST_CONVERSION_FACTOR instead of 1000
+        baseTalonTarget = HIGH_BASE_POS - highBaseFudgeTab.getDouble(0.0)*1000;
+        wristTalonTarget = HIGH_WRIST_POS - highWristFudgeTab.getDouble(0.0)*1000;
     }
 
     public double getHighBaseFudge() {
-        return highBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
+        return highBaseFudgeTab.getDouble(0.0)*1000;
     }
 
     public double getHighWristFudge() {
-        return highBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
+        return highBaseFudgeTab.getDouble(0.0)*1000;
     }
 
     public void setArmMid() {
         overriding = false;
         if (hasCone) {
-            baseTalonTarget = MID_BASE_POS - midBaseFudgeTab.getDouble(0.0) * BASE_CONVERSION_FACTOR;
-            wristTalonTarget = MID_WRIST_POS - midWristFudgeTab.getDouble(0.0) * WRIST_CONVERSION_FACTOR;
+            baseTalonTarget = MID_BASE_POS - midBaseFudgeTab.getDouble(0.0) * 1000;
+            wristTalonTarget = MID_WRIST_POS - midWristFudgeTab.getDouble(0.0) * 1000;
         } else {
-            baseTalonTarget = MID_BASE_POS_CUBE - midBaseFudgeTab.getDouble(0.0) * BASE_CONVERSION_FACTOR;
-            wristTalonTarget = MID_WRIST_POS_CUBE - midWristFudgeTab.getDouble(0.0) * WRIST_CONVERSION_FACTOR;
+            baseTalonTarget = MID_BASE_POS_CUBE - midBaseFudgeTab.getDouble(0.0) * 1000;
+            wristTalonTarget = MID_WRIST_POS_CUBE - midWristFudgeTab.getDouble(0.0) * 1000;
         }
     }
 
     public void setArmConeIntake() {
         overriding = false;
-        baseTalonTarget = INTAKE_BASE_POS_CONE + coneBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
-        wristTalonTarget = INTAKE_WRIST_POS_CONE + coneWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
+        baseTalonTarget = INTAKE_BASE_POS_CONE + coneBaseFudgeTab.getDouble(0.0)*1000;
+        wristTalonTarget = INTAKE_WRIST_POS_CONE + coneWristFudgeTab.getDouble(0.0)*1000;
 
         hasCone = true;
     }
 
     public void setArmCubeIntake() {
         overriding = false;
-        baseTalonTarget = INTAKE_BASE_POS_CUBE + cubeBaseFudgeTab.getDouble(0.0)*BASE_CONVERSION_FACTOR;
-        wristTalonTarget = INTAKE_WRIST_POS_CUBE + cubeWristFudgeTab.getDouble(0.0)*WRIST_CONVERSION_FACTOR;
+        baseTalonTarget = INTAKE_BASE_POS_CUBE + cubeBaseFudgeTab.getDouble(0.0)*1000;
+        wristTalonTarget = INTAKE_WRIST_POS_CUBE + cubeWristFudgeTab.getDouble(0.0)*1000;
 
         hasCone = false;
     }

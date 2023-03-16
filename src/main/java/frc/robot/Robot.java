@@ -28,6 +28,8 @@ public class Robot extends TimedRobot {
   // For enabling the cargo LEDs
   private NetworkTableEntry isCubeEntry;
   private NetworkTableEntry isEnabledEntry;
+
+  private NetworkTableEntry isRainbowEntry;
   private NetworkTableEntry isLocked;
 
   private RobotContainer m_robotContainer;
@@ -50,6 +52,9 @@ public class Robot extends TimedRobot {
 
     NetworkTableInstance lInstance = NetworkTableInstance.getDefault();
     NetworkTable lockedTable = lInstance.getTable("locked");
+
+    isRainbowEntry = ledTable.getEntry("isRainbow");
+    isRainbowEntry.setBoolean(false);
 
     isEnabledEntry = ledTable.getEntry("isEnabled");
     isEnabledEntry.setBoolean(false);
