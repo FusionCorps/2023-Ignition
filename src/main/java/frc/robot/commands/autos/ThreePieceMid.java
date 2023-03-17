@@ -53,7 +53,7 @@ public class ThreePieceMid extends SequentialCommandGroup {
         addCommands(
                 m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
-                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.1),
+                new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.25),
                 new RunVoltsTime(m_intake, OUTTAKE_VOLTS, 0.25),
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE),

@@ -73,6 +73,8 @@ public class RobotContainer {
     public Command twoPieceCenterBalanceBlue;
     public Command twoPieceCenterBalanceRed;
 
+    public Command autobalanceTest;
+
     private final Leds leds = new Leds();
 
 
@@ -120,6 +122,9 @@ public class RobotContainer {
         PathPlannerTrajectory threePieceLoadSideCubeBRed = PathPlanner.loadPath("1+2Cube_2Rred", new PathConstraints(4, 3));
 
         // TODO: Standardize autonomous outtake voltage
+
+        autobalanceTest = new ChassisAutoBalanceFast(m_chassis);
+
         twoPieceLoadSide = new SequentialCommandGroup(
                 m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),

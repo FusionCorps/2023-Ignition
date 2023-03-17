@@ -145,8 +145,8 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     // returns the selected auton
-     m_autonomousCommand = m_chooser.getSelected();
-    //m_autonomousCommand = m_robotContainer.threePieceLoadSideCube;
+    m_autonomousCommand = m_chooser.getSelected();
+    // m_autonomousCommand = m_robotContainer.autobalanceTest;
 
 
     if (m_autonomousCommand != null) {

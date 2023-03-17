@@ -36,8 +36,8 @@ public class ChassisAutoBalanceFast extends CommandBase {
         if(tilt>=0) {
             if (isStopped) {
                 mChassis.crossWheels();
-            } else if (tilt > 8) {
-                mChassis.runSwerve(-.15, 0, 0);
+            } else if (tilt > 8.5) {
+                mChassis.runSwerve(-.125, 0, 0);
                 isStopped = false;
             } else {
                 isStopped = true;
@@ -46,8 +46,8 @@ public class ChassisAutoBalanceFast extends CommandBase {
         } else{
             if(isStopped){
                 mChassis.crossWheels();
-            } else if(tilt < -6){
-                mChassis.runSwerve(.15,0,0);
+            } else if(tilt < -8.5){
+                mChassis.runSwerve(.125,0,0);
                 isStopped = false;
             } else{
                 isStopped = true;
@@ -62,5 +62,11 @@ public class ChassisAutoBalanceFast extends CommandBase {
 //        } else if (tilt < -8){
 //            mChassis.runSwerve(0.2,0,0);
 //        }
+
+    }
+
+    @Override
+    public void end(boolean isStopped) {
+        mChassis.crossWheels();
     }
 }
