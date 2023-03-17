@@ -57,7 +57,8 @@ public class OnePieceTaxiBalance extends SequentialCommandGroup {
                         m_chassis.followTrajectoryCommand(twoPieceHighBalanceA,true)
                         // new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE,2.3)
                 ),
-                new ChassisDriveAuton(m_chassis,0.3,0,0,2.0)
+                new ChassisDriveAuton(m_chassis,0.3,0,0,2.0),
+                new ChassisAutoBalanceFast(m_chassis)
 //                new ParallelCommandGroup(
 //                        m_chassis.followTrajectoryCommand(twoPieceHighBalanceB,false),
 //                        new ArmToPosition(m_arm,BASE_START_POS,WRIST_START_POS)
