@@ -366,12 +366,6 @@ public class RobotContainer {
     }
 
 
-
-    public void ledPeriodic(boolean isCube, boolean isEnabled, boolean isRainbow) {
-        leds.setLedColor(isCube, isRainbow);
-        leds.setLedEnabled(isEnabled);
-    }
-
     /**
      * Use this method to define your trigger->command mappings. Triggers can be created via the
      * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary

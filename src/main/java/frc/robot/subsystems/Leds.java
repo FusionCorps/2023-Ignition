@@ -18,8 +18,10 @@ public class Leds extends SubsystemBase {
     private final int[] coneRGB = new int[]{255, 200, 0};
     private final int[] cubeRGB = new int[]{255, 0, 255};
 
+    boolean isAnimating = false;
+
     private final double MAX_BRIGHTNESS = 1.0;
-    CANdle candle;
+    private CANdle candle;
     CANdleConfiguration configs;
 
     // initialises the LED stuffs
@@ -64,16 +66,22 @@ public class Leds extends SubsystemBase {
 
     // sets the color of led
     public void setLedColor(boolean isCube, boolean isRainbow) {
-        if(!isCube) {
-            if (isRainbow) {
-                candle.animate(new RainbowAnimation(1, 1, LED_COUNT));
-            } else{
-                //candle.setLEDs(0,0,0);
-                candle.clearAnimation(0);
-                candle.setLEDs(coneRGB[0], coneRGB[1], coneRGB[2]);
+        if (isRainbow) {
+            if (!isAnimating) {
+                isAnimating = true;
+                candle.animate(new RainbowAnimation(1, 0.7, LED_COUNT*6));
             }
-        }else {
-            candle.clearAnimation(0);
+        } else if(!isCube) {
+            if (isAnimating) {
+                candle.clearAnimation(0);
+                isAnimating = false;
+            }
+            candle.setLEDs(coneRGB[0], coneRGB[1], coneRGB[2]);
+        } else {
+            if (isAnimating) {
+                candle.clearAnimation(0);
+                isAnimating = false;
+            }
             candle.setLEDs(cubeRGB[0], cubeRGB[1], cubeRGB[2]);
         }
     }
