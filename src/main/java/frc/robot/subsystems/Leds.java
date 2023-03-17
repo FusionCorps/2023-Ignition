@@ -18,10 +18,13 @@ public class Leds extends SubsystemBase {
     private final int[] coneRGB = new int[]{255, 200, 0};
     private final int[] cubeRGB = new int[]{255, 0, 255};
 
-    boolean isAnimating = false;
+    boolean isAnimating = true;
 
     private final double MAX_BRIGHTNESS = 1.0;
     private CANdle candle;
+
+    private String state;
+
     CANdleConfiguration configs;
 
     // initialises the LED stuffs
@@ -46,7 +49,7 @@ public class Leds extends SubsystemBase {
         configs = new CANdleConfiguration();
         configs.brightnessScalar = MAX_BRIGHTNESS;
         configs.stripType = CANdle.LEDStripType.GRB;
-        configs.disableWhenLOS = true;
+        configs.disableWhenLOS = false;
         configs.statusLedOffWhenActive = true;
         configs.vBatOutputMode = CANdle.VBatOutputMode.On;
         candle.configAllSettings(configs);
@@ -67,22 +70,24 @@ public class Leds extends SubsystemBase {
     // sets the color of led
     public void setLedColor(boolean isCube, boolean isRainbow) {
         if (isRainbow) {
-            if (!isAnimating) {
-                isAnimating = true;
-                candle.animate(new RainbowAnimation(1, 0.7, LED_COUNT*6));
+            if (state != "rainbow") {
+                state = "rainbow";
+                candle.animate(new RainbowAnimation(1, 0.7, LED_COUNT), 1);
             }
         } else if(!isCube) {
-            if (isAnimating) {
-                candle.clearAnimation(0);
+            if (state != "cone") {
+                state = "cone";
+                candle.clearAnimation(1);
+                candle.setLEDs(coneRGB[0], coneRGB[1], coneRGB[2]);
                 isAnimating = false;
             }
-            candle.setLEDs(coneRGB[0], coneRGB[1], coneRGB[2]);
         } else {
-            if (isAnimating) {
-                candle.clearAnimation(0);
+            if (state != "cube") {
+                state = "cube";
                 isAnimating = false;
+                candle.clearAnimation(1);
+                candle.setLEDs(cubeRGB[0], cubeRGB[1], cubeRGB[2]);
             }
-            candle.setLEDs(cubeRGB[0], cubeRGB[1], cubeRGB[2]);
         }
     }
 
@@ -90,8 +95,7 @@ public class Leds extends SubsystemBase {
 
     @Override
     public void periodic() {
-        //boolean isRainbow = rainbow.getBoolean(false);
         this.setLedColor(isCubeEntry.getBoolean(false), rainbowEntry.getBoolean(false));
-        this.setLedEnabled(true);
+        // this.setLedEnabled(true);
     }
 }
