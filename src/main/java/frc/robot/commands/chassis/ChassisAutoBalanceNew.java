@@ -73,6 +73,11 @@ public class ChassisAutoBalanceNew extends CommandBase {
 
     }
 
+    @Override
+    public void end(boolean isStopped) {
+        mChassis.crossWheels();
+    }
+
 
 
 }

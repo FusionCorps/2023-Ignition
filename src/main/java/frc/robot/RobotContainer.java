@@ -123,7 +123,7 @@ public class RobotContainer {
 
         // TODO: Standardize autonomous outtake voltage
 
-        autobalanceTest = new ChassisAutoBalanceFast(m_chassis);
+        autobalanceTest = new ChassisAutoBalanceNew(m_chassis);
 
         twoPieceLoadSide = new SequentialCommandGroup(
                 m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
