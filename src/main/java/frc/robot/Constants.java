@@ -100,13 +100,13 @@ public final class Constants {
 
     // testing to get cone very close to high
     public static final double HIGH_BASE_POS_ALT_PREP = -134.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_BASE_POS_ALT = -120*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_BASE_POS_ALT = -122.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS_ALT = -148.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double HIGH_BASE_POS_ALT_WACO = -118*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS_ALT_WACO = -152*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
-    public static final double HIGH_BASE_POS_ALT_AUTO = -118*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_BASE_POS_ALT_AUTO = -120.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS_ALT_AUTO = -152*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double INTAKE_BASE_POS_CONE = 23.5*PI/180/(PI/1024/BASE_GEAR_RATIO);

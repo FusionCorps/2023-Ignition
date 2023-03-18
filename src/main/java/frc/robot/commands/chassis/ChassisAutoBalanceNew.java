@@ -14,7 +14,6 @@ public class ChassisAutoBalanceNew extends CommandBase {
     double speedK = 1.0;
 
     boolean isTriggered = false;
-    boolean isFinished = false;
 
     Timer backupTimer;
     Timer checkTimer;
@@ -43,7 +42,7 @@ public class ChassisAutoBalanceNew extends CommandBase {
         // alternate idea: start tilted up, then trigger on going underneath a certain thresh
         // this worked better, continue researching
 
-        System.out.println(backupTimer.get());
+        // System.out.println(backupTimer.get());
 
         if ((mChassis.ahrs.getPitch() < 6.75 && mChassis.ahrs.getPitch() > -6.75)) {
             mChassis.crossWheels();
