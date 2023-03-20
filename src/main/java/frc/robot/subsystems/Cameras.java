@@ -35,10 +35,10 @@ public class Cameras extends SubsystemBase {
 //
 //        System.out.println(ret_str);
 
-        if (IS_LOGGING) {
-            xPosLog.append(botpose()[0]);
-            yPosLog.append(botpose()[1]);
-        }
+//        if (IS_LOGGING) {
+//            xPosLog.append(botpose()[0]);
+//            yPosLog.append(botpose()[1]);
+//        }
     }
 
     public double tx() {

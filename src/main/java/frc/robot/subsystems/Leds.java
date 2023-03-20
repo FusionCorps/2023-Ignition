@@ -6,6 +6,7 @@ import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.RainbowAnimation;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -30,6 +31,8 @@ public class Leds extends SubsystemBase {
     GenericEntry isCubeEntry = tab.add("Cube Mode", false)
             .withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
+
+    //NetworkTableEntry rainbow;
     GenericEntry rainbowEntry = tab.add("Rainbow Mode", false)
             .withWidget(BuiltInWidgets.kToggleButton).getEntry();
 
@@ -45,6 +48,9 @@ public class Leds extends SubsystemBase {
         configs.statusLedOffWhenActive = true;
         configs.vBatOutputMode = CANdle.VBatOutputMode.On;
         candle.configAllSettings(configs);
+
+        //rainbow = NetworkTableInstance.getDefault().getTable("led").getEntry("rainbow");
+
     }
 
     // changes whether leds are enabled
@@ -63,9 +69,11 @@ public class Leds extends SubsystemBase {
                 candle.animate(new RainbowAnimation(1, 1, LED_COUNT));
             } else{
                 //candle.setLEDs(0,0,0);
+                candle.clearAnimation(0);
                 candle.setLEDs(coneRGB[0], coneRGB[1], coneRGB[2]);
             }
         }else {
+            candle.clearAnimation(0);
             candle.setLEDs(cubeRGB[0], cubeRGB[1], cubeRGB[2]);
         }
     }
@@ -74,6 +82,7 @@ public class Leds extends SubsystemBase {
 
     @Override
     public void periodic() {
+        //boolean isRainbow = rainbow.getBoolean(false);
         this.setLedColor(isCubeEntry.getBoolean(false), rainbowEntry.getBoolean(false));
         this.setLedEnabled(true);
     }

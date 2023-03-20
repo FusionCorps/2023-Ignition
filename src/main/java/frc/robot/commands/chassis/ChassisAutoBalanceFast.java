@@ -30,6 +30,9 @@ public class ChassisAutoBalanceFast extends CommandBase {
             tilt = -Math.sqrt(mChassis.getPitch()*mChassis.getPitch()+mChassis.getRoll()*mChassis.getRoll());
         }
 
+        // TODO: check tilt function works
+        tilt = mChassis.ahrs.getPitch();
+
         if(tilt>=0) {
             if (isStopped) {
                 mChassis.crossWheels();
@@ -43,7 +46,7 @@ public class ChassisAutoBalanceFast extends CommandBase {
         } else{
             if(isStopped){
                 mChassis.crossWheels();
-            } else if(tilt < -8){
+            } else if(tilt < -6){
                 mChassis.runSwerve(.15,0,0);
                 isStopped = false;
             } else{
