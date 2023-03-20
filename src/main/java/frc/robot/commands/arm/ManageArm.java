@@ -67,6 +67,11 @@ public class ManageArm extends CommandBase {
             }
         }
 
+        // pseudocode for fast intake movement check
+        // ((base on intake side) AND (wrist in same direction as base)) OR (everything else)
+        // ((mArm.getBaseTalonPosition() > 0) && (mArm.wristTalonTarget < 0)) || (everything else)
+        // TODO: Condense logic into single function
+
         // speedener was too fast
 //        if (mArm.armAtTarget()) {
 //            mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
