@@ -1,5 +1,6 @@
 package frc.robot.commands.chassis;
 
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -11,7 +12,7 @@ import static frc.robot.RobotContainer.m_controller;
 import static java.lang.Math.*;
 import static java.lang.StrictMath.PI;
 
-public class ChassisDriveToNearestTarget extends CommandBase {
+public class ChassisAngleLock extends CommandBase {
 
     Chassis mChassis;
     Cameras mCameras;
@@ -22,7 +23,7 @@ public class ChassisDriveToNearestTarget extends CommandBase {
     PIDController str_controller = new PIDController(0.04, 0, 0);
     PIDController rot_controller = new PIDController(0.01, 0, 0);
 
-    public ChassisDriveToNearestTarget(Chassis chassis, Cameras cameras, double time) {
+    public ChassisAngleLock(Chassis chassis, Cameras cameras, double time) {
         mChassis = chassis;
         mCameras = cameras;
 

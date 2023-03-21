@@ -487,10 +487,10 @@ public class RobotContainer {
             m_arm.hasCone = true;
         }));
 
-        // m_controller.start().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
-        m_controller.start().onTrue(m_chassis.runOnce(() -> {
-            m_chassis.togglePrecision();
-        }));
+        m_controller.start().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
+//        m_controller.start().onTrue(m_chassis.runOnce(() -> {
+//            m_chassis.togglePrecision();
+//        }));
     }
 
     /**
