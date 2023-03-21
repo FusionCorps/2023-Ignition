@@ -46,9 +46,9 @@ public class ManageArm extends CommandBase {
 
         // speedener if arm is same side and moving out ONLY
         if ((mArm.baseTalonTarget * mArm.getBaseTalonPosition() > 0 && (abs(mArm.baseTalonTarget) >= abs(mArm.getBaseTalonPosition())))
-                || mArm.overriding
-                || ((mArm.baseTalonTarget > 0) && (mArm.getBaseTalonPosition() > 0) && (mArm.wristTalonTarget < 0))) {
-            if (mArm.armAtTarget() || mArm.safeForDouble()) {
+                || mArm.overriding) {
+            if (mArm.armAtTarget() || mArm.safeForDouble()
+                    || ((mArm.baseTalonTarget > CHUTE_BASE_POS*4/3) && (mArm.getBaseTalonPosition() > 0) && (mArm.wristTalonTarget < 0))) {
                 mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
                 if (mArm.safeForDouble()) {
                     // System.out.println("doubling");
@@ -59,7 +59,8 @@ public class ManageArm extends CommandBase {
                 mArm.stowWrist();
             }
         } else {
-            if (mArm.armAtTarget()) {
+            if (mArm.armAtTarget()
+                    || ((mArm.baseTalonTarget > CHUTE_BASE_POS*4/3) && (mArm.getBaseTalonPosition() > 0) && (mArm.wristTalonTarget < 0))) {
                 mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
             } else if (mArm.wristStowed()) {
                 mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);
