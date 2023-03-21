@@ -46,7 +46,8 @@ public class ManageArm extends CommandBase {
 
         // speedener if arm is same side and moving out ONLY
         if ((mArm.baseTalonTarget * mArm.getBaseTalonPosition() > 0 && (abs(mArm.baseTalonTarget) >= abs(mArm.getBaseTalonPosition())))
-                || mArm.overriding) {
+                || mArm.overriding
+                || ((mArm.baseTalonTarget > 0) && (mArm.getBaseTalonPosition() > 0) && (mArm.wristTalonTarget < 0))) {
             if (mArm.armAtTarget() || mArm.safeForDouble()) {
                 mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
                 if (mArm.safeForDouble()) {
