@@ -317,6 +317,14 @@ public class Chassis extends SubsystemBase {
         ahrs.setAngleAdjustment(angle);
     }
 
+    public void setPrecisionTrue(){
+        isPrecision = true;
+    }
+
+    public void setPrecisionFalse(){
+        isPrecision = false;
+    }
+
     public void togglePrecision() {
         isPrecision = !isPrecision;
     }
