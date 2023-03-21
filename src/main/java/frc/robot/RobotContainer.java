@@ -419,7 +419,9 @@ public class RobotContainer {
 
         //m_controller.leftBumper().whileTrue(new ChassisAutoBalanceNew(m_chassis));
         // m_controller.leftBumper().whileTrue(new ChassisAutoBalanceFast(m_chassis));
-        m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(LOW_BASE_POS_CUBE, LOW_WRIST_POS_CUBE);}));
+        //m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(LOW_BASE_POS_CUBE, LOW_WRIST_POS_CUBE);}));
+        m_controller.leftBumper().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras,99));
+        m_controller.leftBumper().onFalse(m_chassis.runOnce(() -> {m_chassis.setPrecisionTrue();}));
 //    m_controller.leftBumper().whileTrue(m_chassis.run(() -> {m_chassis.crossWheels();}));
 //    m_controller.leftBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
         // m_controller.rightBumper().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(0, 30*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
@@ -469,6 +471,7 @@ public class RobotContainer {
             mIntake.set(-0.2);
         }));
 
+        m_controller.leftTrigger().onTrue(m_chassis.runOnce(() -> {m_chassis.setPrecisionFalse();}));
         m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {
             if(m_arm.hasCone) {
                 mIntake.setVolts(OUTTAKE_VOLTS);
@@ -486,7 +489,7 @@ public class RobotContainer {
         m_controller.back().onTrue(m_arm.runOnce(() -> {
             m_arm.hasCone = true;
         }));
-
+        
         m_controller.start().onTrue(m_arm.runOnce(() -> {
             m_arm.setTalonTargets(SHELF_BASE_POS, SHELF_WRIST_POS);
         }));
@@ -496,6 +499,10 @@ public class RobotContainer {
         }));
 
         // m_controller.start().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
+
+        //m_controller.start().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
+        m_controller.start().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(LOW_BASE_POS_CUBE, LOW_WRIST_POS_CUBE);}));
+
 //        m_controller.start().onTrue(m_chassis.runOnce(() -> {
 //            m_chassis.togglePrecision();
 //        }));
