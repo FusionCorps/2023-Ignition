@@ -7,6 +7,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -14,7 +15,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+<<<<<<< Updated upstream
 import edu.wpi.first.wpilibj.RobotBase;
+=======
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
+>>>>>>> Stashed changes
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -26,6 +36,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.math.SwerveCalcs;
 import frc.robot.modules.SwerveCombo;
+
+import java.util.Arrays;
 
 import static frc.robot.Constants.*;
 import static frc.robot.math.SwerveCalcs.getAngle;
@@ -88,8 +100,14 @@ public class Chassis extends SubsystemBase {
 
     public Field2d m_field = new Field2d();
 
+    NetworkTableEntry limelightField = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose");
     public Chassis() {
 
+<<<<<<< Updated upstream
+=======
+
+        m_field = new Field2d();
+>>>>>>> Stashed changes
 
         SmartDashboard.putData("Field", m_field);
 
@@ -215,6 +233,7 @@ public class Chassis extends SubsystemBase {
 
     @Override
     public void periodic() {
+<<<<<<< Updated upstream
         double dt = dtTimer.get();
         m_odometry.update(ahrs.getRotation2d(),
                 new SwerveModulePosition[] {
@@ -232,6 +251,28 @@ public class Chassis extends SubsystemBase {
             m_field.setRobotPose(simPose);
         } else
             m_field.setRobotPose(m_odometry.getPoseMeters());
+=======
+
+        double[] newPos = limelightField.getDoubleArray(new double[6]);
+
+        SwerveModulePosition[] positions = new SwerveModulePosition[] {
+                comboFL.getPosition(),
+                comboBL.getPosition(),
+                comboFR.getPosition(),
+                comboBR.getPosition()
+        };
+
+        m_odometry.update(ahrs.getRotation2d(), positions);
+
+        if (newPos.length > 0) {
+            resetOdometry(new Pose2d(newPos[0], newPos[1], new Rotation2d(newPos[5])));
+        }
+
+        m_field.setRobotPose(m_odometry.getEstimatedPosition());
+
+//        System.out.println(m_odometry.getPoseMeters().getX() + " meters");
+
+>>>>>>> Stashed changes
         feedAll();
         dtTimer.reset();
         dtTimer.start();
