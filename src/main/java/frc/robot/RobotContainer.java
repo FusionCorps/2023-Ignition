@@ -471,6 +471,7 @@ public class RobotContainer {
             mIntake.set(-0.2);
         }));
 
+
         m_controller.leftTrigger().onTrue(m_chassis.runOnce(() -> {m_chassis.setPrecisionFalse();}));
         m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {
             if(m_arm.hasCone) {
@@ -481,6 +482,9 @@ public class RobotContainer {
         }));
         m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {
             mIntake.set(-0.0);
+        }));
+        m_controller.leftTrigger(0.7).onFalse(m_chassis.runOnce(() -> {
+            m_chassis.setPrecisionFalse();
         }));
 
         m_controller.back().onTrue(m_arm.runOnce(() -> {
