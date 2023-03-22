@@ -19,7 +19,7 @@ public class ChassisDriveToNearestTarget extends CommandBase {
     Timer timer = new Timer();
     double runTime;
 
-    PIDController str_controller = new PIDController(0.04, 0, 0);
+    PIDController str_controller = new PIDController(0.03, 0, 0);
     PIDController rot_controller = new PIDController(0.01, 0, 0);
 
     public ChassisDriveToNearestTarget(Chassis chassis, Cameras cameras, double time) {
