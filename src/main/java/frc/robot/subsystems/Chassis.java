@@ -8,11 +8,21 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+<<<<<<< Updated upstream
+=======
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
+>>>>>>> Stashed changes
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,6 +67,25 @@ public class Chassis extends SubsystemBase {
 
     boolean isPrecision = false;
 
+<<<<<<< Updated upstream
+=======
+    DoubleLogEntry xPosLog;
+    DoubleLogEntry yPosLog;
+    DoubleLogEntry rotPosLog;
+
+    DoubleLogEntry aprilXPosLog;
+    DoubleLogEntry aprilYPosLog;
+    DoubleLogEntry aprilRotPosLog;
+
+
+
+
+    NetworkTableEntry limelightField = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose_blue");
+    DoubleLogEntry deltaXPosLog;
+    DoubleLogEntry deltaYPosLog;
+    DoubleLogEntry deltaRotPosLog;
+
+>>>>>>> Stashed changes
     // odometry set-up (import - Ri3D Redux)
     private final Translation2d m_frontLeftLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_frontRightLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, -TRACK_LENGTH_METERS / 2.0);
@@ -97,6 +126,27 @@ public class Chassis extends SubsystemBase {
 
         // TODO: Make sure this doesn't break anything
         ahrs.calibrate();
+<<<<<<< Updated upstream
+=======
+
+        isLocked.setBoolean(false);
+
+        if (IS_LOGGING) {
+            DataLog log = DataLogManager.getLog();
+
+            xPosLog = new DoubleLogEntry(log, "/my/xPos");
+            yPosLog = new DoubleLogEntry(log, "/my/yPos");
+            rotPosLog = new DoubleLogEntry(log, "/my/rotation");
+
+            aprilXPosLog = new DoubleLogEntry(log, "/my/aprilXPos");
+            aprilYPosLog = new DoubleLogEntry(log, "/my/aprilYPos");
+            aprilRotPosLog = new DoubleLogEntry(log, "/my/aprilRotPos");
+
+            deltaXPosLog = new DoubleLogEntry(log, "/my/deltaX");
+            deltaYPosLog = new DoubleLogEntry(log, "/my/deltaY");
+            deltaRotPosLog = new DoubleLogEntry(log, "/my/deltaAngle");
+        }
+>>>>>>> Stashed changes
     }
 
     // ported from last year
@@ -209,6 +259,10 @@ public class Chassis extends SubsystemBase {
 
     @Override
     public void periodic() {
+
+        double[] newPos = limelightField.getDoubleArray(new double[6]);
+
+
         m_odometry.update(ahrs.getRotation2d(),
                 new SwerveModulePosition[] {
                         comboFL.getPosition(),
@@ -216,14 +270,44 @@ public class Chassis extends SubsystemBase {
                         comboFR.getPosition(),
                         comboBR.getPosition()
                 });
+        Pose2d aprilTagFieldEstimate = null;
+        if (newPos.length > 0) {
+            aprilTagFieldEstimate = new Pose2d(newPos[0], newPos[1], new Rotation2d(newPos[5]));
+            // resetOdometry(aprilTagFieldEstimate);
+        }
+        Pose2d stdFieldEstimate = m_odometry.getEstimatedPosition();
 
-        m_field.setRobotPose(m_odometry.getEstimatedPosition());
+        m_field.setRobotPose(stdFieldEstimate);
 
         System.out.println(m_odometry.getEstimatedPosition().getX() + " meters");
 
 //        System.out.println(m_odometry.getPoseMeters().getX() + " meters");
 
         feedAll();
+<<<<<<< Updated upstream
+=======
+
+        if (IS_LOGGING) {
+            xPosLog.append(m_odometry.getEstimatedPosition().getX());
+            yPosLog.append(m_odometry.getEstimatedPosition().getY());
+            rotPosLog.append(m_odometry.getEstimatedPosition().getRotation().getDegrees());
+
+            if (aprilTagFieldEstimate != null) {
+                double aprilX = aprilTagFieldEstimate.getX();
+                double aprilY = aprilTagFieldEstimate.getY();
+                double aprilRot = aprilTagFieldEstimate.getRotation().getDegrees();
+
+                double deltaX = aprilX - stdFieldEstimate.getX();
+                double deltaY = aprilY - stdFieldEstimate.getY();
+                double deltaRot = aprilRot - stdFieldEstimate.getRotation().getDegrees();
+
+                deltaXPosLog.append(deltaX);
+                deltaYPosLog.append(deltaY);
+                deltaRotPosLog.append(deltaRot);
+            }
+        }
+
+>>>>>>> Stashed changes
     }
 
     public void resetOdometry(Pose2d pose) {
