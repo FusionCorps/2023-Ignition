@@ -103,6 +103,9 @@ public final class Constants {
     public static final double HIGH_BASE_POS_ALT = -123*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS_ALT = -148.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
+//    public static final double HIGH_BASE_POS_ALT = -123*PI/180/(PI/1024/BASE_GEAR_RATIO);
+//    public static final double HIGH_WRIST_POS_ALT = -168.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
     public static final double HIGH_BASE_POS_ALT_FTW = -121.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS_ALT_FTW = -148.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
     public static final double HIGH_BASE_POS_ALT_WACO = -118*PI/180/(PI/1024/BASE_GEAR_RATIO);
