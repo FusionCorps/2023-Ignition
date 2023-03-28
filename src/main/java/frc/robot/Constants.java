@@ -23,7 +23,7 @@ public final class Constants {
     // INTAKE MOTOR ID
     public static final int INTAKE_ID = 25;
 
-    public static final double INTAKE_PCT = -0.45;
+    public static final double INTAKE_PCT = -0.4;
 
     public static final double OUTTAKE_VOLTS = 6.3;
     public static final double OUTTAKE_VOLTS_CUBE = 4.2;
@@ -100,7 +100,7 @@ public final class Constants {
 
     // testing to get cone very close to high
     public static final double HIGH_BASE_POS_ALT_PREP = -134.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_BASE_POS_ALT = -123*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_BASE_POS_ALT = -121*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS_ALT = -148.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
 //    public static final double HIGH_BASE_POS_ALT = -123*PI/180/(PI/1024/BASE_GEAR_RATIO);
@@ -128,8 +128,15 @@ public final class Constants {
     public static final double SHELF_WRIST_POS = -120
             *PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
-    public static final double LOW_BASE_POS_CUBE = INTAKE_BASE_POS_CUBE;
-    public static final double LOW_WRIST_POS_CUBE = 45*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+//    public static final double LOW_BASE_POS_CUBE = INTAKE_BASE_POS_CUBE;
+//    public static final double LOW_WRIST_POS_CUBE = 45*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
+    public static final double LOW_BASE_POS_CUBE = 0;
+    public static final double LOW_WRIST_POS_CUBE = 70*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
+    public static final double FLING_BASE_POS = 0;
+    public static final double FLING_INIT_WRIST_POS = -50*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double FLING_FINAL_WRIST_POS = 70*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
   }
 

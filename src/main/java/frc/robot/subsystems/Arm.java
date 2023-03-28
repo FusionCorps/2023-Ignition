@@ -237,6 +237,12 @@ public class Arm extends SubsystemBase {
         wristTalonTarget = 0;
     }
 
+    // convenience function to see if arm is at a position yet
+    public boolean isAt(double basePos, double wristPos) {
+        return (abs(basePos - baseTalon.getSelectedSensorPosition()) < 1000)
+                && (abs(wristPos - wristTalon.getSelectedSensorPosition()) < 1000);
+    }
+
     public double getBasePos() {
         return baseTalon.getSelectedSensorPosition();
     }
