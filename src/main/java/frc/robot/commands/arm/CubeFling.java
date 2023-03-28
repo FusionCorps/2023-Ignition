@@ -80,7 +80,8 @@ public class CubeFling extends CommandBase {
 
     @Override
     public void end(boolean isFinished) {
-        mArm.setTalonTargets(0, 0);
+//        mArm.setTalonTargets(0, 0);
+        mArm.setTalonTargets(mArm.getBasePos(), mArm.getWristPos());
     }
 
 }

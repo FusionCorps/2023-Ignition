@@ -80,6 +80,12 @@ public class Chassis extends SubsystemBase {
     private final Translation2d m_backLeftLocation = new Translation2d(-TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_backRightLocation = new Translation2d(-TRACK_WIDTH_METERS / 2.0, -TRACK_LENGTH_METERS / 2.0);
 
+    // need to see how much changing this affects auton
+//    private final Translation2d m_frontLeftLocation = new Translation2d(TRACK_WIDTH_METERS_TEST / 2.0, TRACK_LENGTH_METERS_TEST / 2.0);
+//    private final Translation2d m_frontRightLocation = new Translation2d(TRACK_WIDTH_METERS_TEST / 2.0, -TRACK_LENGTH_METERS_TEST / 2.0);
+//    private final Translation2d m_backLeftLocation = new Translation2d(-TRACK_WIDTH_METERS_TEST / 2.0, TRACK_LENGTH_METERS_TEST / 2.0);
+//    private final Translation2d m_backRightLocation = new Translation2d(-TRACK_WIDTH_METERS_TEST / 2.0, -TRACK_LENGTH_METERS_TEST / 2.0);
+
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
             m_frontLeftLocation, m_backLeftLocation, m_frontRightLocation, m_backRightLocation);
 
