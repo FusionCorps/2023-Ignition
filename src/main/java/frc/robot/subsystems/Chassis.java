@@ -217,7 +217,7 @@ public class Chassis extends SubsystemBase {
                         comboBR.getPosition()
                 });
 
-        m_field.setRobotPose(m_odometry.getEstimatedPosition());
+        m_field.setRobotPose(getPose());
 
         System.out.println(m_odometry.getEstimatedPosition().getX() + " meters");
 
@@ -259,8 +259,8 @@ public class Chassis extends SubsystemBase {
                         traj,
                         this::getPose, // Pose supplier
                         this.m_kinematics, // SwerveDriveKinematics
-                        new PIDController(10, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        new PIDController(10, 0, 0), // Y controller (usually the same values as X controller)
+                        new PIDController(9.5, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        new PIDController(9.5, 0, 0), // Y controller (usually the same values as X controller)
                         new PIDController(5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
                         this::setModuleStates, // Module states consumer
                         this // Requires this drive subsystem

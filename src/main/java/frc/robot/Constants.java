@@ -113,8 +113,11 @@ public final class Constants {
   public static double INDEXER_TARGET = 0.8;
 
   // Drivebase Facts
-  public static double TRACK_WIDTH_METERS = 0.7112;
-  public static double TRACK_LENGTH_METERS = 0.7112;
+  public static double TRACK_WIDTH_METERS = 0.5588;
+  public static double TRACK_LENGTH_METERS = 0.5588;
+
+//  public static double TRACK_WIDTH_METERS = 0.7112;
+//  public static double TRACK_LENGTH_METERS = 0.7112;
 
   public static double SWERVE_FORWARD_SPEED_MAX = 4.2;
   public static double SWERVE_STRAFE_SPEED_MAX = 4.2;
