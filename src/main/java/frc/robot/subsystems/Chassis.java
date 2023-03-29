@@ -68,7 +68,7 @@ public class Chassis extends SubsystemBase {
 
     public double desiredHeading = 0;
 
-    boolean isPrecision = false;
+    public boolean isPrecision = false;
 
     DoubleLogEntry xPosLog;
     DoubleLogEntry yPosLog;
@@ -134,9 +134,11 @@ public class Chassis extends SubsystemBase {
         // driving ratio to tweak or go "Turbo Mode"
         double ratio = 1.0;
 
-        if (isPrecision) {
-            ratio = 0.15;
-        }
+        // deprecated from old precision mode
+        // new one takes place in command instead of here
+//        if (isPrecision) {
+//            ratio = 0.15;
+//        }
 
         // assign new calc values
         double speedFL = 0;
