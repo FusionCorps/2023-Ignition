@@ -6,6 +6,7 @@ import frc.robot.subsystems.Intake;
 
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.IntakeConstants.OUTTAKE_VOLTS;
+import static java.lang.Math.abs;
 
 public class CubeFling extends CommandBase {
 
@@ -67,10 +68,20 @@ public class CubeFling extends CommandBase {
             }
         } else {
             mArm.setTalonTargets(FLING_BASE_POS, FLING_FINAL_WRIST_POS);
-            if (mArm.getWristPos() > 0) {
+            if (mArm.getWristPos() > FLING_FINAL_WRIST_POS*2/7) {
                 mIntake.setVolts(OUTTAKE_VOLTS);
             }
         }
+
+//        if (mArm.armAtTarget()
+//                || ((mArm.baseTalonTarget > CHUTE_BASE_POS*4/3) && (mArm.getBaseTalonPosition() > 0) && (mArm.wristTalonTarget < 0))) {
+//            mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
+//        } else if (mArm.wristStowed()) {
+//            mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);
+//        } else {
+//            mArm.stowWrist();
+//        }
+
     }
 
     @Override
@@ -82,6 +93,7 @@ public class CubeFling extends CommandBase {
     public void end(boolean isFinished) {
 //        mArm.setTalonTargets(0, 0);
         mArm.setTalonTargets(mArm.getBasePos(), mArm.getWristPos());
+        mIntake.set(0);
     }
 
 }
