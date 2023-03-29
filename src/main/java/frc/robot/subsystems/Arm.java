@@ -181,6 +181,10 @@ public class Arm extends SubsystemBase {
         wristTalon.set(0);
     }
 
+    public void setBaseBrake() {
+        baseTalon.set(0);
+    }
+
     public void setHoldCurrentPos() {
         baseTalonTarget = baseTalon.getSelectedSensorPosition();
         wristTalonTarget = wristTalon.getSelectedSensorPosition();

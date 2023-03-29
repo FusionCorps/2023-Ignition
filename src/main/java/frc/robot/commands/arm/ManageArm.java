@@ -50,9 +50,6 @@ public class ManageArm extends CommandBase {
             if (mArm.armAtTarget() || mArm.safeForDouble()
                     || ((mArm.baseTalonTarget > CHUTE_BASE_POS*4/3) && (mArm.getBaseTalonPosition() > 0) && (mArm.wristTalonTarget < 0))) {
                 mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
-                if (mArm.safeForDouble()) {
-                    // System.out.println("doubling");
-                }
             } else if (mArm.wristStowed()) {
                 mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);
             } else {

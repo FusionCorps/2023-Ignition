@@ -29,7 +29,7 @@ public class TwoPartHigh extends CommandBase {
             mArm.baseTalonTarget = HIGH_BASE_POS_ALT_PREP;
             mArm.wristTalonTarget = HIGH_WRIST_POS_ALT - mArm.getHighWristFudge();
 
-            if (mArm.armAtTarget()) {
+            if (mArm.armAtTarget() || mArm.safeForDouble()) {
                 mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
             } else if (mArm.wristStowed()) {
                 mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);
@@ -38,15 +38,16 @@ public class TwoPartHigh extends CommandBase {
             }
         } else {
             if (mArm.getWristPos() < MID_WRIST_POS) {
-                mArm.passSetpoints(HIGH_BASE_POS_ALT - mArm.getHighBaseFudge(), HIGH_WRIST_POS_ALT - mArm.getHighWristFudge());
+                mArm.passSetpoints(HIGH_BASE_POS_ALT, HIGH_WRIST_POS_ALT - mArm.getHighWristFudge());
                 System.out.println("Trying to end");
             } else {
                 mArm.passSetpoints(HIGH_BASE_POS_ALT_PREP, HIGH_WRIST_POS_ALT - mArm.getHighWristFudge());
             }
         }
 
-        if (!reachedPrep && abs(mArm.getBasePos() - HIGH_BASE_POS_ALT_PREP) <= BASE_ERROR_THRESHOLD) {
+        if (!reachedPrep && abs(mArm.getBasePos() - HIGH_BASE_POS_ALT_PREP) <= BASE_ERROR_THRESHOLD/4) {
             reachedPrep = true;
+            mArm.setBaseBrake();
             mArm.configBaseAccel(BASE_MAX_A/10);
         }
     }

@@ -56,7 +56,7 @@ public final class Constants {
 
     public static final double WRIST_MAX_V = 20000;
     public static final double WRIST_MAX_A = 48000; // could be up to 102400 with good enough intake
-    public static final int WRIST_CURVE_STR = 3;
+    public static final int WRIST_CURVE_STR = 2;
 
     // slomo testing
 //    public static final double WRIST_MAX_V = 2000;
@@ -75,7 +75,7 @@ public final class Constants {
     public static final int BASE_ERROR_THRESHOLD = 8000;
     public static final int WRIST_ERROR_THRESHOLD = 20000;
 
-    public static final double BASE_SAFETY_THRESHOLD = 75*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double BASE_SAFETY_THRESHOLD = 45*PI/180/(PI/1024/BASE_GEAR_RATIO);
 
     public static final int WRIST_STOWED_POS = 0;
 
@@ -115,7 +115,7 @@ public final class Constants {
     public static final double HIGH_WRIST_POS_ALT_AUTO = -152*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double INTAKE_BASE_POS_CONE = 23.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double INTAKE_WRIST_POS_CONE = -157*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double INTAKE_WRIST_POS_CONE = -155*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double INTAKE_BASE_POS_CUBE = 45.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double INTAKE_WRIST_POS_CUBE = -175*PI/180/(PI/1024/WRIST_GEAR_RATIO);
