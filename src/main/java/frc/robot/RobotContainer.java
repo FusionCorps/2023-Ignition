@@ -415,6 +415,9 @@ public class RobotContainer {
         m_controller.a().onTrue(m_arm.runOnce(() -> {
             m_arm.setArmStow();
         }));
+        m_controller.a().onTrue(m_chassis.runOnce(() -> {
+            m_chassis.setPrecisionFalse();
+        }));
 
 
         //m_controller.leftBumper().whileTrue(new ChassisAutoBalanceNew(m_chassis));
@@ -472,7 +475,7 @@ public class RobotContainer {
         }));
 
 
-        m_controller.leftTrigger().onTrue(m_chassis.runOnce(() -> {m_chassis.setPrecisionFalse();}));
+        // m_controller.leftTrigger().onTrue(m_chassis.runOnce(() -> {m_chassis.setPrecisionFalse();}));
         m_controller.leftTrigger(0.7).whileTrue(mIntake.run(() -> {
             if(m_arm.hasCone) {
                 mIntake.setVolts(OUTTAKE_VOLTS);
@@ -483,9 +486,9 @@ public class RobotContainer {
         m_controller.leftTrigger(0.7).onFalse(mIntake.runOnce(() -> {
             mIntake.set(-0.0);
         }));
-        m_controller.leftTrigger(0.7).onFalse(m_chassis.runOnce(() -> {
-            m_chassis.setPrecisionFalse();
-        }));
+//        m_controller.leftTrigger(0.7).onFalse(m_chassis.runOnce(() -> {
+//            m_chassis.setPrecisionFalse();
+//        }));
 
         m_controller.back().onTrue(m_arm.runOnce(() -> {
             m_arm.setTalonTargets(CHUTE_BASE_POS, CHUTE_WRIST_POS);
@@ -503,11 +506,11 @@ public class RobotContainer {
         // m_controller.start().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
 
         //m_controller.start().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
-        m_controller.start().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(LOW_BASE_POS_CUBE, LOW_WRIST_POS_CUBE);}));
+        // m_controller.start().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(LOW_BASE_POS_CUBE, LOW_WRIST_POS_CUBE);}));
 
-//        m_controller.start().onTrue(m_chassis.runOnce(() -> {
-//            m_chassis.togglePrecision();
-//        }));
+        m_controller.start().onTrue(m_chassis.runOnce(() -> {
+            m_chassis.togglePrecision();
+        }));
     }
 
     /**

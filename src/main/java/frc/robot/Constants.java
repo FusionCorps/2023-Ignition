@@ -162,6 +162,9 @@ public final class Constants {
   public static double INDEXER_TARGET = 0.8;
 
   // Drivebase Facts
+//  public static double TRACK_WIDTH_METERS = 0.4953;
+//  public static double TRACK_LENGTH_METERS = 0.4953;
+
   public static double TRACK_WIDTH_METERS = 0.7112;
   public static double TRACK_LENGTH_METERS = 0.7112;
 

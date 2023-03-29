@@ -73,7 +73,7 @@ public class ChassisDriveFC extends CommandBase {
                 try {
                     mChassis.runSwerve(fwdLimiter.calculate(axis1 * cos(angle / 360 * (2 * PI)) + axis0 * sin(angle / 360 * (2 * PI))),
                             strLimiter.calculate(axis1 * sin(angle / 360 * (2 * PI)) - axis0 * cos(angle / 360 * (2 * PI))),
-                            clamp(rot_controller.calculate(angle, 0), -0.75, 0.75));
+                            clamp(-rot_controller.calculate(angle, 0), -0.75, 0.75));
                 } catch (Exception e) {
 
                 }
