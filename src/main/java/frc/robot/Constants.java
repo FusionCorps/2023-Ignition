@@ -36,13 +36,13 @@ public final class Constants {
     public static final int BASE_FOLLOWER_ID = 22;
 
     public static final double BASE_kF = 0;
-    public static final double BASE_kP = 0.15;
+    public static final double BASE_kP = 0.2;
     public static final double BASE_kI = 0;
     public static final double BASE_kD = 0;
 
-    public static final double BASE_MAX_V = 20000; // ticks / 100ms
-    public static final double BASE_MAX_A = 64000; // ticks / 100ms / s
-    public static final int BASE_CURVE_STR = 1; // smoothness
+    public static final double BASE_MAX_V = 19500; // ticks / 100ms
+    public static final double BASE_MAX_A = 48000; // ticks / 100ms / s
+    public static final int BASE_CURVE_STR = 2; // smoothness
 
     // slomo testing
 //    public static final double BASE_MAX_V = 2000;
@@ -50,12 +50,12 @@ public final class Constants {
 //    public static final int BASE_CURVE_STR = 1;
 
     public static final double WRIST_kF = 0;
-    public static final double WRIST_kP = 0.15;
+    public static final double WRIST_kP = 0.4;
     public static final double WRIST_kI = 0;
     public static final double WRIST_kD = 0;
 
-    public static final double WRIST_MAX_V = 20000;
-    public static final double WRIST_MAX_A = 48000; // could be up to 102400 with good enough intake
+    public static final double WRIST_MAX_V = 19500;
+    public static final double WRIST_MAX_A = 52000; // could be up to 102400 with good enough intake
     public static final int WRIST_CURVE_STR = 2;
 
     // slomo testing
@@ -89,8 +89,8 @@ public final class Constants {
     public static final double MID_BASE_POS_CUBE = -15*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double MID_WRIST_POS_CUBE = 55*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
-    public static final double HIGH_BASE_POS = -142*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_WRIST_POS = -109.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double HIGH_BASE_POS = -131.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS = -129*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double HIGH_BASE_POS_VIKES = -131.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS_VIKES = -129*PI/180/(PI/1024/WRIST_GEAR_RATIO);
@@ -100,11 +100,14 @@ public final class Constants {
 
     // testing to get cone very close to high
     public static final double HIGH_BASE_POS_ALT_PREP = -134.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_BASE_POS_ALT = -121*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double HIGH_WRIST_POS_ALT = -148.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double HIGH_BASE_POS_ALT = -122*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double HIGH_WRIST_POS_ALT = -146.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
-//    public static final double HIGH_BASE_POS_ALT = -123*PI/180/(PI/1024/BASE_GEAR_RATIO);
-//    public static final double HIGH_WRIST_POS_ALT = -168.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+//    public static final double HIGH_BASE_POS_ALT = -114*PI/180/(PI/1024/BASE_GEAR_RATIO);
+//    public static final double HIGH_WRIST_POS_ALT = -161.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+
+//    public static final double HIGH_BASE_POS_ALT = -121*PI/180/(PI/1024/BASE_GEAR_RATIO);
+//    public static final double HIGH_WRIST_POS_ALT = -148.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double HIGH_BASE_POS_ALT_FTW = -121.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double HIGH_WRIST_POS_ALT_FTW = -148.5*PI/180/(PI/1024/WRIST_GEAR_RATIO);
