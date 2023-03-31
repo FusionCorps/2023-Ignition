@@ -48,7 +48,7 @@ public class TwoPartHigh extends CommandBase {
         if (!reachedPrep && abs(mArm.getBasePos() - HIGH_BASE_POS_ALT_PREP) <= BASE_ERROR_THRESHOLD/4) {
             reachedPrep = true;
             mArm.setBaseBrake();
-            mArm.configBaseAccel(BASE_MAX_A/8);
+            mArm.configBaseAccel(BASE_MAX_A/16);
         }
     }
 
