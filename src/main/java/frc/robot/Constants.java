@@ -84,7 +84,7 @@ public final class Constants {
     public static final double WRIST_CONVERSION_FACTOR = PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double MID_BASE_POS = -127*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double MID_WRIST_POS = -90*PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double MID_WRIST_POS = -95*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
     public static final double MID_BASE_POS_CUBE = -15*PI/180/(PI/1024/BASE_GEAR_RATIO);
     public static final double MID_WRIST_POS_CUBE = 55*PI/180/(PI/1024/WRIST_GEAR_RATIO);

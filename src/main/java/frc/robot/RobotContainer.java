@@ -499,9 +499,9 @@ public class RobotContainer {
         
         // m_controller.start().onTrue(new CubeFling(mIntake, m_arm));
 
-        m_controller.y().and(m_controller.rightBumper()).onTrue(m_arm.runOnce(() -> {
-            m_arm.setTalonTargets(SHELF_BASE_POS, SHELF_WRIST_POS);
-        }));
+//        m_controller.y().and(m_controller.rightBumper()).onTrue(m_arm.runOnce(() -> {
+//            m_arm.setTalonTargets(SHELF_BASE_POS, SHELF_WRIST_POS);
+//        }));
 
         // m_controller.start().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
 
