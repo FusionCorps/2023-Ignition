@@ -72,35 +72,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     // m_chooser.addOption("Test Line", m_robotContainer.autoOne);
-    m_chooser.addOption("Two Piece Loadside", m_robotContainer.twoPieceLoadSide);
 
-//    m_chooser.addOption("Two Piece Loadside and Balance Blue", m_robotContainer.twoPieceLoadSideBalance);
-//    m_chooser.addOption("Two Piece Loadside and Balance Red", m_robotContainer.twoPieceLoadSideBalanceRed);
-
-    m_chooser.addOption("Three Piece Loadside Mid Blue", m_robotContainer.threePieceLoadSideMidBlue);
-    m_chooser.addOption("Three Piece Loadside Mid Red", m_robotContainer.threePieceLoadSideMidRed);
-
-    m_chooser.addOption("Two Piece Wireside High Blue",m_robotContainer.twoPieceWireSideHighBlue);
-    m_chooser.addOption("Two Piece WireSide High Red",m_robotContainer.twoPieceWireSideHighRed);
-
-    // m_chooser.addOption("Three Piece Left", m_robotContainer.threePieceLoadSide);
-    m_chooser.addOption("One Piece Balance", m_robotContainer.onePieceBalance);
-    m_chooser.addOption("One Piece Farside", m_robotContainer.oneMidFarSide);
-    // m_chooser.addOption("Three Piece Left Cube", m_robotContainer.threePieceLoadSideCube);
-
-    m_chooser.addOption("Cone/Cube Loadside Blue", m_robotContainer.twoPieceLoadSideCubeBlue);
-    m_chooser.addOption("Cone/Cube Loadside Red", m_robotContainer.twoPieceLoadSideCubeRed);
-
-    m_chooser.addOption("Two Piece Cube Loadside Balance Blue",m_robotContainer.twoPieceCubeLoadSideBalanceBlue);
-    m_chooser.addOption("Two Piece Cube Loadside Balance Red",m_robotContainer.twoPieceCubeLoadSideBalanceRed);
-
-    m_chooser.addOption("Two Piece And Intake And Balance Blue",m_robotContainer.twoPieceIntakeLoadSideBalanceBlue);
-    m_chooser.addOption("Two Piece And Intake And Balance Red",m_robotContainer.twoPieceIntakeLoadSideBalanceRed);
-
-    m_chooser.addOption("Two Piece Center and Balance Blue", m_robotContainer.twoPieceCenterBalanceBlue);
-    m_chooser.addOption("Two Piece Center and Balance Red", m_robotContainer.twoPieceCenterBalanceRed);
-
-    m_chooser.setDefaultOption("Two Piece Loadside and Balance", m_robotContainer.twoPieceLoadSideBalance);
 
     // adds the auton selection to ShuffleBoard
     SmartDashboard.putData(m_chooser);
@@ -134,7 +106,6 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    m_robotContainer.relaxArm.schedule();
   }
 
   @Override
@@ -168,7 +139,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_robotContainer.relaxArm.schedule();
   }
 
   /** This function is called periodically during operator control. */
