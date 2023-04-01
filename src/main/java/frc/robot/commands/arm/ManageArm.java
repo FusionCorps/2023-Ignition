@@ -57,7 +57,7 @@ public class ManageArm extends CommandBase {
             }
         } else {
             if (mArm.armAtTarget()
-                    || ((mArm.baseTalonTarget > CHUTE_BASE_POS*4/3) && (mArm.getBaseTalonPosition() > 0) && (mArm.wristTalonTarget < 0))) {
+                    || ((mArm.getBaseTalonPosition() < INTAKE_BASE_POS_CUBE*5/3) && (mArm.baseTalonTarget > CHUTE_BASE_POS*4/3) && (mArm.getBaseTalonPosition() > 0) && (mArm.wristTalonTarget < 0))) {
                 mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
             } else if (mArm.wristStowed()) {
                 mArm.passSetpoints(mArm.baseTalonTarget, WRIST_STOWED_POS);

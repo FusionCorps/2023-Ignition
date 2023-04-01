@@ -127,9 +127,8 @@ public final class Constants {
     public static final double CHUTE_WRIST_POS = -58
               *PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
-    public static final double SHELF_BASE_POS = -131.5*PI/180/(PI/1024/BASE_GEAR_RATIO);
-    public static final double SHELF_WRIST_POS = -120
-            *PI/180/(PI/1024/WRIST_GEAR_RATIO);
+    public static final double SHELF_BASE_POS = 90*PI/180/(PI/1024/BASE_GEAR_RATIO);
+    public static final double SHELF_WRIST_POS = -180*PI/180/(PI/1024/WRIST_GEAR_RATIO);
 
 //    public static final double LOW_BASE_POS_CUBE = INTAKE_BASE_POS_CUBE;
 //    public static final double LOW_WRIST_POS_CUBE = 45*PI/180/(PI/1024/WRIST_GEAR_RATIO);
