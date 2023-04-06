@@ -42,7 +42,7 @@ public class ThreePieceWireSide extends SequentialCommandGroup {
 
         // need to push these to 5/3 in order to make time
         twoPieceWireSideA = PathPlanner.loadPath("Titan_1+1_wire_path1", new PathConstraints(5,3));
-        twoPieceWireSideB = PathPlanner.loadPath("Titan_1+1_wire_path2", new PathConstraints(5,3));
+        twoPieceWireSideB = PathPlanner.loadPath("Why_1+1_wire_path2", new PathConstraints(5,3));
         threePieceWireSideC = PathPlanner.loadPath("Titan_1+2_wire_path3", new PathConstraints(5,3));
         threePieceWireSideD = PathPlanner.loadPath("Titan_1+2_wire_path4", new PathConstraints(5,3));
 
@@ -84,10 +84,10 @@ public class ThreePieceWireSide extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         // avoid crashing intake into wiretrace
                         new SequentialCommandGroup(
-                            new RunVoltsTime(m_intake,0.0,1.5).andThen(
+                            new RunVoltsTime(m_intake,0.0,2.0).andThen(
                                     new ArmToPosition(m_arm,INTAKE_BASE_POS_CONE,INTAKE_WRIST_POS_CONE)
                             ),
-                            new RunVoltsTime(m_intake,-8,threePieceWireSideC.getTotalTimeSeconds() - 1.5)
+                            new RunVoltsTime(m_intake,-8,threePieceWireSideC.getTotalTimeSeconds() - 2.0)
                         ),
                         m_chassis.followTrajectoryCommand(threePieceWireSideC,false)
                 ),

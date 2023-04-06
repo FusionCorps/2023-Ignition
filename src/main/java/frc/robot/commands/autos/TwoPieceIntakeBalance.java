@@ -38,11 +38,11 @@ public class TwoPieceIntakeBalance extends SequentialCommandGroup {
         m_arm = arm;
         m_intake = intake;
 
-        twoPieceIntakeBalanceA = PathPlanner.loadPath("1+1_path1R_NP", new PathConstraints(5, 2.25));
-        twoPieceIntakeBalanceB = PathPlanner.loadPath("1+2Cube_2R Copy", new PathConstraints(5, 3));
-        twoPieceIntakeBalanceC = PathPlanner.loadPath("1+2Cube_3R", new PathConstraints(4, 3));
+        twoPieceIntakeBalanceA = PathPlanner.loadPath("Titan_1+1_path1R_NP", new PathConstraints(5, 2.25));
+        twoPieceIntakeBalanceB = PathPlanner.loadPath("Titan_1+2Cube_2R Copy", new PathConstraints(5, 3));
+        twoPieceIntakeBalanceC = PathPlanner.loadPath("Titan_1+2Cube_3R", new PathConstraints(4, 3));
 
-        balance = PathPlanner.loadPath("1+1_intake_balance", new PathConstraints(4,3));
+        balance = PathPlanner.loadPath("Titan_1+1_intake_balance", new PathConstraints(4,3));
 
         if(isRed){
             twoPieceIntakeBalanceA = PathPlannerTrajectory.transformTrajectoryForAlliance(twoPieceIntakeBalanceA, DriverStation.Alliance.Red);

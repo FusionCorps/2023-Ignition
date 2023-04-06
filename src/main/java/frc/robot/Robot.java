@@ -100,6 +100,11 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Two Piece Center and Balance Blue", m_robotContainer.twoPieceCenterBalanceBlue);
     m_chooser.addOption("Two Piece Center and Balance Red", m_robotContainer.twoPieceCenterBalanceRed);
 
+    m_chooser.addOption("Three Piece Wireside Blue", m_robotContainer.threePieceWireSideBlue);
+    m_chooser.addOption("Three Piece Wireside Red", m_robotContainer.threePieceWireSideRed);
+
+    m_chooser.addOption("Do Nothing", null);
+
     m_chooser.setDefaultOption("Two Piece Loadside and Balance", m_robotContainer.twoPieceLoadSideBalance);
 
     // adds the auton selection to ShuffleBoard
@@ -145,7 +150,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
 
     // returns the selected auton
-    m_autonomousCommand = m_chooser.getSelected();
+     m_autonomousCommand = m_chooser.getSelected();
     // m_autonomousCommand = m_robotContainer.autobalanceTest;
 
 

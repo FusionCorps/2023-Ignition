@@ -73,6 +73,9 @@ public class RobotContainer {
     public Command twoPieceCenterBalanceBlue;
     public Command twoPieceCenterBalanceRed;
 
+    public Command threePieceWireSideBlue;
+    public Command threePieceWireSideRed;
+
     public Command autobalanceTest;
 
     private final Leds leds = new Leds();
@@ -220,6 +223,9 @@ public class RobotContainer {
 
         twoPieceWireSideHighBlue = new TwoPieceHighWire(m_chassis,m_arm,m_cameras,mIntake,false);
         twoPieceWireSideHighRed = new TwoPieceHighWire(m_chassis,m_arm,m_cameras,mIntake,true);
+
+        threePieceWireSideBlue = new ThreePieceWireSide(m_chassis,m_arm,m_cameras,mIntake,false);
+        threePieceWireSideRed = new ThreePieceWireSide(m_chassis,m_arm,m_cameras,mIntake,true);
 
         twoPieceCubeLoadSideBalanceBlue = new TwoPieceCubeBalance(m_cameras, m_chassis, m_arm, mIntake,false);
         twoPieceCubeLoadSideBalanceRed = new TwoPieceCubeBalance(m_cameras, m_chassis, m_arm, mIntake,true);

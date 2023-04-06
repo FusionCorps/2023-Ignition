@@ -24,44 +24,44 @@ public class ChassisAutoBalanceFast extends CommandBase {
 
     @Override
     public void execute(){
-        if(mChassis.getPitch()+mChassis.getRoll()>=0) {
-            tilt = Math.sqrt(mChassis.getPitch()*mChassis.getPitch()+mChassis.getRoll()*mChassis.getRoll());
-        } else{
-            tilt = -Math.sqrt(mChassis.getPitch()*mChassis.getPitch()+mChassis.getRoll()*mChassis.getRoll());
-        }
+//        if(mChassis.getPitch()+mChassis.getRoll()>=0) {
+//            tilt = Math.sqrt(mChassis.getPitch()*mChassis.getPitch()+mChassis.getRoll()*mChassis.getRoll());
+//        } else{
+//            tilt = -Math.sqrt(mChassis.getPitch()*mChassis.getPitch()+mChassis.getRoll()*mChassis.getRoll());
+//        }
 
         // TODO: check tilt function works
         tilt = mChassis.ahrs.getPitch();
 
-        if(tilt>=0) {
-            if (isStopped) {
-                mChassis.crossWheels();
-            } else if (tilt > 8.5) {
-                mChassis.runSwerve(-.125, 0, 0);
-                isStopped = false;
-            } else {
-                isStopped = true;
-                mChassis.crossWheels();
-            }
-        } else{
-            if(isStopped){
-                mChassis.crossWheels();
-            } else if(tilt < -8.5){
-                mChassis.runSwerve(.125,0,0);
-                isStopped = false;
-            } else{
-                isStopped = true;
-                mChassis.crossWheels();
-            }
-        }
-
-//        if(tilt<8 && tilt>-8){
-//            mChassis.crossWheels();
-//        } else if(tilt>8){
-//            mChassis.runSwerve(-0.2,0,0);
-//        } else if (tilt < -8){
-//            mChassis.runSwerve(0.2,0,0);
+//        if(tilt>=0) {
+//            if (isStopped) {
+//                mChassis.crossWheels();
+//            } else if (tilt > 8.5) {
+//                mChassis.runSwerve(-.125, 0, 0);
+//                isStopped = false;
+//            } else {
+//                isStopped = true;
+//                mChassis.crossWheels();
+//            }
+//        } else{
+//            if(isStopped){
+//                mChassis.crossWheels();
+//            } else if(tilt < -8.5){
+//                mChassis.runSwerve(.125,0,0);
+//                isStopped = false;
+//            } else{
+//                isStopped = true;
+//                mChassis.crossWheels();
+//            }
 //        }
+
+        if(tilt<8 && tilt>-8){
+            mChassis.crossWheels();
+        } else if(tilt>8){
+            mChassis.runSwerve(-0.075,0, 0);
+        } else if (tilt < -8){
+            mChassis.runSwerve(0.075,0,0);
+        }
 
     }
 

@@ -212,7 +212,7 @@ public class Arm extends SubsystemBase {
         overriding = false;
         if (hasCone) {
             baseTalonTarget = MID_BASE_POS - midBaseFudgeTab.getDouble(0.0) * 1000;
-            wristTalonTarget = MID_WRIST_POS - midWristFudgeTab.getDouble(0.0) * 1000;
+            wristTalonTarget = MID_WRIST_POS_TELE - midWristFudgeTab.getDouble(0.0) * 1000;
         } else {
             baseTalonTarget = MID_BASE_POS_CUBE - midBaseFudgeTab.getDouble(0.0) * 1000;
             wristTalonTarget = MID_WRIST_POS_CUBE - midWristFudgeTab.getDouble(0.0) * 1000;
