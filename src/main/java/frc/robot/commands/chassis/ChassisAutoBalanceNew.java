@@ -48,13 +48,13 @@ public class ChassisAutoBalanceNew extends CommandBase {
             mChassis.crossWheels();
             isTriggered = true;
         } else if (mChassis.ahrs.getPitch() > 6.75) {
-            mChassis.runSwerve(speedLimit.calculate(-0.2*speedK), 0, 0);
+            mChassis.runSwerve(speedLimit.calculate(-0.1*speedK), 0, 0);
             if (isTriggered) {
                 isTriggered = false;
                 speedK /= 1.6;
             }
         } else if (mChassis.ahrs.getPitch() < 6.75) {
-            mChassis.runSwerve(speedLimit.calculate(0.2*speedK), 0, 0);
+            mChassis.runSwerve(speedLimit.calculate(0.1*speedK), 0, 0);
             if (isTriggered) {
                 isTriggered = false;
                 speedK /= 1.6;

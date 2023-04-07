@@ -302,7 +302,7 @@ public class RobotContainer {
                 new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO, 0.75),
                 new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.75), // outtake
                 new ArmToPosition(m_arm, 0, 0), // stow
-                new ChassisDriveAuton(m_chassis, -0.2, 0.0, 0.0, 3.0), // drive forward
+                new ChassisDriveAuton(m_chassis, -0.3, 0.0, 0.0, 2.0), // drive forward
                 new ChassisAutoBalanceNew(m_chassis) // balance
         );
 
