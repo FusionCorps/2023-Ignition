@@ -77,8 +77,8 @@ public class ThreePieceMid extends SequentialCommandGroup {
                         new ArmToPosition(m_arm,MID_BASE_POS,MID_WRIST_POS),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideD,false)
                 ),
-                new ChassisDriveAuton(m_chassis,0.2,0,0,0.13)
-                // new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.25)
+                new ChassisDriveAuton(m_chassis,0.2,0,0,0.13),
+                new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.25)
 
 
         );

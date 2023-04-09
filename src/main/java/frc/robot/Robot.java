@@ -6,6 +6,8 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -109,7 +111,7 @@ public class Robot extends TimedRobot {
 
     // adds the auton selection to ShuffleBoard
     SmartDashboard.putData(m_chooser);
-    
+
     CameraServer.startAutomaticCapture();
 
     if (IS_LOGGING) {
