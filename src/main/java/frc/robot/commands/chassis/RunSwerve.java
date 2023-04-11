@@ -1,4 +1,4 @@
-package frc.robot.commands.Chassis;
+package frc.robot.commands.chassis;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import static frc.robot.RobotContainer.m_chassis;

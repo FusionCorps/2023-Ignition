@@ -4,21 +4,22 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.Chassis.*;
-import frc.robot.commands.ChassisDriveAuton;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.Cameras;
-import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.arm.*;
+import frc.robot.commands.autos.*;
+import frc.robot.commands.chassis.*;
+import frc.robot.commands.intake.IntakeCube;
+import frc.robot.commands.intake.RunVoltsTime;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.ShooterTest;
+
+import static frc.robot.Constants.ArmConstants.*;
+import static frc.robot.Constants.IntakeConstants.*;
 
 
 /**
@@ -28,76 +29,8 @@ import frc.robot.subsystems.ShooterTest;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-<<<<<<< Updated upstream
-  // The robot's subsystems and commands are defined here...
-  public static Chassis m_chassis = new Chassis();
-  private final Cameras m_cameras = new Cameras();
-  private final ShooterTest m_shooter = new ShooterTest();
-
-  public ChassisDriveFC chassisDrive;
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  public static CommandXboxController m_controller =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-    // Configure the trigger bindings
-    configureBindings();
-
-    m_chassis.comboFR.zero();
-    m_chassis.comboBR.zero();
-    m_chassis.comboFL.zero();
-    m_chassis.comboBL.zero();
-
-    chassisDrive = new ChassisDriveFC(m_chassis);
-
-    m_chassis.setDefaultCommand(chassisDrive);
-  }
-
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
-  private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    // new Trigger(m_exampleSubsystem::exampleCondition)
-    //     .onTrue(new ExampleCommand(m_exampleSubsystem));
-
-    // // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // // cancelling on release.
-    // m_controller.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-
-    m_controller.b().whileTrue(new InstantCommand(m_chassis::resetGyro));
-    m_controller.a().onTrue(m_cameras.runOnce(() -> {m_cameras.togglePipeline();}));
-
-    m_controller.x().whileTrue(new ChassisAltAutoBalance(null));
-    m_controller.rightBumper().whileTrue(new ChassisTargetToCone(m_chassis, m_cameras));
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  /*public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.AutonLine(m_chassis);
-  }*/
-  public void periodic() {
-    //System.out.println(m_controller.getLeftX() + " "+m_controller.getRightY());
-    //m_chassis.periodic();
-    //System.out.println(m_controller.x());
-  }
-=======
     // The robot's subsystems and commands are defined here...
-    private final Chassis m_chassis = new Chassis();
+    public final static Chassis m_chassis = new Chassis();
     private final Cameras m_cameras = new Cameras();
     private final ShooterTest m_shooter = new ShooterTest();
     private final Arm m_arm = new Arm();
@@ -160,7 +93,7 @@ public class RobotContainer {
         m_chassis.comboFL.zero();
         m_chassis.comboBL.zero();
 
-        m_chassis.setDefaultCommand(new ChassisDriveFC(m_chassis));
+        m_chassis.setDefaultCommand(new frc.robot.commands.chassis.ChassisDriveFC(m_chassis));
         m_arm.setDefaultCommand(new ManageArm(m_arm));
 
         PathPlannerTrajectory examplePath = PathPlanner.loadPath("test_line", new PathConstraints(4, 3));
@@ -193,7 +126,7 @@ public class RobotContainer {
 
         // TODO: Standardize autonomous outtake voltage
 
-        autobalanceTest = new ChassisAutoBalanceNew(m_chassis);
+        autobalanceTest = new frc.robot.commands.chassis.ChassisAutoBalanceNew(m_chassis);
 
         twoPieceLoadSide = new SequentialCommandGroup(
                 m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
@@ -370,7 +303,7 @@ public class RobotContainer {
                 new RunVoltsTime(mIntake, OUTTAKE_VOLTS, 0.75), // outtake
                 new ArmToPosition(m_arm, 0, 0), // stow
                 new ChassisDriveAuton(m_chassis, -0.3, 0.0, 0.0, 2.0), // drive forward
-                new ChassisAutoBalanceNew(m_chassis) // balance
+                new frc.robot.commands.chassis.ChassisAutoBalanceNew(m_chassis) // balance
         );
 
         //TODO: tune the chassis drive seconds
@@ -386,7 +319,7 @@ public class RobotContainer {
                 new ChassisDriveAuton(m_chassis, -0.3, 0.0, 0.0, 5.0), // drive over the charge station to neutral zone
                 new WaitCommand(1), // wait a second
                 new ChassisDriveAuton(m_chassis, 0.3, 0.0, 0.0, 2.0), // drive
-                new ChassisAutoBalanceNew(m_chassis) // balance
+                new frc.robot.commands.chassis.ChassisAutoBalanceNew(m_chassis) // balance
         );
 
         threePieceLoadSide = new SequentialCommandGroup(
@@ -455,8 +388,6 @@ public class RobotContainer {
                 new RunVoltsTime(mIntake, 9, 0.5));
 
 
-
-
         relaxArm = new RelaxArm(m_arm);
 
     }
@@ -489,7 +420,7 @@ public class RobotContainer {
 //            m_arm.setArmHigh();
 //        }));
 
-         m_controller.y().onTrue(new TwoPartHigh(m_arm));
+        m_controller.y().onTrue(new TwoPartHigh(m_arm));
 
 //        m_controller.y().onTrue(new TwoPartHigh(m_arm));
         // m_controller.y().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(MID_BASE_POS, -190*PI/180/(PI/1024/WRIST_GEAR_RATIO));}));
@@ -587,7 +518,7 @@ public class RobotContainer {
         m_controller.back().onTrue(m_arm.runOnce(() -> {
             m_arm.hasCone = true;
         }));
-        
+
         // m_controller.start().onTrue(new CubeFling(mIntake, m_arm));
 
 //        m_controller.y().and(m_controller.rightBumper()).onTrue(m_arm.runOnce(() -> {
@@ -613,5 +544,4 @@ public class RobotContainer {
 //    // An example command will be run in autonomous
 //    return autoCommand;
 //  }
->>>>>>> Stashed changes
 }

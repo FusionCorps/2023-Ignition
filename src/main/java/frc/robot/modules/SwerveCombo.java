@@ -61,14 +61,76 @@ public class SwerveCombo {
         this.driveMotor.config_kD(0, Constants.DRIVE_kD);
         this.driveMotor.setNeutralMode(NeutralMode.Coast);
 
+        this.driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 60,80, 0.75));
+
         this.mPosition = position;
 
-        // in hindsight, probably needed to current limit
+        // TODO: in hindsight, probably needed to current limit
 
     }
 
 
     public void passArgs(double speed, double angle) {
+
+        // pass a speed and angle to a module
+        new Constants();
+
+        // get the current angle, as well a driveConstant and angleConstant to convert ticks to radians
+        double encAngle = axisMotor.getSelectedSensorPosition()/STEERING_RATIO/2048*(2*PI);
+
+        // thank you CTRE for making this per 100ms
+        // I'm sure it was for a good reason at some point
+        double driveConstant = 204.8/(2*PI)*DRIVING_RATIO/WHEEL_RADIUS_METERS;
+        double angleConstant = 2048/(2*PI)*STEERING_RATIO;
+
+        // convert speed to ticks / 100 ms
+        speed *= driveConstant;
+
+        // loop angle to 0-2PI
+        double encTrue = encAngle%(2*PI);
+
+        // get the difference in theta
+        double dTheta = angle - encTrue;
+
+        // logic to make the axle motion continuous
+        // (thank you 2910)
+        if (abs(-2*PI + dTheta) < abs(dTheta)) {
+            if (abs(-2*PI + dTheta) < abs(2*PI + dTheta)) {
+                dTheta = -2*PI + dTheta;
+            } else {
+                dTheta = 2*PI + dTheta;
+            }
+        } else if (abs(dTheta) > abs(2*PI + dTheta)) {
+            dTheta = 2*PI + dTheta;
+        }
+
+        // wheel optimization
+        double invertK = 1;
+        if (dTheta > PI/2) {
+            dTheta = dTheta - PI;
+            invertK = -1;
+        } else if (dTheta < -PI/2) {
+            dTheta = dTheta + PI;
+            invertK = -1;
+        }
+
+        // convert to final position target
+        double angleFinal = encAngle + dTheta;
+        angleFinal *= angleConstant;
+
+        // set some deadzones
+//        this.driveMotor.set(ControlMode.Velocity, speed);
+        if (speed < 120) {
+            this.axisMotor.set(ControlMode.Velocity, 0);
+            this.driveMotor.set(ControlMode.Velocity, 0);
+            // push values to PID controllers
+        } else {
+            this.axisMotor.set(ControlMode.Position, angleFinal);
+            this.driveMotor.set(ControlMode.Velocity, invertK*speed);
+        }
+    }
+
+    public void passArgsNoDeadzone(double speed, double angle) {
 
         // pass a speed and angle to a module
         new Constants();
@@ -106,16 +168,9 @@ public class SwerveCombo {
         double angleFinal = encAngle + dTheta;
         angleFinal *= angleConstant;
 
-        // set some deadzones
+        this.axisMotor.set(ControlMode.Position, angleFinal);
         this.driveMotor.set(ControlMode.Velocity, speed);
-        if (speed < 120) {
-            this.axisMotor.set(ControlMode.Velocity, 0);
-            this.driveMotor.set(ControlMode.Velocity, 0);
-        // push values to PID controllers
-        } else {
-            this.axisMotor.set(ControlMode.Position, angleFinal);
-            this.driveMotor.set(ControlMode.Velocity, speed);
-        }
+
     }
 
     // resets encoders from CanCoder value
@@ -134,7 +189,7 @@ public class SwerveCombo {
 
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-                -driveMotor.getSelectedSensorPosition()/2048*2*PI*WHEEL_RADIUS_METERS/DRIVING_RATIO,
+                -driveMotor.getSelectedSensorPosition()/1024*PI*WHEEL_RADIUS_METERS/DRIVING_RATIO,
                 new Rotation2d(coder.getAbsolutePosition()/180*PI)
         );
     }

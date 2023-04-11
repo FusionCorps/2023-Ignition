@@ -6,27 +6,21 @@ import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Twist2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-<<<<<<< Updated upstream
-import edu.wpi.first.wpilibj.RobotBase;
-=======
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
->>>>>>> Stashed changes
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,8 +31,6 @@ import frc.robot.Constants;
 import frc.robot.math.SwerveCalcs;
 import frc.robot.modules.SwerveCombo;
 
-import java.util.Arrays;
-
 import static frc.robot.Constants.*;
 import static frc.robot.math.SwerveCalcs.getAngle;
 import static frc.robot.math.SwerveCalcs.getSpeed;
@@ -46,14 +38,6 @@ import static java.lang.Double.max;
 import static java.lang.Math.PI;
 
 public class Chassis extends SubsystemBase {
-
-    // used for calculating dt
-    Timer dtTimer = new Timer();
-
-    private Pose2d simPose = new Pose2d();
-
-
-    private ChassisSpeeds simSpeeds = new ChassisSpeeds(0, 0, 0);
 
     // swerve motor + coder init
     private static WPI_TalonFX drive0 = new WPI_TalonFX(DRIVE_FL_ID);
@@ -78,16 +62,34 @@ public class Chassis extends SubsystemBase {
 
     public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
-    // odometry set-up
+    ShuffleboardTab tab = Shuffleboard.getTab("General");
+
+    public GenericEntry isLocked = tab.add("Locked", false).withWidget(BuiltInWidgets.kToggleButton).getEntry();
+
+    public double desiredHeading = 0;
+
+    public boolean isPrecision = false;
+
+    DoubleLogEntry xPosLog;
+    DoubleLogEntry yPosLog;
+    DoubleLogEntry rotPosLog;
+
+    // odometry set-up (import - Ri3D Redux)
     private final Translation2d m_frontLeftLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_frontRightLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, -TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_backLeftLocation = new Translation2d(-TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_backRightLocation = new Translation2d(-TRACK_WIDTH_METERS / 2.0, -TRACK_LENGTH_METERS / 2.0);
 
+    // need to see how much changing this affects auton
+//    private final Translation2d m_frontLeftLocation = new Translation2d(TRACK_WIDTH_METERS_TEST / 2.0, TRACK_LENGTH_METERS_TEST / 2.0);
+//    private final Translation2d m_frontRightLocation = new Translation2d(TRACK_WIDTH_METERS_TEST / 2.0, -TRACK_LENGTH_METERS_TEST / 2.0);
+//    private final Translation2d m_backLeftLocation = new Translation2d(-TRACK_WIDTH_METERS_TEST / 2.0, TRACK_LENGTH_METERS_TEST / 2.0);
+//    private final Translation2d m_backRightLocation = new Translation2d(-TRACK_WIDTH_METERS_TEST / 2.0, -TRACK_LENGTH_METERS_TEST / 2.0);
+
     private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
             m_frontLeftLocation, m_backLeftLocation, m_frontRightLocation, m_backRightLocation);
 
-    private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(
+    private final SwerveDrivePoseEstimator m_odometry = new SwerveDrivePoseEstimator(
             m_kinematics,
             ahrs.getRotation2d(),
             new SwerveModulePosition[] {
@@ -98,36 +100,29 @@ public class Chassis extends SubsystemBase {
             },
             new Pose2d(5, 5, ahrs.getRotation2d()));
 
-    public Field2d m_field = new Field2d();
+    Field2d m_field;
 
-    NetworkTableEntry limelightField = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose");
     public Chassis() {
-
-<<<<<<< Updated upstream
-=======
-
         m_field = new Field2d();
->>>>>>> Stashed changes
 
         SmartDashboard.putData("Field", m_field);
 
         // TODO: Make sure this doesn't break anything
         ahrs.calibrate();
+
+        isLocked.setBoolean(false);
+
+        if (IS_LOGGING) {
+            DataLog log = DataLogManager.getLog();
+
+            xPosLog = new DoubleLogEntry(log, "/my/xPos");
+            yPosLog = new DoubleLogEntry(log, "/my/yPos");
+            rotPosLog = new DoubleLogEntry(log, "/my/rotation");
+        }
     }
 
     // ported from last year
     public void runSwerve(double fwd, double str, double rot_temp) {
-        
-        // updates Chassis Speeds for simulation
-        ChassisSpeeds speeds = new ChassisSpeeds(fwd, str, rot_temp);
-
-        SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(speeds);
-        for (int i = 0; i < states.length; i++) {
-            SmartDashboard.putNumber("angle " + i, states[i].angle.getDegrees());
-        }
-    
-        if (RobotBase.isSimulation()) 
-            simSpeeds = speeds;
 
         // convenience for negating
         double rot = rot_temp;
@@ -138,6 +133,12 @@ public class Chassis extends SubsystemBase {
 
         // driving ratio to tweak or go "Turbo Mode"
         double ratio = 1.0;
+
+        // deprecated from old precision mode
+        // new one takes place in command instead of here
+//        if (isPrecision) {
+//            ratio = 0.15;
+//        }
 
         // assign new calc values
         double speedFL = 0;
@@ -157,10 +158,9 @@ public class Chassis extends SubsystemBase {
         // cap wheel speeds by finding max and adjusting all others down
         double maxWheelSpeed = max(max(speedFL, speedBL), max(speedFR, speedBR));
 
+        // desaturate wheel speeds
         if (maxWheelSpeed > Constants.MAX_SPEED) {
             ratio = (Constants.MAX_SPEED/ maxWheelSpeed);
-        } else {
-            ratio = 1.0;
         }
 
         // pass all values to motors
@@ -173,11 +173,17 @@ public class Chassis extends SubsystemBase {
 
     // used for braking when scoring, balancing ideally
     public void crossWheels() {
-        this.comboFL.passArgs(0, 1/4*PI);
-        this.comboBL.passArgs(0, 3/4*PI);
-        this.comboFR.passArgs(0, 5/4*PI);
-        this.comboBR.passArgs(0, 7/4*PI);
+        this.comboFL.passArgsNoDeadzone(0, -PI/4);
+        this.comboBL.passArgsNoDeadzone(0, PI/4);
+        this.comboFR.passArgsNoDeadzone(0, PI/4);
+        this.comboBR.passArgsNoDeadzone(0, -PI/4);
     }
+
+//    public void setLockedWheels(boolean locked){
+//        if(locked){
+//            crossWheels();
+//        }
+//    }
 
 
 
@@ -233,8 +239,6 @@ public class Chassis extends SubsystemBase {
 
     @Override
     public void periodic() {
-<<<<<<< Updated upstream
-        double dt = dtTimer.get();
         m_odometry.update(ahrs.getRotation2d(),
                 new SwerveModulePosition[] {
                         comboFL.getPosition(),
@@ -242,40 +246,19 @@ public class Chassis extends SubsystemBase {
                         comboFR.getPosition(),
                         comboBR.getPosition()
                 });
-        if (RobotBase.isSimulation()) {
-            simPose = simPose.exp(new Twist2d(
-                -simSpeeds.vxMetersPerSecond * dt,
-                simSpeeds.vyMetersPerSecond * dt,
-                -simSpeeds.omegaRadiansPerSecond * dt
-            ));
-            m_field.setRobotPose(simPose);
-        } else
-            m_field.setRobotPose(m_odometry.getPoseMeters());
-=======
-
-        double[] newPos = limelightField.getDoubleArray(new double[6]);
-
-        SwerveModulePosition[] positions = new SwerveModulePosition[] {
-                comboFL.getPosition(),
-                comboBL.getPosition(),
-                comboFR.getPosition(),
-                comboBR.getPosition()
-        };
-
-        m_odometry.update(ahrs.getRotation2d(), positions);
-
-        if (newPos.length > 0) {
-            resetOdometry(new Pose2d(newPos[0], newPos[1], new Rotation2d(newPos[5])));
-        }
 
         m_field.setRobotPose(m_odometry.getEstimatedPosition());
 
 //        System.out.println(m_odometry.getPoseMeters().getX() + " meters");
 
->>>>>>> Stashed changes
         feedAll();
-        dtTimer.reset();
-        dtTimer.start();
+
+        if (IS_LOGGING) {
+            xPosLog.append(m_odometry.getEstimatedPosition().getX());
+            yPosLog.append(m_odometry.getEstimatedPosition().getY());
+            rotPosLog.append(m_odometry.getEstimatedPosition().getRotation().getDegrees());
+        }
+
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -289,7 +272,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public Pose2d getPose() {
-        return m_odometry.getPoseMeters();
+        return m_odometry.getEstimatedPosition();
     }
 
     public void setModuleStates(SwerveModuleState[] desired) {
@@ -311,28 +294,47 @@ public class Chassis extends SubsystemBase {
                         traj,
                         this::getPose, // Pose supplier
                         this.m_kinematics, // SwerveDriveKinematics
-                        new PIDController(1, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        new PIDController(1, 0, 0), // Y controller (usually the same values as X controller)
+                        new PIDController(10, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        new PIDController(10, 0, 0), // Y controller (usually the same values as X controller)
                         new PIDController(5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        this::setModuleStates, // Module states consumer
+                        this::setModuleStates,
+                        false, // Module states consumer
                         this // Requires this drive subsystem
                 )
         );
 
+
+    }
+
+    public double getPitch(){
+        return ahrs.getPitch();
+    }
+
+    public double getRoll(){
+        return ahrs.getRoll();
     }
 
     public void resetGyro() {
         ahrs.reset();
+        ahrs.setAngleAdjustment(0);
+        desiredHeading = 0;
     }
 
-    // starts dtTimer
-    public void startTimer() {
-        dtTimer.start();
+    public void setGyroAngle(double angle) {
+        ahrs.reset();
+        ahrs.setAngleAdjustment(angle);
     }
 
-    // resets dtTimer
-    public void resetTimer() {
-        dtTimer.reset();
+    public void setPrecisionTrue(){
+        isPrecision = true;
+    }
+
+    public void setPrecisionFalse(){
+        isPrecision = false;
+    }
+
+    public void togglePrecision() {
+        isPrecision = !isPrecision;
     }
 
 }

@@ -31,15 +31,11 @@ public class TwoPieceCubeBalance extends SequentialCommandGroup {
 
     PathPlannerTrajectory balance;
 
-    boolean isRed;
-
     public TwoPieceCubeBalance(Cameras cameras, Chassis chassis, Arm arm, Intake intake, boolean isRed){
         m_cameras = cameras;
         m_chassis = chassis;
         m_arm = arm;
         m_Intake = intake;
-
-        this.isRed = isRed;
 
         twoPieceLoadsideA = PathPlanner.loadPath("1+1_path1R_NP", new PathConstraints(5, 2.25));
         twoPieceLoadsideB = PathPlanner.loadPath("1+2Cube_2R Copy", new PathConstraints(5, 3));
@@ -72,6 +68,5 @@ public class TwoPieceCubeBalance extends SequentialCommandGroup {
                 m_chassis.followTrajectoryCommand(balance,true),
                 new ChassisAutoBalanceFast(m_chassis)
         );
-
     }
 }

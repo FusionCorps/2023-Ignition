@@ -1,34 +1,22 @@
-package frc.robot.commands;
+package frc.robot.commands.chassis;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.Chassis.RunSwerve;
 import frc.robot.subsystems.Chassis;
-import static frc.robot.RobotContainer.m_chassis;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.lang.StrictMath.PI;
 
 public class ChassisDriveAuton extends CommandBase {
-
-    private SlewRateLimiter fwdLimiter = new SlewRateLimiter(6.5);
-    private SlewRateLimiter strLimiter = new SlewRateLimiter(6.5);
-    private SlewRateLimiter rotLimiter = new SlewRateLimiter(6.5);
-
+    
+    Chassis m_chassis;
     double fwdSpeed, rotSpeed, strSpeed, time;
-
-    RunSwerve runSwerve;
 
     Timer timer = new Timer();
 
-    public ChassisDriveAuton(double fwdSpeed, double rotSpeed, double strSpeed, double time) {
+    public ChassisDriveAuton(Chassis chassis, double fwdSpeed, double rotSpeed, double strSpeed, double time) {
+        m_chassis = chassis;
         this.fwdSpeed = fwdSpeed;
         this.rotSpeed = rotSpeed;
         this.strSpeed = strSpeed;
         this.time = time;
-
-        runSwerve = new RunSwerve(fwdSpeed, rotSpeed, strSpeed);
 
         addRequirements(m_chassis);
     }
@@ -45,7 +33,7 @@ public class ChassisDriveAuton extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      runSwerve.run();
+    m_chassis.runSwerve(fwdSpeed, strSpeed, rotSpeed);
   }
 
   // Called once the command ends or is interrupted.

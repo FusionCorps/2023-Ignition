@@ -17,12 +17,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.autos.AllianceCommand;
 import frc.robot.data.CSVManager;
 import frc.robot.math.*;
 import static java.lang.Math.*;
-
 import static frc.robot.RobotContainer.m_chassis;
+
+import frc.robot.RobotContainer;
 
 
 /**
@@ -43,11 +46,8 @@ public class Robot extends TimedRobot {
   // to add auton to auton selection, initiate auton variable here:
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
-<<<<<<< Updated upstream
   CSVManager logs;
-=======
   SendableChooser<Boolean> colorChooser = new SendableChooser<>();
->>>>>>> Stashed changes
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -67,9 +67,7 @@ public class Robot extends TimedRobot {
     // if it is the first auton in the list, use m_chooser.setDefaultOption("Auton_Name", auton_variable)
     m_robotContainer = new RobotContainer();
 
-<<<<<<< Updated upstream
-    m_robotContainer.chassisDrive.setAutoDrive(.1, 0, 0, -1);
-=======
+
     // m_chooser.addOption("Test Line", m_robotContainer.autoOne);
     m_chooser.addOption("Two Piece Loadside", m_robotContainer.twoPieceLoadSide);
 
@@ -106,7 +104,6 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Do Nothing", null);
 
     m_chooser.setDefaultOption("Two Piece Loadside and Balance", m_robotContainer.twoPieceLoadSideBalance);
->>>>>>> Stashed changes
 
     // adds the auton selection to ShuffleBoard
     SmartDashboard.putData(m_chooser);
@@ -185,7 +182,7 @@ public class Robot extends TimedRobot {
 
     //System.out.println(Tilt.calculate(yaw, pitch, roll));
     //System.out.println(Tilt.calculate(yaw, pitch, roll));
-    m_robotContainer.periodic();
+    //m_robotContainer.periodic();
   }
 
   @Override

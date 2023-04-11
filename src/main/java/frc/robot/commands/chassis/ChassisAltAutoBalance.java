@@ -1,24 +1,22 @@
-package frc.robot.commands.Chassis;
+package frc.robot.commands.chassis;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.math.Tilt;
 import frc.robot.subsystems.Chassis;
-import static frc.robot.RobotContainer.m_chassis;
 
 public class ChassisAltAutoBalance extends CommandBase {
 
     /* Here's how this auto balance works:
-     * It uses a custom Proportional-only PID controller that subtracts the current robot angle from the target angle (basically negates the current angle
-     *   because the target angle is zero).
-     * It plugs that value into the chassis to make it drive.
-     * If the angle is within a certain margin of error of the target angle, a stopwatch starts.
-     * If the robot stays within the margin of error for x number of seconds, the command terminates.*/
+    * It uses a custom Proportional-only PID controller that subtracts the current robot angle from the target angle (basically negates the current angle
+    *   because the target angle is zero).
+    * It plugs that value into the chassis to make it drive.
+    * If the angle is within a certain margin of error of the target angle, a stopwatch starts.
+    * If the robot stays within the margin of error for x number of seconds, the command terminates.*/
+    Chassis mChassis;
 
     Timer endTimer;
 
-    private double maxSpeed = .1;
     private double error;
     private double drivePower;
     private double currentAngle;
@@ -27,13 +25,11 @@ public class ChassisAltAutoBalance extends CommandBase {
 
     boolean timerStarted;
 
-    RunSwerve runSwerve;
-
     public ChassisAltAutoBalance(Chassis chassis){
-        runSwerve = new RunSwerve(0, 0, 0);
+        mChassis = chassis;
         endTimer = new Timer();
-
-        addRequirements(m_chassis);
+        
+        addRequirements(mChassis);
     }
 
     @Override
@@ -43,32 +39,23 @@ public class ChassisAltAutoBalance extends CommandBase {
 
     @Override
     public void execute(){
-        double yaw = m_chassis.ahrs.getYaw();
-        double pitch = m_chassis.ahrs.getPitch();
-        double roll = m_chassis.ahrs.getRoll();
-        currentAngle = Tilt.calculate(yaw, pitch, roll);
+        currentAngle = mChassis.getRoll();
 
-        System.out.println(currentAngle);
-
-        error = -currentAngle +  11.75;
+        error = -currentAngle + 11.75;
         drivePower = Math.min(error* Constants.AUTON_DRIVE_kP,1);
 
-        //System.out.println(error + ", " + drivePower + ", " + currentAngle);
+        System.out.println(error + ", " + drivePower + ", " + currentAngle);
 
 
-        if (Math.abs(drivePower) > maxSpeed) {
-            drivePower = Math.copySign(maxSpeed, drivePower);
+        if (Math.abs(drivePower) > 0.1) {
+            drivePower = Math.copySign(0.1, drivePower);
         }
-
-        runSwerve.changeSpeeds(drivePower, 0, 0);
-
-        runSwerve.run();
-
+        mChassis.runSwerve(drivePower,0,0);
     }
 
     @Override
     public void end(boolean interrupted){
-        m_chassis.crossWheels();
+        mChassis.crossWheels();
     }
 
     @Override
@@ -85,7 +72,7 @@ public class ChassisAltAutoBalance extends CommandBase {
         } else if (inMarginofError && endTimer.hasElapsed(Constants.CHARGE_STATION_STABILIZE_SECONDS)) {
             endTimer.stop();
             endTimer.reset();
-            m_chassis.crossWheels();
+            mChassis.crossWheels();
             finished = true;
         }
 
