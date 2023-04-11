@@ -38,10 +38,10 @@ public class ThreePieceMid extends SequentialCommandGroup {
         m_arm = arm;
         m_intake = intake;
 
-        threePieceLoadSideA = PathPlanner.loadPath("Titan_1+1_path1R_NP", new PathConstraints(5, 2.25));
-        threePieceLoadSideB = PathPlanner.loadPath("Titan_1+2Cube_2R Copy", new PathConstraints(5, 3));
-        threePieceLoadSideC = PathPlanner.loadPath("Titan_1+2Cube_3R", new PathConstraints(4, 3));
-        threePieceLoadSideD = PathPlanner.loadPath("Titan_1+2Cube_4R_NP", new PathConstraints(4, 3));
+        threePieceLoadSideA = PathPlanner.loadPath("A_1+1_path1R_NP", new PathConstraints(5, 2.5));
+        threePieceLoadSideB = PathPlanner.loadPath("A_1+2Cube_2R Copy", new PathConstraints(5, 2.5));
+        threePieceLoadSideC = PathPlanner.loadPath("A_1+2Cube_3R", new PathConstraints(4, 3));
+        threePieceLoadSideD = PathPlanner.loadPath("A_1+2Cube_4R_NP", new PathConstraints(4, 3));
 
         if(isRed){
             threePieceLoadSideA = PathPlannerTrajectory.transformTrajectoryForAlliance(threePieceLoadSideA, DriverStation.Alliance.Red);

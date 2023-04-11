@@ -78,6 +78,8 @@ public class RobotContainer {
 
     public Command autobalanceTest;
 
+    public Command fourMetersForward;
+
     private final Leds leds = new Leds();
 
 
@@ -235,6 +237,8 @@ public class RobotContainer {
 
         twoPieceCenterBalanceBlue = new OnePieceTaxiBalance(m_chassis,m_arm,m_cameras,mIntake,false);
         twoPieceCenterBalanceRed = new OnePieceTaxiBalance(m_chassis,m_arm,m_cameras,mIntake,true);
+
+        fourMetersForward = new FourMetersForward(m_chassis, false);
 
 
         // TODO: Standardize autonomous outtake voltage

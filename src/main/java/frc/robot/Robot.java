@@ -107,6 +107,8 @@ public class Robot extends TimedRobot {
 
     m_chooser.addOption("Do Nothing", null);
 
+    m_chooser.addOption("Four Meters Forward", m_robotContainer.fourMetersForward);
+
     m_chooser.setDefaultOption("Two Piece Loadside and Balance", m_robotContainer.twoPieceLoadSideBalance);
 
     // adds the auton selection to ShuffleBoard

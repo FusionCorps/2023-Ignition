@@ -165,18 +165,18 @@ public final class Constants {
   public static double INDEXER_TARGET = 0.8;
 
   // Drivebase Facts
-//  public static double TRACK_WIDTH_METERS = 0.4953;
-//  public static double TRACK_LENGTH_METERS = 0.4953;
+  public static double TRACK_WIDTH_METERS = 0.4953;
+  public static double TRACK_LENGTH_METERS = 0.4953;
 
-  public static double TRACK_WIDTH_METERS = 0.7112;
-  public static double TRACK_LENGTH_METERS = 0.7112;
+//  public static double TRACK_WIDTH_METERS = 0.7112;
+//  public static double TRACK_LENGTH_METERS = 0.7112;
 
   public static double TRACK_WIDTH_METERS_TEST = 0.4953;
   public static double TRACK_LENGTH_METERS_TEST = 0.4953;
 
   public static double SWERVE_FORWARD_SPEED_MAX = 6.6;
   public static double SWERVE_STRAFE_SPEED_MAX = 6.6;
-  public static double SWERVE_ROT_SPEED_MAX = 4.0;
+  public static double SWERVE_ROT_SPEED_MAX = 4.0 / 0.4953 * 0.7112;
 
   public static double MAX_SPEED = 9.2;
 
