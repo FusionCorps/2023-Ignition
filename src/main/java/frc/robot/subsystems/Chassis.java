@@ -5,6 +5,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -13,11 +14,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -28,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.math.FusionSwerveOdometry;
 import frc.robot.math.SwerveCalcs;
 import frc.robot.modules.SwerveCombo;
 
@@ -35,7 +39,7 @@ import static frc.robot.Constants.*;
 import static frc.robot.math.SwerveCalcs.getAngle;
 import static frc.robot.math.SwerveCalcs.getSpeed;
 import static java.lang.Double.max;
-import static java.lang.Math.PI;
+import static java.lang.Math.*;
 
 public class Chassis extends SubsystemBase {
 
@@ -74,6 +78,7 @@ public class Chassis extends SubsystemBase {
     DoubleLogEntry yPosLog;
     DoubleLogEntry rotPosLog;
 
+
     // odometry set-up (import - Ri3D Redux)
     private final Translation2d m_frontLeftLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, TRACK_LENGTH_METERS / 2.0);
     private final Translation2d m_frontRightLocation = new Translation2d(TRACK_WIDTH_METERS / 2.0, -TRACK_LENGTH_METERS / 2.0);
@@ -98,7 +103,18 @@ public class Chassis extends SubsystemBase {
                 comboFR.getPosition(),
                 comboBR.getPosition()
             },
-            new Pose2d(5, 5, ahrs.getRotation2d()));
+            new Pose2d(5, 5, ahrs.getRotation2d())
+//            , VecBuilder.fill(0.01, 0.01, Units.degreesToRadians(5)), // wheel odometry std filter // might be different
+//            VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30))
+    ); // vision std filter
+
+    private final FusionSwerveOdometry m_odoTest = new FusionSwerveOdometry(5, 5, ahrs.getRotation2d(),
+            new SwerveModulePosition[] {
+                    comboFL.getPosition(),
+                    comboBL.getPosition(),
+                    comboFR.getPosition(),
+                    comboBR.getPosition()
+            });
 
     Field2d m_field;
 
@@ -247,9 +263,19 @@ public class Chassis extends SubsystemBase {
                         comboBR.getPosition()
                 });
 
-        m_field.setRobotPose(m_odometry.getEstimatedPosition());
+        m_odoTest.updateCustomOdo(ahrs.getRotation2d(),
+                new SwerveModulePosition[] {
+                        comboFL.getPosition(),
+                        comboBL.getPosition(),
+                        comboFR.getPosition(),
+                        comboBR.getPosition()
+                });
 
-        System.out.println(m_odometry.getEstimatedPosition().getX() + " meters");
+        // m_field.setRobotPose(m_odometry.getEstimatedPosition());
+        m_field.setRobotPose(m_odoTest.getRobotPose());
+
+        // System.out.println("(" + m_odometry.getEstimatedPosition().getX() + "," + m_odometry.getEstimatedPosition().getY() + ")");
+        System.out.println("(" + m_odoTest.getRobotPose().getX() + "," + m_odoTest.getRobotPose().getY() + ")");
 
         feedAll();
 
@@ -273,6 +299,10 @@ public class Chassis extends SubsystemBase {
 
     public Pose2d getPose() {
         return m_odometry.getEstimatedPosition();
+    }
+
+    public void passVisionMeasurement(Pose2d measurement) {
+        m_odometry.addVisionMeasurement(measurement, Timer.getFPGATimestamp());
     }
 
     public void setModuleStates(SwerveModuleState[] desired) {
@@ -321,6 +351,7 @@ public class Chassis extends SubsystemBase {
     }
 
     public void setGyroAngle(double angle) {
+        ahrs.calibrate();
         ahrs.reset();
         ahrs.setAngleAdjustment(angle);
     }
@@ -336,5 +367,6 @@ public class Chassis extends SubsystemBase {
     public void togglePrecision() {
         isPrecision = !isPrecision;
     }
+
 
 }
