@@ -38,10 +38,10 @@ public class ThreePieceMid extends SequentialCommandGroup {
         m_arm = arm;
         m_intake = intake;
 
-        threePieceLoadSideA = PathPlanner.loadPath("A_1+1_path1R_NP", new PathConstraints(3, 2));
-        threePieceLoadSideB = PathPlanner.loadPath("A_1+2Cube_2R Copy", new PathConstraints(3, 2));
+        threePieceLoadSideA = PathPlanner.loadPath("A_1+1_path1R_NP", new PathConstraints(5, 3));
+        threePieceLoadSideB = PathPlanner.loadPath("A_1+2Cube_2R Copy", new PathConstraints(5, 3));
         threePieceLoadSideC = PathPlanner.loadPath("A_1+2Cube_3R", new PathConstraints(5, 2.75));
-        threePieceLoadSideD = PathPlanner.loadPath("A_1+2Cube_4R_NP", new PathConstraints(5, 2.75));
+        threePieceLoadSideD = PathPlanner.loadPath("A_1+2Cube_4R_NP", new PathConstraints(4, 2.75));
 
         if(isRed){
             threePieceLoadSideA = PathPlannerTrajectory.transformTrajectoryForAlliance(threePieceLoadSideA, DriverStation.Alliance.Red);
@@ -58,7 +58,9 @@ public class ThreePieceMid extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideA,true),
-                        new RunVoltsTime(m_intake,-6,threePieceLoadSideA.getTotalTimeSeconds())
+                        new SequentialCommandGroup(new RunVoltsTime(m_intake,0,1),
+                                new RunVoltsTime(m_intake,-6,threePieceLoadSideA.getTotalTimeSeconds()-1)
+                        )
                 ),
                 m_intake.runOnce(() -> {m_intake.set(-0.2);}),
                 new ParallelCommandGroup(

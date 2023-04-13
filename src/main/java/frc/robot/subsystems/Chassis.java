@@ -339,8 +339,8 @@ public class Chassis extends SubsystemBase {
                         traj,
                         this::getPoseCustom, // Pose supplier
                         this.m_kinematics, // SwerveDriveKinematics
-                        new PIDController(25, 0, 0.02), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        new PIDController(25, 0, 0.02), // Y controller (usually the same values as X controller)
+                        new PIDController(25, 0, 0.01), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        new PIDController(25, 0, 0.01), // Y controller (usually the same values as X controller)
                         new PIDController(5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
                         this::setModuleStates,
                         false, // Module states consumer

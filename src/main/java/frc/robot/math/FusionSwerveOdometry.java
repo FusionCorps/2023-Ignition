@@ -15,6 +15,7 @@ public class FusionSwerveOdometry {
     Pose2d robotPose; // store values in a Pose2D
 
     SwerveModulePosition[] lastPositions; // save last known positions
+    Rotation2d lastRotation;
 
     Translation2d[] moduleLocations;
 
@@ -22,6 +23,7 @@ public class FusionSwerveOdometry {
         robotPose = new Pose2d(xInit, yInit, rotInit);
 
         lastPositions = initSwervePositions;
+        lastRotation = rotInit;
 
         // starting locations of the modules
         // FL BL FR BR
@@ -50,14 +52,17 @@ public class FusionSwerveOdometry {
         double netDeltaY = (deltaFL[1] + deltaBL[1] + deltaFR[1] + deltaBR[1])/4;
 
         double netDistance = sqrt(pow(netDeltaX,2) + pow(netDeltaY,2));
+        double netDeltaTheta = abs(newRot.getRadians() - lastRotation.getRadians());
 
         // use heading to correct robot relative translation to field relative
         // add fudge factor ~ 1 cm per meter
         //
         // -0.0125 dX
         robotPose = new Pose2d(
-                robotPose.getX() + netDeltaX*newRot.getCos() - netDeltaY*newRot.getSin() - 0.0065*abs(netDeltaX) - 0.0065*abs(netDeltaY),
-                robotPose.getY() + netDeltaY*newRot.getCos() + netDeltaX* newRot.getSin() - 0.0125*abs(netDeltaX) - 0.01*abs(netDeltaY),
+                robotPose.getX() + netDeltaX*newRot.getCos() - netDeltaY*newRot.getSin()
+                        - 0.0065*abs(netDeltaX) - 0.0065*abs(netDeltaY),
+                robotPose.getY() + netDeltaY*newRot.getCos() + netDeltaX* newRot.getSin()
+                        - 0.0125*abs(netDeltaX) - 0.0115*abs(netDeltaY),
                 newRot
         );
 
@@ -67,6 +72,7 @@ public class FusionSwerveOdometry {
 
         // save readings as last read positions
         lastPositions = newPos;
+        lastRotation = newRot;
     }
 
     // reset to a passed Pose2d
