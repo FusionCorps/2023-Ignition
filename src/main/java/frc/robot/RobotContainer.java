@@ -517,10 +517,11 @@ public class RobotContainer {
 
         //m_controller.start().whileTrue(new ChassisDriveToNearestTarget(m_chassis, m_cameras, 99.0));
         // m_controller.start().onTrue(m_arm.runOnce(() -> {m_arm.setTalonTargets(LOW_BASE_POS_CUBE, LOW_WRIST_POS_CUBE);}));
+        m_controller.start().onTrue(m_chassis.runOnce(() -> {m_chassis.resetCustomOdoToOrigin();}));
 
-        m_controller.start().onTrue(m_chassis.runOnce(() -> {
-            m_chassis.togglePrecision();
-        }));
+//        m_controller.start().onTrue(m_chassis.runOnce(() -> {
+//            m_chassis.togglePrecision();
+//        }));
     }
 
     /**

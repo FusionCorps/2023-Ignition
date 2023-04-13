@@ -273,6 +273,7 @@ public class Chassis extends SubsystemBase {
 
         // m_field.setRobotPose(m_odometry.getEstimatedPosition());
         m_field.setRobotPose(m_odoTest.getRobotPose());
+        m_odoTest.pushModuleLocationsToField(m_field);
 
         // System.out.println("(" + m_odometry.getEstimatedPosition().getX() + "," + m_odometry.getEstimatedPosition().getY() + ")");
         System.out.println("(" + m_odoTest.getRobotPose().getX() + "," + m_odoTest.getRobotPose().getY() + ")");
@@ -382,5 +383,8 @@ public class Chassis extends SubsystemBase {
         isPrecision = !isPrecision;
     }
 
+    public void resetCustomOdoToOrigin() {
+        m_odoTest.resetOdometryPoseOnly(new Pose2d(0, 0, ahrs.getRotation2d()));
+    }
 
 }
