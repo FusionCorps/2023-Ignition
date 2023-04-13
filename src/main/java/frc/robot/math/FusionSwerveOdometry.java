@@ -42,8 +42,8 @@ public class FusionSwerveOdometry {
 
     // convenience function to get the difference in swerve modules
     public double[] getPosDelta(SwerveModulePosition newPos, SwerveModulePosition oldPos) {
-        double xDelta = (newPos.distanceMeters - oldPos.distanceMeters)*cos(newPos.angle.getRadians());
-        double yDelta = (newPos.distanceMeters - oldPos.distanceMeters)*sin(newPos.angle.getRadians());
+        double xDelta = (newPos.distanceMeters - oldPos.distanceMeters)*cos((newPos.angle.getRadians() + newPos.angle.getRadians())/2);
+        double yDelta = (newPos.distanceMeters - oldPos.distanceMeters)*sin((newPos.angle.getRadians() + newPos.angle.getRadians())/2);
 
         return new double[] {xDelta, yDelta};
     }
@@ -52,8 +52,10 @@ public class FusionSwerveOdometry {
         return robotPose;
     }
 
-    public void resetPosition() {
+    public void resetPosition(Rotation2d rot, SwerveModulePosition[] positions, Pose2d pose) {
+        robotPose = pose;
 
+        lastPositions = positions;
     }
 
 }

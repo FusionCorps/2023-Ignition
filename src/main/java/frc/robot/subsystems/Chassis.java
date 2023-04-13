@@ -297,8 +297,22 @@ public class Chassis extends SubsystemBase {
         }, pose);
     }
 
+    public void resetOdometryCustom(Pose2d pose) {
+
+        m_odoTest.resetPosition(ahrs.getRotation2d(), new SwerveModulePosition[] {
+                comboFL.getPosition(),
+                comboBL.getPosition(),
+                comboFR.getPosition(),
+                comboBR.getPosition()
+        }, pose);
+    }
+
     public Pose2d getPose() {
         return m_odometry.getEstimatedPosition();
+    }
+
+    public Pose2d getPoseCustom() {
+        return m_odoTest.getRobotPose();
     }
 
     public void passVisionMeasurement(Pose2d measurement) {
@@ -317,12 +331,12 @@ public class Chassis extends SubsystemBase {
                 new InstantCommand(() -> {
                     // Reset odometry for the first path you run during auto
                     if(isFirstPath){
-                        this.resetOdometry(traj.getInitialHolonomicPose());
+                        this.resetOdometryCustom(traj.getInitialHolonomicPose());
                     }
                 }),
                 new PPSwerveControllerCommand(
                         traj,
-                        this::getPose, // Pose supplier
+                        this::getPoseCustom, // Pose supplier
                         this.m_kinematics, // SwerveDriveKinematics
                         new PIDController(25, 0, 0.02), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
                         new PIDController(25, 0, 0.02), // Y controller (usually the same values as X controller)
