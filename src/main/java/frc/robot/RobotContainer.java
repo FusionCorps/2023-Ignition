@@ -80,6 +80,8 @@ public class RobotContainer {
 
     public Command fourMetersForward;
 
+    public Command oneHighIntakeBalance;
+
     private final Leds leds = new Leds();
 
 
@@ -240,6 +242,7 @@ public class RobotContainer {
 
         fourMetersForward = new FourMetersForward(m_chassis, false);
 
+        oneHighIntakeBalance = new OneHighIntakeBalance(m_chassis, m_arm, mIntake);
 
         // TODO: Standardize autonomous outtake voltage
         oneMidFarSide = new SequentialCommandGroup(
