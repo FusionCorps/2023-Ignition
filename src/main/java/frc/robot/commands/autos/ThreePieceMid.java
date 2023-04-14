@@ -76,7 +76,11 @@ public class ThreePieceMid extends SequentialCommandGroup {
                 ),
                 m_intake.runOnce(() -> {m_intake.set(-0.2);}),
                 new ParallelCommandGroup(
-                        new ArmToPosition(m_arm,MID_BASE_POS,MID_WRIST_POS),
+                        new SequentialCommandGroup(
+                                // delay putting arm up to avoid rocking robot
+                                new RunVoltsTime(m_intake,0,threePieceLoadSideD.getTotalTimeSeconds()*0.8),
+                                new ArmToPosition(m_arm,MID_BASE_POS,MID_WRIST_POS)
+                        ),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideD,false)
                 ),
                 new ChassisDriveAuton(m_chassis,0.2,0,0,0.13),
