@@ -38,10 +38,10 @@ public class ThreePieceMid extends SequentialCommandGroup {
         m_arm = arm;
         m_intake = intake;
 
-        threePieceLoadSideA = PathPlanner.loadPath("A_1+1_path1R_NP", new PathConstraints(5, 3));
+        threePieceLoadSideA = PathPlanner.loadPath("A_1+1_path1R_NP", new PathConstraints(5, 2.75));
         threePieceLoadSideB = PathPlanner.loadPath("A_1+2Cube_2R Copy", new PathConstraints(5, 3));
-        threePieceLoadSideC = PathPlanner.loadPath("A_1+2Cube_3R", new PathConstraints(5, 2.75));
-        threePieceLoadSideD = PathPlanner.loadPath("A_1+2Cube_4R_NP", new PathConstraints(4, 2.75));
+        threePieceLoadSideC = PathPlanner.loadPath("A_1+2Cube_3R", new PathConstraints(5, 3));
+        threePieceLoadSideD = PathPlanner.loadPath("A_1+2Cube_4R_NP", new PathConstraints(5, 2.75));
 
         if(isRed){
             threePieceLoadSideA = PathPlannerTrajectory.transformTrajectoryForAlliance(threePieceLoadSideA, DriverStation.Alliance.Red);
@@ -62,8 +62,8 @@ public class ThreePieceMid extends SequentialCommandGroup {
                                 new RunVoltsTime(m_intake,-6,threePieceLoadSideA.getTotalTimeSeconds()-1)
                         )
                 ),
-                m_intake.runOnce(() -> {m_intake.set(-0.2);}),
                 new ParallelCommandGroup(
+                        m_intake.runOnce(() -> {m_intake.set(-0.2);}),
                         new ArmToPosition(m_arm, MID_BASE_POS_CUBE, MID_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideB,false)
                 ),
@@ -78,12 +78,13 @@ public class ThreePieceMid extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new SequentialCommandGroup(
                                 // delay putting arm up to avoid rocking robot
-                                new RunVoltsTime(m_intake,0,threePieceLoadSideD.getTotalTimeSeconds()*0.8),
+                                new ArmToPosition(m_arm,0,0),
+                                new RunVoltsTime(m_intake,-1.0,threePieceLoadSideD.getTotalTimeSeconds()*0.4),
                                 new ArmToPosition(m_arm,MID_BASE_POS,MID_WRIST_POS)
                         ),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideD,false)
                 ),
-                new ChassisDriveAuton(m_chassis,0.2,0,0,0.13),
+                new ChassisDriveAuton(m_chassis,0.1,0,0,0.13),
                 new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.25)
 
 

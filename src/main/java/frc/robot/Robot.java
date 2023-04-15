@@ -87,6 +87,7 @@ public class Robot extends TimedRobot {
 
     // m_chooser.addOption("Three Piece Left", m_robotContainer.threePieceLoadSide);
     m_chooser.addOption("One Piece Balance", m_robotContainer.onePieceBalance);
+    m_chooser.addOption("One Piece Intake Balance", m_robotContainer.oneHighIntakeBalance);
     m_chooser.addOption("One Piece Farside", m_robotContainer.oneMidFarSide);
     // m_chooser.addOption("Three Piece Left Cube", m_robotContainer.threePieceLoadSideCube);
 

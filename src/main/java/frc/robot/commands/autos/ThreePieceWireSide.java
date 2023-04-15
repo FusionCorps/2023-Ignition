@@ -80,20 +80,23 @@ public class ThreePieceWireSide extends SequentialCommandGroup {
                     new RunVoltsTime(m_intake,3.5,0.1)
                 ),
                 new ChassisDriveAuton(m_chassis, -0.25, 0.0, 0.0, 0.1),
-                // grab next cone
+                // grab next cube
                 new ParallelCommandGroup(
                         // avoid crashing intake into wiretrace
                         new SequentialCommandGroup(
-                            new RunVoltsTime(m_intake,0.0,2.0).andThen(
-                                    new ArmToPosition(m_arm,INTAKE_BASE_POS_CONE,INTAKE_WRIST_POS_CONE)
+                            new RunVoltsTime(m_intake,0.0,1.0).andThen(
+                                    new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE)
                             ),
-                            new RunVoltsTime(m_intake,-8,threePieceWireSideC.getTotalTimeSeconds() - 2.0)
+                            new RunVoltsTime(m_intake,-8,threePieceWireSideC.getTotalTimeSeconds() - 1.25)
                         ),
                         m_chassis.followTrajectoryCommand(threePieceWireSideC,false)
                 ),
-                // stow and return
+                // hold cube in intake
+                m_intake.runOnce(() -> {m_intake.set(-0.2);}),
+                // bowl for score
                 new ParallelCommandGroup(
-                        new ArmToPosition(m_arm,BASE_START_POS,WRIST_START_POS),
+                        new SequentialCommandGroup(new ArmToPosition(m_arm,LOW_BASE_POS_CUBE,LOW_WRIST_POS_CUBE),
+                                new RunVoltsTime(m_intake,-8, 0.5)),
                         m_chassis.followTrajectoryCommand(threePieceWireSideD,false)
                 )
                 // depending on time we could go for a score with this one too
