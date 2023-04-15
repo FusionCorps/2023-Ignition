@@ -275,8 +275,8 @@ public class Chassis extends SubsystemBase {
         m_field.setRobotPose(m_odoTest.getRobotPose());
         m_odoTest.pushModuleLocationsToField(m_field);
 
-        // System.out.println("(" + m_odometry.getEstimatedPosition().getX() + "," + m_odometry.getEstimatedPosition().getY() + ")");
-        System.out.println("(" + m_odoTest.getRobotPose().getX() + "," + m_odoTest.getRobotPose().getY() + ")");
+         System.out.println("(" + m_odometry.getEstimatedPosition().getX() + "," + m_odometry.getEstimatedPosition().getY() + ")");
+//        System.out.println("(" + m_odoTest.getRobotPose().getX() + "," + m_odoTest.getRobotPose().getY() + ")");
 
         feedAll();
 
@@ -332,15 +332,15 @@ public class Chassis extends SubsystemBase {
                 new InstantCommand(() -> {
                     // Reset odometry for the first path you run during auto
                     if(isFirstPath){
-                        this.resetOdometryCustom(traj.getInitialHolonomicPose());
+                        this.resetOdometry(traj.getInitialHolonomicPose());
                     }
                 }),
                 new PPSwerveControllerCommand(
                         traj,
-                        this::getPoseCustom, // Pose supplier
+                        this::getPose, // Pose supplier
                         this.m_kinematics, // SwerveDriveKinematics
-                        new PIDController(25, 0, 0.01), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-                        new PIDController(25, 0, 0.01), // Y controller (usually the same values as X controller)
+                        new PIDController(15, 0, 0.01), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
+                        new PIDController(15, 0, 0.01), // Y controller (usually the same values as X controller)
                         new PIDController(5, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
                         this::setModuleStates,
                         false, // Module states consumer

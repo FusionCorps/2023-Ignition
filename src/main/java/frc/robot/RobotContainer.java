@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.IntakeConstants.*;
-import static java.lang.Math.PI;
 
 
 /**
@@ -231,8 +230,8 @@ public class RobotContainer {
         threePieceWireSideBlue = new ThreePieceWireSide(m_chassis,m_arm,m_cameras,mIntake,false);
         threePieceWireSideRed = new ThreePieceWireSide(m_chassis,m_arm,m_cameras,mIntake,true);
 
-        twoPieceCubeLoadSideBalanceBlue = new TwoPieceCubeBalance(m_cameras, m_chassis, m_arm, mIntake,false);
-        twoPieceCubeLoadSideBalanceRed = new TwoPieceCubeBalance(m_cameras, m_chassis, m_arm, mIntake,true);
+        twoPieceCubeLoadSideBalanceBlue = new TwoPieceCubeIntakeSlow(m_cameras, m_chassis, m_arm, mIntake,false);
+        twoPieceCubeLoadSideBalanceRed = new TwoPieceCubeIntakeSlow(m_cameras, m_chassis, m_arm, mIntake,true);
 
         twoPieceIntakeLoadSideBalanceBlue = new TwoPieceIntakeBalance(m_chassis,m_arm,mIntake,m_cameras,false);
         twoPieceIntakeLoadSideBalanceRed = new TwoPieceIntakeBalance(m_chassis,m_arm,mIntake,m_cameras,true);

@@ -62,7 +62,7 @@ public class FusionSwerveOdometry {
                 robotPose.getX() + netDeltaX*newRot.getCos() - netDeltaY*newRot.getSin()
                         - 0.0065*abs(netDeltaX) - 0.0065*abs(netDeltaY),
                 robotPose.getY() + netDeltaY*newRot.getCos() + netDeltaX* newRot.getSin()
-                        - 0.0125*abs(netDeltaX) - 0.0065*abs(netDeltaY)
+                        - 0.0065*abs(netDeltaX) - 0.0065*abs(netDeltaY)
                 , newRot
         );
 

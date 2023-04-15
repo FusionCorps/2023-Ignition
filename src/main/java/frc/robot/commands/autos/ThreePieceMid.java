@@ -38,10 +38,10 @@ public class ThreePieceMid extends SequentialCommandGroup {
         m_arm = arm;
         m_intake = intake;
 
-        threePieceLoadSideA = PathPlanner.loadPath("A_1+1_path1R_NP", new PathConstraints(5, 2.75));
-        threePieceLoadSideB = PathPlanner.loadPath("A_1+2Cube_2R Copy", new PathConstraints(5, 3));
-        threePieceLoadSideC = PathPlanner.loadPath("A_1+2Cube_3R", new PathConstraints(5, 3));
-        threePieceLoadSideD = PathPlanner.loadPath("A_1+2Cube_4R_NP", new PathConstraints(5, 2.75));
+        threePieceLoadSideA = PathPlanner.loadPath("A_1+1_path1R_NP", new PathConstraints(5, 1.75));
+        threePieceLoadSideB = PathPlanner.loadPath("A_1+2Cube_2R Copy", new PathConstraints(5, 1.75));
+        threePieceLoadSideC = PathPlanner.loadPath("A_1+2Cube_3R", new PathConstraints(5, 2.0));
+        threePieceLoadSideD = PathPlanner.loadPath("A_1+2Cube_4R_NP", new PathConstraints(5, 3.25));
 
         if(isRed){
             threePieceLoadSideA = PathPlannerTrajectory.transformTrajectoryForAlliance(threePieceLoadSideA, DriverStation.Alliance.Red);
@@ -54,12 +54,12 @@ public class ThreePieceMid extends SequentialCommandGroup {
                 m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
                 new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.25),
-                new RunVoltsTime(m_intake, OUTTAKE_VOLTS, 0.25),
+                new RunVoltsTime(m_intake, OUTTAKE_VOLTS, 0.2),
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideA,true),
                         new SequentialCommandGroup(new RunVoltsTime(m_intake,0,1),
-                                new RunVoltsTime(m_intake,-6,threePieceLoadSideA.getTotalTimeSeconds()-1)
+                                new RunVoltsTime(m_intake,-0.45*12,threePieceLoadSideA.getTotalTimeSeconds()-1)
                         )
                 ),
                 new ParallelCommandGroup(
@@ -68,7 +68,7 @@ public class ThreePieceMid extends SequentialCommandGroup {
                         m_chassis.followTrajectoryCommand(threePieceLoadSideB,false)
                 ),
                 new ChassisDriveAuton(m_chassis, 0.25, 0.0, 0.0, 0.1),
-                new RunVoltsTime(m_intake,3.5,0.3),
+                new RunVoltsTime(m_intake,3.5,0.1),
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CONE,INTAKE_WRIST_POS_CONE),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideC,false),

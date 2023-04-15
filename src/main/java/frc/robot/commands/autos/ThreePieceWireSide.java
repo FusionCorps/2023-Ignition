@@ -4,6 +4,7 @@ import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.arm.ArmToPosition;
@@ -41,9 +42,9 @@ public class ThreePieceWireSide extends SequentialCommandGroup {
         m_camera = camera;
 
         // need to push these to 5/3 in order to make time
-        twoPieceWireSideA = PathPlanner.loadPath("Titan_1+1_wire_path1", new PathConstraints(5,3));
-        twoPieceWireSideB = PathPlanner.loadPath("Why_1+1_wire_path2", new PathConstraints(5,3));
-        threePieceWireSideC = PathPlanner.loadPath("Titan_1+2_wire_path3", new PathConstraints(5,3));
+        twoPieceWireSideA = PathPlanner.loadPath("Titan_1+1_wire_path1", new PathConstraints(5,2.5));
+        twoPieceWireSideB = PathPlanner.loadPath("Why_1+1_wire_path2", new PathConstraints(5,2.5));
+        threePieceWireSideC = PathPlanner.loadPath("Titan_1+2_wire_path3", new PathConstraints(5,2.5));
         threePieceWireSideD = PathPlanner.loadPath("Titan_1+2_wire_path4", new PathConstraints(5,3));
 
         if(isRed){
@@ -84,18 +85,18 @@ public class ThreePieceWireSide extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         // avoid crashing intake into wiretrace
                         new SequentialCommandGroup(
-                            new RunVoltsTime(m_intake,0.0,1.0).andThen(
+                            Commands.waitSeconds(1.0).andThen(
                                     new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE)
-                            ),
-                            new RunVoltsTime(m_intake,-8,threePieceWireSideC.getTotalTimeSeconds() - 1.25)
+                            )
                         ),
-                        m_chassis.followTrajectoryCommand(threePieceWireSideC,false)
+                        m_chassis.followTrajectoryCommand(threePieceWireSideC,false),
+                        new RunVoltsTime(m_intake,-6,threePieceWireSideC.getTotalTimeSeconds())
                 ),
                 // hold cube in intake
                 m_intake.runOnce(() -> {m_intake.set(-0.2);}),
                 // bowl for score
                 new ParallelCommandGroup(
-                        new SequentialCommandGroup(new ArmToPosition(m_arm,LOW_BASE_POS_CUBE,LOW_WRIST_POS_CUBE),
+                        new SequentialCommandGroup(new ArmToPosition(m_arm,LOW_BASE_POS_CUBE,LOW_WRIST_POS_CUBE, 0.5),
                                 new RunVoltsTime(m_intake,-8, 0.5)),
                         m_chassis.followTrajectoryCommand(threePieceWireSideD,false)
                 )

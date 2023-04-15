@@ -19,7 +19,7 @@ import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.ArmConstants.MID_WRIST_POS_CUBE;
 import static frc.robot.Constants.IntakeConstants.OUTTAKE_VOLTS;
 
-public class TwoPieceCubeBalance extends SequentialCommandGroup {
+public class TwoPieceCubeIntakeSlow extends SequentialCommandGroup {
 
     Cameras m_cameras;
     Chassis m_chassis;
@@ -28,24 +28,24 @@ public class TwoPieceCubeBalance extends SequentialCommandGroup {
 
     PathPlannerTrajectory twoPieceLoadsideA;
     PathPlannerTrajectory twoPieceLoadsideB;
+    PathPlannerTrajectory twoPieceLoadsideC;
 
-    PathPlannerTrajectory balance;
 
-    public TwoPieceCubeBalance(Cameras cameras, Chassis chassis, Arm arm, Intake intake, boolean isRed){
+    public TwoPieceCubeIntakeSlow(Cameras cameras, Chassis chassis, Arm arm, Intake intake, boolean isRed){
         m_cameras = cameras;
         m_chassis = chassis;
         m_arm = arm;
         m_Intake = intake;
 
-        twoPieceLoadsideA = PathPlanner.loadPath("1+1_path1R_NP", new PathConstraints(5, 2.25));
-        twoPieceLoadsideB = PathPlanner.loadPath("1+2Cube_2R Copy", new PathConstraints(5, 3));
+        twoPieceLoadsideA = PathPlanner.loadPath("A_1+1_path1R_NP", new PathConstraints(5, 1.5));
+        twoPieceLoadsideB = PathPlanner.loadPath("A_1+2Cube_2R Copy", new PathConstraints(5, 1.5));
+        twoPieceLoadsideC = PathPlanner.loadPath("A_1+2Cube_3R", new PathConstraints(5, 1.5));
 
-        balance = PathPlanner.loadPath("1+1_pathToBalance_NP", new PathConstraints(2, 3));
 
         if(isRed){
             twoPieceLoadsideA = PathPlannerTrajectory.transformTrajectoryForAlliance(twoPieceLoadsideA, DriverStation.Alliance.Red);
             twoPieceLoadsideB = PathPlannerTrajectory.transformTrajectoryForAlliance(twoPieceLoadsideB, DriverStation.Alliance.Red);
-            balance = PathPlannerTrajectory.transformTrajectoryForAlliance(balance, DriverStation.Alliance.Red);
+            twoPieceLoadsideC = PathPlannerTrajectory.transformTrajectoryForAlliance(twoPieceLoadsideC, DriverStation.Alliance.Red);
         }
 
         addCommands(
@@ -55,7 +55,9 @@ public class TwoPieceCubeBalance extends SequentialCommandGroup {
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(twoPieceLoadsideA,true),
-                        new RunVoltsTime(m_Intake,-6,twoPieceLoadsideA.getTotalTimeSeconds())
+                        new SequentialCommandGroup(new RunVoltsTime(m_Intake,0,1),
+                                new RunVoltsTime(m_Intake,-6,twoPieceLoadsideA.getTotalTimeSeconds()-1)
+                        )
                 ),
                 m_chassis.runOnce(() -> {m_Intake.set(-0.2);}),
                 new ParallelCommandGroup(
@@ -64,9 +66,11 @@ public class TwoPieceCubeBalance extends SequentialCommandGroup {
                 ),
                 new ChassisDriveAuton(m_chassis, 0.2, 0.0, 0.0, 0.1),
                 new RunVoltsTime(m_Intake,3,0.3),
-                new ArmToPosition(m_arm,BASE_START_POS,WRIST_START_POS),
-                m_chassis.followTrajectoryCommand(balance,true),
-                new ChassisAutoBalanceFast(m_chassis)
+                new ParallelCommandGroup(
+                        new ArmToPosition(m_arm,INTAKE_BASE_POS_CONE,INTAKE_WRIST_POS_CONE),
+                        m_chassis.followTrajectoryCommand(twoPieceLoadsideC,false),
+                        new RunVoltsTime(m_Intake,-11,twoPieceLoadsideC.getTotalTimeSeconds())
+                )
         );
     }
 }
