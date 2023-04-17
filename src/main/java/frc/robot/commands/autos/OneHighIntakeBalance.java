@@ -23,12 +23,20 @@ public class OneHighIntakeBalance extends SequentialCommandGroup {
     Arm m_arm;
     Intake m_intake;
 
+    double direction;
+
     // using dead reckoning
-    public OneHighIntakeBalance(Chassis chassis, Arm arm, Intake intake) {
+    public OneHighIntakeBalance(Chassis chassis, Arm arm, Intake intake, boolean isRight) {
 
         m_chassis = chassis;
         m_arm = arm;
         m_intake = intake;
+
+        if (isRight) {
+            direction = -1;
+        } else {
+            direction = 1;
+        }
 
         addCommands(
                 m_chassis.runOnce(() -> {
@@ -38,7 +46,7 @@ public class OneHighIntakeBalance extends SequentialCommandGroup {
                 new ArmToPosition(m_arm, HIGH_BASE_POS_ALT_AUTO, HIGH_WRIST_POS_ALT_AUTO, 0.01),
                 new RunVoltsTime(m_intake, OUTTAKE_VOLTS, 0.25), // outtake
                 new ArmToPosition(m_arm, 0, 0), // stow
-                new ChassisDriveAutonLockHeading(m_chassis, -0.4, 0.02, 3.0), // drive forward
+                new ChassisDriveAutonLockHeading(m_chassis, -0.4, 0.02*direction, 3.0), // drive forward
                 // drive forward + intake
                 new ParallelCommandGroup(
                         new ChassisDriveAuton(m_chassis, -0.2, 0.0, 0.0, 2.0),
@@ -48,7 +56,7 @@ public class OneHighIntakeBalance extends SequentialCommandGroup {
                 // stow
                 new ArmToPosition(m_arm, 0, 0),
                 // drive back
-                new ChassisDriveAutonLockHeading(m_chassis, 0.5, -0.05, 2.0),
+                new ChassisDriveAutonLockHeading(m_chassis, 0.5, -0.05*direction, 2.0),
                 // balance
                 new ChassisAutoBalanceNew(m_chassis) // balance
         );

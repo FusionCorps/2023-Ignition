@@ -38,12 +38,17 @@ public class ThreePieceMid extends SequentialCommandGroup {
         m_arm = arm;
         m_intake = intake;
 
-        threePieceLoadSideA = PathPlanner.loadPath("A_1+1_path1R_NP", new PathConstraints(5, 1.75));
-        threePieceLoadSideB = PathPlanner.loadPath("A_1+2Cube_2R Copy", new PathConstraints(5, 1.75));
-        threePieceLoadSideC = PathPlanner.loadPath("A_1+2Cube_3R", new PathConstraints(5, 2.0));
-        threePieceLoadSideD = PathPlanner.loadPath("A_1+2Cube_4R_NP", new PathConstraints(5, 3.25));
+        threePieceLoadSideA = PathPlanner.loadPath("MilB_3Piece_1", new PathConstraints(5, 1.75));
+        threePieceLoadSideB = PathPlanner.loadPath("MilB_3Piece_2", new PathConstraints(5, 1.75));
+        threePieceLoadSideC = PathPlanner.loadPath("MilB_3Piece_3", new PathConstraints(5, 2.0));
+        threePieceLoadSideD = PathPlanner.loadPath("MilB_3Piece_4", new PathConstraints(5, 3.25));
 
         if(isRed){
+            threePieceLoadSideA = PathPlanner.loadPath("MilR_3Piece_1", new PathConstraints(5, 1.75));
+            threePieceLoadSideB = PathPlanner.loadPath("MilR_3Piece_2", new PathConstraints(5, 1.75));
+            threePieceLoadSideC = PathPlanner.loadPath("MilR_3Piece_3", new PathConstraints(5, 2.0));
+            threePieceLoadSideD = PathPlanner.loadPath("MilR_3Piece_4", new PathConstraints(5, 3.25));
+
             threePieceLoadSideA = PathPlannerTrajectory.transformTrajectoryForAlliance(threePieceLoadSideA, DriverStation.Alliance.Red);
             threePieceLoadSideB = PathPlannerTrajectory.transformTrajectoryForAlliance(threePieceLoadSideB, DriverStation.Alliance.Red);
             threePieceLoadSideC = PathPlannerTrajectory.transformTrajectoryForAlliance(threePieceLoadSideC, DriverStation.Alliance.Red);

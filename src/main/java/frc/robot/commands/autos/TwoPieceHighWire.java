@@ -35,8 +35,8 @@ public class TwoPieceHighWire extends SequentialCommandGroup {
         m_intake = intake;
         m_camera = camera;
 
-        twoPieceWireSideA = PathPlanner.loadPath("Vikes_1+1_wire_path1", new PathConstraints(3,2));
-        twoPieceWireSideB = PathPlanner.loadPath("Vikes_1+1_wire_path2", new PathConstraints(3,2));
+        twoPieceWireSideA = PathPlanner.loadPath("MilB_3PieceWire_1", new PathConstraints(3,2));
+        twoPieceWireSideB = PathPlanner.loadPath("MilB_3PieceWire_2", new PathConstraints(3,2));
 
         if(isRed){
             twoPieceWireSideA = PathPlannerTrajectory.transformTrajectoryForAlliance(twoPieceWireSideA, DriverStation.Alliance.Red);

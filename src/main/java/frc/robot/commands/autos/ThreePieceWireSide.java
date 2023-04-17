@@ -42,12 +42,17 @@ public class ThreePieceWireSide extends SequentialCommandGroup {
         m_camera = camera;
 
         // need to push these to 5/3 in order to make time
-        twoPieceWireSideA = PathPlanner.loadPath("Titan_1+1_wire_path1", new PathConstraints(5,2.5));
-        twoPieceWireSideB = PathPlanner.loadPath("Why_1+1_wire_path2", new PathConstraints(5,2.5));
-        threePieceWireSideC = PathPlanner.loadPath("Titan_1+2_wire_path3", new PathConstraints(5,2.5));
-        threePieceWireSideD = PathPlanner.loadPath("Titan_1+2_wire_path4", new PathConstraints(5,3));
+        twoPieceWireSideA = PathPlanner.loadPath("MilB_3PieceWire_1", new PathConstraints(5,2.5));
+        twoPieceWireSideB = PathPlanner.loadPath("MilB_3PieceWire_2", new PathConstraints(5,2.5));
+        threePieceWireSideC = PathPlanner.loadPath("MilB_3PieceWire_3", new PathConstraints(5,2.5));
+        threePieceWireSideD = PathPlanner.loadPath("MilB_3PieceWire_4", new PathConstraints(5,3));
 
         if(isRed){
+            twoPieceWireSideA = PathPlanner.loadPath("MilR_3PieceWire_1", new PathConstraints(5,2.5));
+            twoPieceWireSideB = PathPlanner.loadPath("MilR_3PieceWire_2", new PathConstraints(5,2.5));
+            threePieceWireSideC = PathPlanner.loadPath("MilR_3PieceWire_3", new PathConstraints(5,2.5));
+            threePieceWireSideD = PathPlanner.loadPath("MilR_3PieceWire_4", new PathConstraints(5,3));
+
             twoPieceWireSideA = PathPlannerTrajectory.transformTrajectoryForAlliance(twoPieceWireSideA, DriverStation.Alliance.Red);
             twoPieceWireSideB = PathPlannerTrajectory.transformTrajectoryForAlliance(twoPieceWireSideB,DriverStation.Alliance.Red);
             threePieceWireSideC = PathPlannerTrajectory.transformTrajectoryForAlliance(threePieceWireSideC,DriverStation.Alliance.Red);

@@ -79,7 +79,8 @@ public class RobotContainer {
 
     public Command fourMetersForward;
 
-    public Command oneHighIntakeBalance;
+    public Command oneHighIntakeBalanceLeft;
+    public Command oneHighIntakeBalanceRight;
 
     private final Leds leds = new Leds();
 
@@ -218,8 +219,8 @@ public class RobotContainer {
 //                new ChassisAutoBalance(m_chassis) // balance
 //        );
 
-        twoPieceLoadSideBalance = new TwoPieceMidBalance(m_cameras, m_chassis, m_arm, mIntake, false);
         twoPieceLoadSideBalanceRed = new TwoPieceMidBalance(m_cameras, m_chassis, m_arm, mIntake, true);
+        twoPieceLoadSideBalance = new TwoPieceMidBalance(m_cameras, m_chassis, m_arm, mIntake, false);
 
         threePieceLoadSideMidBlue = new ThreePieceMid(m_cameras,m_chassis,m_arm,mIntake,false);
         threePieceLoadSideMidRed = new ThreePieceMid(m_cameras,m_chassis,m_arm,mIntake,true);
@@ -241,7 +242,8 @@ public class RobotContainer {
 
         fourMetersForward = new FourMetersForward(m_chassis, false);
 
-        oneHighIntakeBalance = new OneHighIntakeBalance(m_chassis, m_arm, mIntake);
+        oneHighIntakeBalanceLeft = new OneHighIntakeBalance(m_chassis, m_arm, mIntake, false);
+        oneHighIntakeBalanceRight = new OneHighIntakeBalance(m_chassis, m_arm, mIntake, true);
 
         // TODO: Standardize autonomous outtake voltage
         oneMidFarSide = new SequentialCommandGroup(

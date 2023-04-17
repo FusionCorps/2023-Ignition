@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.arm.ArmToPosition;
 import frc.robot.commands.chassis.ChassisAutoBalanceFast;
+import frc.robot.commands.chassis.ChassisAutoBalanceNew;
 import frc.robot.commands.chassis.ChassisDriveAuton;
 import frc.robot.commands.intake.RunVoltsTime;
 import frc.robot.subsystems.Arm;
@@ -38,11 +39,11 @@ public class TwoPieceIntakeBalance extends SequentialCommandGroup {
         m_arm = arm;
         m_intake = intake;
 
-        twoPieceIntakeBalanceA = PathPlanner.loadPath("Titan_1+1_path1R_NP", new PathConstraints(5, 2.25));
-        twoPieceIntakeBalanceB = PathPlanner.loadPath("Titan_1+2Cube_2R Copy", new PathConstraints(5, 3));
-        twoPieceIntakeBalanceC = PathPlanner.loadPath("Titan_1+2Cube_3R", new PathConstraints(4, 3));
+        twoPieceIntakeBalanceA = PathPlanner.loadPath("MilB_3Piece_1", new PathConstraints(5, 1.75));
+        twoPieceIntakeBalanceB = PathPlanner.loadPath("MilB_3Piece_2", new PathConstraints(5, 1.75));
+        twoPieceIntakeBalanceC = PathPlanner.loadPath("MilB_3Piece_3", new PathConstraints(5, 2));
 
-        balance = PathPlanner.loadPath("Titan_1+1_intake_balance", new PathConstraints(4,3));
+        balance = PathPlanner.loadPath("MilB_3PieceToBalance", new PathConstraints(4,3));
 
         if(isRed){
             twoPieceIntakeBalanceA = PathPlannerTrajectory.transformTrajectoryForAlliance(twoPieceIntakeBalanceA, DriverStation.Alliance.Red);
@@ -54,19 +55,19 @@ public class TwoPieceIntakeBalance extends SequentialCommandGroup {
         addCommands(
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
                 new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.25),
-                new RunVoltsTime(m_intake, OUTTAKE_VOLTS, 0.25),
+                new RunVoltsTime(m_intake, OUTTAKE_VOLTS, 0.2),
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(twoPieceIntakeBalanceA,true),
-                        new RunVoltsTime(m_intake,-6,twoPieceIntakeBalanceA.getTotalTimeSeconds())
+                        new RunVoltsTime(m_intake,-0.45*12,twoPieceIntakeBalanceA.getTotalTimeSeconds())
                 ),
-                m_chassis.runOnce(() -> {m_intake.set(-0.2);}),
                 new ParallelCommandGroup(
+                        m_chassis.runOnce(() -> {m_intake.set(-0.2);}),
                         new ArmToPosition(m_arm, MID_BASE_POS_CUBE, MID_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(twoPieceIntakeBalanceB,false)
                 ),
                 new ChassisDriveAuton(m_chassis, 0.25, 0.0, 0.0, 0.1),
-                new RunVoltsTime(m_intake,3.5,0.3),
+                new RunVoltsTime(m_intake,3.5,0.1),
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CONE,INTAKE_WRIST_POS_CONE),
                         m_chassis.followTrajectoryCommand(twoPieceIntakeBalanceC,false),
@@ -77,7 +78,7 @@ public class TwoPieceIntakeBalance extends SequentialCommandGroup {
                         new ArmToPosition(m_arm,BASE_START_POS,WRIST_START_POS),
                         m_chassis.followTrajectoryCommand(balance,false)
                 ),
-                new ChassisAutoBalanceFast(m_chassis)
+                new ChassisAutoBalanceNew(m_chassis)
         );
     }
 }

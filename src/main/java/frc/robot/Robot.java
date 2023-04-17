@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     // m_chooser.addOption("Test Line", m_robotContainer.autoOne);
-    m_chooser.addOption("Two Piece Loadside", m_robotContainer.twoPieceLoadSide);
+    // m_chooser.addOption("Two Piece Loadside", m_robotContainer.twoPieceLoadSide);
 
 //    m_chooser.addOption("Two Piece Loadside and Balance Blue", m_robotContainer.twoPieceLoadSideBalance);
 //    m_chooser.addOption("Two Piece Loadside and Balance Red", m_robotContainer.twoPieceLoadSideBalanceRed);
@@ -87,30 +87,27 @@ public class Robot extends TimedRobot {
 
     // m_chooser.addOption("Three Piece Left", m_robotContainer.threePieceLoadSide);
     m_chooser.addOption("One Piece Balance", m_robotContainer.onePieceBalance);
-    m_chooser.addOption("One Piece Intake Balance", m_robotContainer.oneHighIntakeBalance);
-    m_chooser.addOption("One Piece Farside", m_robotContainer.oneMidFarSide);
+    m_chooser.addOption("One Piece Intake Balance Left", m_robotContainer.oneHighIntakeBalanceLeft);
+    m_chooser.addOption("One Piece Intake Balance Right", m_robotContainer.oneHighIntakeBalanceRight);
     // m_chooser.addOption("Three Piece Left Cube", m_robotContainer.threePieceLoadSideCube);
 
-    m_chooser.addOption("Cone/Cube Loadside Blue", m_robotContainer.twoPieceLoadSideCubeBlue);
-    m_chooser.addOption("Cone/Cube Loadside Red", m_robotContainer.twoPieceLoadSideCubeRed);
+//    m_chooser.addOption("Cone/Cube Loadside Blue", m_robotContainer.twoPieceLoadSideCubeBlue);
+//    m_chooser.addOption("Cone/Cube Loadside Red", m_robotContainer.twoPieceLoadSideCubeRed);
 
-    m_chooser.addOption("Two Piece Cube Loadside Balance Blue",m_robotContainer.twoPieceCubeLoadSideBalanceBlue);
-    m_chooser.addOption("Two Piece Cube Loadside Balance Red",m_robotContainer.twoPieceCubeLoadSideBalanceRed);
+    m_chooser.addOption("Two Piece Loadside Slow Blue",m_robotContainer.twoPieceCubeLoadSideBalanceBlue);
+    m_chooser.addOption("Two Piece Loadside Slow Red",m_robotContainer.twoPieceCubeLoadSideBalanceRed);
 
     m_chooser.addOption("Two Piece And Intake And Balance Blue",m_robotContainer.twoPieceIntakeLoadSideBalanceBlue);
     m_chooser.addOption("Two Piece And Intake And Balance Red",m_robotContainer.twoPieceIntakeLoadSideBalanceRed);
-
-    m_chooser.addOption("Two Piece Center and Balance Blue", m_robotContainer.twoPieceCenterBalanceBlue);
-    m_chooser.addOption("Two Piece Center and Balance Red", m_robotContainer.twoPieceCenterBalanceRed);
 
     m_chooser.addOption("Three Piece Wireside Blue", m_robotContainer.threePieceWireSideBlue);
     m_chooser.addOption("Three Piece Wireside Red", m_robotContainer.threePieceWireSideRed);
 
     m_chooser.addOption("Do Nothing", null);
 
-    m_chooser.addOption("Four Meters Forward", m_robotContainer.fourMetersForward);
+    // m_chooser.addOption("Four Meters Forward", m_robotContainer.fourMetersForward);
 
-    m_chooser.setDefaultOption("Two Piece Loadside and Balance", m_robotContainer.twoPieceLoadSideBalance);
+    m_chooser.setDefaultOption("Do Nothing", null);
 
     // adds the auton selection to ShuffleBoard
     SmartDashboard.putData(m_chooser);

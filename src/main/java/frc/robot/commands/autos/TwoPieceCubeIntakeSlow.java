@@ -37,9 +37,9 @@ public class TwoPieceCubeIntakeSlow extends SequentialCommandGroup {
         m_arm = arm;
         m_Intake = intake;
 
-        twoPieceLoadsideA = PathPlanner.loadPath("A_1+1_path1R_NP", new PathConstraints(5, 1.5));
-        twoPieceLoadsideB = PathPlanner.loadPath("A_1+2Cube_2R Copy", new PathConstraints(5, 1.5));
-        twoPieceLoadsideC = PathPlanner.loadPath("A_1+2Cube_3R", new PathConstraints(5, 1.5));
+        twoPieceLoadsideA = PathPlanner.loadPath("MilB_3Piece_1", new PathConstraints(5, 1.5));
+        twoPieceLoadsideB = PathPlanner.loadPath("MilB_3Piece_2", new PathConstraints(5, 1.5));
+        twoPieceLoadsideC = PathPlanner.loadPath("MilB_3Piece_3", new PathConstraints(5, 1.5));
 
 
         if(isRed){
@@ -70,7 +70,8 @@ public class TwoPieceCubeIntakeSlow extends SequentialCommandGroup {
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CONE,INTAKE_WRIST_POS_CONE),
                         m_chassis.followTrajectoryCommand(twoPieceLoadsideC,false),
                         new RunVoltsTime(m_Intake,-11,twoPieceLoadsideC.getTotalTimeSeconds())
-                )
+                ),
+                new ArmToPosition(m_arm, 0, 0)
         );
     }
 }
