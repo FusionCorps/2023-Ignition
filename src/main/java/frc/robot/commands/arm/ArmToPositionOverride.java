@@ -4,6 +4,10 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
+// arm to position but I turned off the safety features
+// really for testing only DO NOT USE UNLESS YOU KNOW WHAT YOU ARE DOING
+// SERIOUSLY THIS COULD BREAK !@$#
+// I don't even know if this works anymore either
 public class ArmToPositionOverride extends CommandBase {
 
     Arm mArm;
@@ -16,6 +20,7 @@ public class ArmToPositionOverride extends CommandBase {
 
     double delay;
 
+    // this is basically the same thing but minus the safety checks
     public ArmToPositionOverride(Arm arm, double basePos, double wristPos) {
         mArm = arm;
 

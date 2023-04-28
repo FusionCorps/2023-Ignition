@@ -8,6 +8,7 @@ import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.IntakeConstants.OUTTAKE_VOLTS;
 import static java.lang.Math.abs;
 
+// this doesn't really work either it's better just to do high cancels
 public class CubeFling extends CommandBase {
 
     // assumes start at 0 -70
@@ -15,26 +16,6 @@ public class CubeFling extends CommandBase {
     // release cube at 0 0
 
     // used in tele only so no need to recreate arm motion logic here
-
-    // logic pseudocode
-    //
-    // bool init? = false
-    //
-    //
-    // if (!init) {
-    //     if (arm != 0 -70):
-    //          arm -> 0 -70
-    //     else:
-    //          init = true
-    // }
-
-    // else:
-    //      arm -> 0 70
-    //      if arm > 0 0:
-    //          mIntake.set(out)
-
-    // end when arm at 0 70 and init = true
-
     Intake mIntake;
     Arm mArm;
 

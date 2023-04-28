@@ -19,6 +19,8 @@ import frc.robot.subsystems.Intake;
 import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.IntakeConstants.OUTTAKE_VOLTS;
 
+// Score one taxi then balance.
+// Might be good to curve this one towards the middle to avoid falling off charge station edge.
 public class OnePieceTaxiBalance extends SequentialCommandGroup {
 
     Chassis m_chassis;
@@ -47,16 +49,20 @@ public class OnePieceTaxiBalance extends SequentialCommandGroup {
         }
 
         addCommands(
+                // reset gyro
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
+                // score first cone
                 new TwoPartHighAuto(m_arm),
                 new ArmToPosition(m_arm,HIGH_BASE_POS_ALT_AUTO,HIGH_WRIST_POS_ALT_AUTO),
                 new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.5),
                 new ArmToPosition(m_arm,BASE_START_POS, WRIST_START_POS),
+                // go over the charge station (note maybe deprecated check the path b4 running)
                 new ParallelCommandGroup(
                         //new RunVoltsTime(m_intake,-6,twoPieceHighBalanceA.getTotalTimeSeconds()),
                         m_chassis.followTrajectoryCommand(twoPieceHighBalanceA,true)
                         // new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE,2.3)
                 ),
+                // drive back and balance
                 new ChassisDriveAuton(m_chassis,0.3,0,0,2.0),
                 new ChassisAutoBalanceFast(m_chassis)
 //                new ParallelCommandGroup(

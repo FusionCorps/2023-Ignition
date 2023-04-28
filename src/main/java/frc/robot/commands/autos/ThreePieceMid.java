@@ -58,8 +58,10 @@ public class ThreePieceMid extends SequentialCommandGroup {
         addCommands(
                 m_cameras.runOnce(() -> { System.out.println("Running two piece loader side"); }),
                 m_chassis.runOnce(() -> { m_chassis.setGyroAngle(0.0); }),
+                // score preload
                 new ArmToPosition(m_arm, MID_BASE_POS, MID_WRIST_POS, 0.25),
                 new RunVoltsTime(m_intake, OUTTAKE_VOLTS, 0.2),
+                // grab next cube
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CUBE,INTAKE_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideA,true),
@@ -67,19 +69,23 @@ public class ThreePieceMid extends SequentialCommandGroup {
                                 new RunVoltsTime(m_intake,-0.45*12,threePieceLoadSideA.getTotalTimeSeconds()-1)
                         )
                 ),
+                // come back with cube
                 new ParallelCommandGroup(
                         m_intake.runOnce(() -> {m_intake.set(-0.2);}),
                         new ArmToPosition(m_arm, MID_BASE_POS_CUBE, MID_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideB,false)
                 ),
+                // score it
                 new ChassisDriveAuton(m_chassis, 0.25, 0.0, 0.0, 0.1),
                 new RunVoltsTime(m_intake,3.5,0.1),
+                // grab cone
                 new ParallelCommandGroup(
                         new ArmToPosition(m_arm,INTAKE_BASE_POS_CONE,INTAKE_WRIST_POS_CONE),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideC,false),
                         new RunVoltsTime(m_intake,-11,threePieceLoadSideC.getTotalTimeSeconds())
                 ),
                 m_intake.runOnce(() -> {m_intake.set(-0.2);}),
+                // come back with arm up
                 new ParallelCommandGroup(
                         new SequentialCommandGroup(
                                 // delay putting arm up to avoid rocking robot
@@ -89,6 +95,7 @@ public class ThreePieceMid extends SequentialCommandGroup {
                         ),
                         m_chassis.followTrajectoryCommand(threePieceLoadSideD,false)
                 ),
+                // score cone
                 new ChassisDriveAuton(m_chassis,0.1,0,0,0.13),
                 new RunVoltsTime(m_intake,OUTTAKE_VOLTS,0.25)
 

@@ -6,6 +6,7 @@ import frc.robot.subsystems.Arm;
 import static frc.robot.Constants.ArmConstants.*;
 import static java.lang.Math.abs;
 
+// literally just TwoPartHigh but the motor logic is over here since it's in auto
 public class TwoPartHighAuto extends CommandBase {
 
     Arm mArm;

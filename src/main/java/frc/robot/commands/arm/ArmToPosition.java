@@ -6,6 +6,8 @@ import frc.robot.subsystems.Arm;
 
 import static frc.robot.Constants.ArmConstants.*;
 
+// Command for moving arm to setpoints in auto
+// since CommandGroups would override DefaultCommand
 public class ArmToPosition extends CommandBase {
 
     Arm mArm;
@@ -18,6 +20,8 @@ public class ArmToPosition extends CommandBase {
 
     double delay;
 
+    // overloaded constructor so default delay is 0.25
+    // there's a way better way to do this I'm just lazy
     public ArmToPosition(Arm arm, double basePos, double wristPos) {
         mArm = arm;
 
@@ -36,6 +40,7 @@ public class ArmToPosition extends CommandBase {
         delay = delayTime;
     }
 
+    // reset timer and stop so the command doesn't end prematurely
     @Override
     public void initialize() {
         mArm.setTalonTargets(baseTarget, wristTarget);
@@ -50,6 +55,8 @@ public class ArmToPosition extends CommandBase {
 //        mArm.baseTalonTarget = HIGH_BASE_POS_ALT_PREP;
 //        mArm.wristTalonTarget = HIGH_WRIST_POS_ALT;
 
+        // arm logic copy pasted from ManageArm
+        // minus some of the more advanced cases
         if (mArm.armAtTarget()) {
             mArm.passSetpoints(mArm.baseTalonTarget, mArm.wristTalonTarget);
         } else if (mArm.wristStowed()) {
@@ -58,6 +65,7 @@ public class ArmToPosition extends CommandBase {
             mArm.stowWrist();
         }
 
+        // start timer once arm reaches target
         if (!timerStarted && (mArm.armAtTarget() && mArm.wristAtTarget())) {
             timerStarted = true;
             timer.reset();
@@ -65,14 +73,16 @@ public class ArmToPosition extends CommandBase {
         }
     }
 
+    // end command once delay is over
     @Override
     public boolean isFinished() {
         return timer.hasElapsed(delay);
     }
 
+    // print out for testing (old)
     @Override
     public void end(boolean isFinished) {
-        System.out.println("ArmToPosition Finished");
+        // System.out.println("ArmToPosition Finished");
     }
 
 }

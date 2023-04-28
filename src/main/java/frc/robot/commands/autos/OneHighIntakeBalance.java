@@ -17,6 +17,8 @@ import static frc.robot.Constants.ArmConstants.*;
 import static frc.robot.Constants.ArmConstants.INTAKE_WRIST_POS_CONE;
 import static frc.robot.Constants.IntakeConstants.OUTTAKE_VOLTS;
 
+// dead reckon over the charge station grab a piece then balance
+// never run in comp
 public class OneHighIntakeBalance extends SequentialCommandGroup {
 
     Chassis m_chassis;

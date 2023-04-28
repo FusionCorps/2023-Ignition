@@ -34,6 +34,7 @@ public class RelaxArm extends CommandBase {
         return mTimer.hasElapsed(0.5);
     }
 
+    // just have the arm relax on wakeup since no good way to reset MotionMagic loops
     @Override
     public void end(boolean interrupted) {
         mArm.setMotorsBrake();
