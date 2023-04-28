@@ -62,7 +62,7 @@ public class TwoPieceIntakeBalance extends SequentialCommandGroup {
                         new RunVoltsTime(m_intake,-0.45*12,twoPieceIntakeBalanceA.getTotalTimeSeconds())
                 ),
                 new ParallelCommandGroup(
-                        m_chassis.runOnce(() -> {m_intake.set(-0.2);}),
+                        m_intake.runOnce(() -> {m_intake.set(-0.2);}),
                         new ArmToPosition(m_arm, MID_BASE_POS_CUBE, MID_WRIST_POS_CUBE),
                         m_chassis.followTrajectoryCommand(twoPieceIntakeBalanceB,false)
                 ),
