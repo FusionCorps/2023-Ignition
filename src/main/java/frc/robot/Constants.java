@@ -40,8 +40,13 @@ public final class Constants {
     public static final double BASE_kI = 0;
     public static final double BASE_kD = 0;
 
-    public static final double BASE_MAX_V = 19500; // ticks / 100ms
-    public static final double BASE_MAX_A = 48000; // ticks / 100ms / s
+//    public static final double BASE_MAX_V = 19500; // ticks / 100ms
+//    public static final double BASE_MAX_A = 48000; // ticks / 100ms / s
+//    public static final int BASE_CURVE_STR = 2; // smoothness
+
+    // demo constants
+    public static final double BASE_MAX_V = 10000; // ticks / 100ms
+    public static final double BASE_MAX_A = 20000; // ticks / 100ms / s
     public static final int BASE_CURVE_STR = 2; // smoothness
 
     // slomo testing
@@ -54,8 +59,13 @@ public final class Constants {
     public static final double WRIST_kI = 0;
     public static final double WRIST_kD = 0;
 
-    public static final double WRIST_MAX_V = 19500;
-    public static final double WRIST_MAX_A = 52000; // could be up to 102400 with good enough intake
+//    public static final double WRIST_MAX_V = 19500;
+//    public static final double WRIST_MAX_A = 52000; // could be up to 102400 with good enough intake
+//    public static final int WRIST_CURVE_STR = 2;
+
+    // demo constants
+    public static final double WRIST_MAX_V = 10000;
+    public static final double WRIST_MAX_A = 25000; // could be up to 102400 with good enough intake
     public static final int WRIST_CURVE_STR = 2;
 
     // slomo testing
@@ -174,9 +184,10 @@ public final class Constants {
   public static double TRACK_WIDTH_METERS_TEST = 0.4953;
   public static double TRACK_LENGTH_METERS_TEST = 0.4953;
 
-  public static double SWERVE_FORWARD_SPEED_MAX = 6.6;
-  public static double SWERVE_STRAFE_SPEED_MAX = 6.6;
-  public static double SWERVE_ROT_SPEED_MAX = 4.0 / 0.4953 * 0.7112;
+  // halved for demo
+  public static double SWERVE_FORWARD_SPEED_MAX = 3.3;
+  public static double SWERVE_STRAFE_SPEED_MAX = 3.3;
+  public static double SWERVE_ROT_SPEED_MAX = 2.0 / 0.4953 * 0.7112;
 
   public static double MAX_SPEED = 9.2;
 
