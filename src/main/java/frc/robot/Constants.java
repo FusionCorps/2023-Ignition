@@ -15,6 +15,8 @@ import static java.lang.Math.PI;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  // dt for updating odometry
+  public static final double kLooperDt = .01;
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }

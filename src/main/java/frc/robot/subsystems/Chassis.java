@@ -9,7 +9,10 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -311,6 +314,41 @@ public class Chassis extends SubsystemBase {
     public Pose2d getPose() {
         return m_odometry.getEstimatedPosition();
     }
+/*
+ Pose2d robot_pose_vel = new Pose2d(mPeriodicIO.des_chassis_speeds.vxMetersPerSecond * Constants.kLooperDt,
+            mPeriodicIO.des_chassis_speeds.vyMetersPerSecond * Constants.kLooperDt,
+            Rotation2d.fromRadians(mPeriodicIO.des_chassis_speeds.omegaRadiansPerSecond * Constants.kLooperDt));
+Twist2d twist_vel = Pose2d.log(robot_pose_vel);
+ChassisSpeeds updated_chassis_speeds = new ChassisSpeeds(
+            twist_vel.dx / Constants.kLooperDt, twist_vel.dy / Constants.kLooperDt, twist_vel.dtheta / Constants.kLooperDt);
+
+
+// Getting individual speeds
+double forward = chassisSpeeds.vxMetersPerSecond;
+double sideways = chassisSpeeds.vyMetersPerSecond;
+double angular = chassisSpeeds.omegaRadiansPerSecond;
+ */
+    // applying 254's method to update the odometry
+    public ChassisSpeeds updateChassisSpeeds(SwerveModuleState[] desired) {
+
+        // get swerve module states
+        SwerveModuleState flState = desired[0];
+        SwerveModuleState frState = desired[2];
+        SwerveModuleState blState = desired[1];
+        SwerveModuleState brState = desired[3];
+
+        // converts swerve module states to chassis speed
+        ChassisSpeeds chassisSpeeds = m_kinematics.toChassisSpeeds(flState, frState, blState, brState);
+
+        // delta velocity
+        Pose2d robot_pose_vel = new Pose2d(chassisSpeeds.vxMetersPerSecond * Constants.kLooperDt,
+        chassisSpeeds.vyMetersPerSecond * Constants.kLooperDt,
+        Rotation2d.fromRadians(chassisSpeeds.omegaRadiansPerSecond * Constants.kLooperDt));
+        Twist2d twist_vel = new Pose2d().log(robot_pose_vel);
+
+        return new ChassisSpeeds(twist_vel.dx / kLooperDt, twist_vel.dy / kLooperDt, twist_vel.dtheta / kLooperDt);
+
+    }
 
     public Pose2d getPoseCustom() {
         return m_odoTest.getRobotPose();
@@ -321,10 +359,27 @@ public class Chassis extends SubsystemBase {
     }
 
     public void setModuleStates(SwerveModuleState[] desired) {
-        comboFL.passState(desired[0]);
-        comboBL.passState(desired[1]);
-        comboFR.passState(desired[2]);
-        comboBR.passState(desired[3]);
+        
+        ChassisSpeeds updatedSpeeds = updateChassisSpeeds(desired);
+
+        SwerveModuleState[] updated_desired = m_kinematics.toSwerveModuleStates(updatedSpeeds);
+
+        // Front left module state
+        SwerveModuleState frontLeft = updated_desired[0];
+
+        // Front right module state
+        SwerveModuleState frontRight = updated_desired[1];
+
+        // Back left module state
+        SwerveModuleState backLeft = updated_desired[2];
+
+        // Back right module state
+        SwerveModuleState backRight = updated_desired[3];
+
+        comboFL.passState(frontLeft);
+        comboBL.passState(backLeft);
+        comboFR.passState(frontRight);
+        comboBR.passState(backRight);
     }
 
     public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
