@@ -1,9 +1,9 @@
-package com.team254.lib.trajectory.timing;
+/*package com.team254.lib.trajectory.timing;
 
 import com.team254.lib.geometry.ICurvature;
 import com.team254.lib.geometry.IPose2d;
 import com.team254.lib.physics.SwerveDrive;
-import frc.robot.Constant;;
+import frc.robot.Constant;
 
 public class SwerveDriveDynamicsConstraint<S extends IPose2d<S> & ICurvature<S>> implements TimingConstraint<S> {
 
@@ -26,3 +26,4 @@ public class SwerveDriveDynamicsConstraint<S extends IPose2d<S> & ICurvature<S>>
         return new MinMaxAcceleration(-Constants.kMaxDriveAcceleration, Constants.kMaxDriveAcceleration);
     }
 }
+*/
