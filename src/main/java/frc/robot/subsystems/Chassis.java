@@ -142,7 +142,7 @@ public class Chassis extends SubsystemBase {
 
     // ported from last year
     public void runSwerve(double fwd, double str, double rot_temp) {
-
+        /* 
         // convenience for negating
         double rot = rot_temp;
         // sometimes happens if we align the modules up wrong, easier to just fix in here than redo
@@ -181,13 +181,14 @@ public class Chassis extends SubsystemBase {
         if (maxWheelSpeed > Constants.MAX_SPEED) {
             ratio = (Constants.MAX_SPEED/ maxWheelSpeed);
         }
+        
 
         // pass all values to motors
         this.comboFL.passArgs(ratio * speedFL, getAngle(fwd, str, rot, 0));
         this.comboBL.passArgs(ratio * speedBL, getAngle(fwd, str, rot, 1));
         this.comboFR.passArgs(ratio * speedFR, getAngle(fwd, str, rot, 2));
         this.comboBR.passArgs(ratio * speedBR, getAngle(fwd, str, rot, 3));
-
+        */
     }
 
     // used for braking when scoring, balancing ideally

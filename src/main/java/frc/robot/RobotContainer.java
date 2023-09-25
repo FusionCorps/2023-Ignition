@@ -36,6 +36,9 @@ public class RobotContainer {
     private final Arm m_arm = new Arm();
     private final Intake mIntake = new Intake();
 
+    // Test 254's kinematics library
+    private final TestKinematics kinematicsTest = new TestKinematics();
+
     // Replace with CommandPS4Controller or CommandJoystick if needed
     public static CommandXboxController m_controller =
             new CommandXboxController(OperatorConstants.kDriverControllerPort);
