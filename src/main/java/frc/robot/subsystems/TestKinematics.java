@@ -44,7 +44,7 @@ public class TestKinematics extends SubsystemBase {
 
     // configurations for goofy ahh keyboard 
     XboxController rotational = new XboxController(1);
-    boolean isKeyboard = true;
+    boolean isKeyboard = false;
 
 
     public TestKinematics() {
