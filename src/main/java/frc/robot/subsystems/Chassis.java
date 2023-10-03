@@ -142,7 +142,7 @@ public class Chassis extends SubsystemBase {
 
     // ported from last year
     public void runSwerve(double fwd, double str, double rot_temp) {
-        /* 
+        
         // convenience for negating
         double rot = rot_temp;
         // sometimes happens if we align the modules up wrong, easier to just fix in here than redo
@@ -184,11 +184,23 @@ public class Chassis extends SubsystemBase {
         
 
         // pass all values to motors
-        this.comboFL.passArgs(ratio * speedFL, getAngle(fwd, str, rot, 0));
-        this.comboBL.passArgs(ratio * speedBL, getAngle(fwd, str, rot, 1));
-        this.comboFR.passArgs(ratio * speedFR, getAngle(fwd, str, rot, 2));
-        this.comboBR.passArgs(ratio * speedBR, getAngle(fwd, str, rot, 3));
-        */
+
+        // FL, FR, BL, BR
+        SwerveModuleState[] states = new SwerveModuleState[]{
+            new SwerveModuleState(ratio * speedFR, new Rotation2d(getAngle(fwd, str, rot, 0))),
+            new SwerveModuleState(ratio * speedFL, new Rotation2d(getAngle(fwd, str, rot, 2))),
+            new SwerveModuleState(ratio * speedBL, new Rotation2d(getAngle(fwd, str, rot, 1))),
+            new SwerveModuleState(ratio * speedBR, new Rotation2d(getAngle(fwd, str, rot, 3)))
+        };
+
+        // update swerve modules with 254's method
+        states = updateChassisSpeeds(states);
+
+        this.comboFL.passArgs(states[0].speedMetersPerSecond, states[0].angle.getRadians());
+        this.comboBL.passArgs(states[2].speedMetersPerSecond, states[2].angle.getRadians());
+        this.comboFR.passArgs(states[1].speedMetersPerSecond, states[1].angle.getRadians());
+        this.comboBR.passArgs(states[3].speedMetersPerSecond, states[3].angle.getRadians());
+        
     }
 
     // used for braking when scoring, balancing ideally
@@ -330,12 +342,12 @@ double sideways = chassisSpeeds.vyMetersPerSecond;
 double angular = chassisSpeeds.omegaRadiansPerSecond;
  */
     // applying 254's method to update the odometry
-    public ChassisSpeeds updateChassisSpeeds(SwerveModuleState[] desired) {
+    public SwerveModuleState[] updateChassisSpeeds(SwerveModuleState[] desired) {
 
         // get swerve module states
         SwerveModuleState flState = desired[0];
-        SwerveModuleState frState = desired[2];
-        SwerveModuleState blState = desired[1];
+        SwerveModuleState frState = desired[1];
+        SwerveModuleState blState = desired[2];
         SwerveModuleState brState = desired[3];
 
         // converts swerve module states to chassis speed
@@ -347,7 +359,7 @@ double angular = chassisSpeeds.omegaRadiansPerSecond;
         Rotation2d.fromRadians(chassisSpeeds.omegaRadiansPerSecond * Constants.kLooperDt));
         Twist2d twist_vel = new Pose2d().log(robot_pose_vel);
 
-        return new ChassisSpeeds(twist_vel.dx / kLooperDt, twist_vel.dy / kLooperDt, twist_vel.dtheta / kLooperDt);
+        return m_kinematics.toSwerveModuleStates(new ChassisSpeeds(twist_vel.dx / kLooperDt, twist_vel.dy / kLooperDt, twist_vel.dtheta / kLooperDt));
 
     }
 
@@ -360,22 +372,21 @@ double angular = chassisSpeeds.omegaRadiansPerSecond;
     }
 
     public void setModuleStates(SwerveModuleState[] desired) {
-        
-        ChassisSpeeds updatedSpeeds = updateChassisSpeeds(desired);
 
-        SwerveModuleState[] updated_desired = m_kinematics.toSwerveModuleStates(updatedSpeeds);
+        // update swerve module state with 254's method
 
+        SwerveModuleState[] updatedDesired = updateChassisSpeeds(desired);
         // Front left module state
-        SwerveModuleState frontLeft = updated_desired[0];
+        SwerveModuleState frontLeft = updatedDesired[0];
 
         // Front right module state
-        SwerveModuleState frontRight = updated_desired[1];
+        SwerveModuleState frontRight = updatedDesired[1];
 
         // Back left module state
-        SwerveModuleState backLeft = updated_desired[2];
+        SwerveModuleState backLeft = updatedDesired[2];
 
         // Back right module state
-        SwerveModuleState backRight = updated_desired[3];
+        SwerveModuleState backRight = updatedDesired[3];
 
         comboFL.passState(frontLeft);
         comboBL.passState(backLeft);
