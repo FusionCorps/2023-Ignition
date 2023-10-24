@@ -13,7 +13,7 @@ public class SwerveConverter {
         
         // adds 90 degrees to all the s 
         for (int i = 0; i < states.length; i++) {
-            states[i].angle = new Rotation2d(states[i].angle.getRadians() + Math.PI / 2);
+            states[i].angle = new Rotation2d(states[i].angle.getRadians() - Math.PI / 2);
         }
         return states;
     }

@@ -145,6 +145,25 @@ public final class Constants {
 
   }
 
+  /* 
+  // MOTOR IDS for the SWERVE
+  public static int AXIS_FL_ID = 0;
+  public static int AXIS_BL_ID = 1;
+  public static int AXIS_FR_ID = 3;
+  public static int AXIS_BR_ID = 7;
+
+  public static int DRIVE_FL_ID = 8;
+  public static int DRIVE_BL_ID = 9;
+  public static int DRIVE_FR_ID = 4;
+  public static int DRIVE_BR_ID = 5;
+
+  // CANCODER IDS
+  public static int CODER_FL_ID = 12;
+  public static int CODER_BL_ID = 2;
+  public static int CODER_FR_ID = 13;
+  public static int CODER_BR_ID = 11;
+
+  */
   // MOTOR IDS for the SWERVE
   public static int AXIS_FL_ID = 0;
   public static int AXIS_BL_ID = 1;

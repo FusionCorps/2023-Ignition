@@ -25,7 +25,7 @@ public class ChassisDrive extends CommandBase {
         // 4 - RJoystick X Axis
         try {
             mChassis.runSwerve(m_controller.getRawAxis(1),
-                    -m_controller.getRawAxis(0),
+                    m_controller.getRawAxis(0),
                     m_controller.getRawAxis(4));
         } catch (Exception e) {
             e.printStackTrace();

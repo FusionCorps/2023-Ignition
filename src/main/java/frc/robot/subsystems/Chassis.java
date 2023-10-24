@@ -36,6 +36,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.math.FusionSwerveOdometry;
 import frc.robot.math.SwerveCalcs;
+import frc.robot.math.SwerveConverter;
 import frc.robot.modules.SwerveCombo;
 
 import static frc.robot.Constants.*;
@@ -142,9 +143,12 @@ public class Chassis extends SubsystemBase {
 
     // ported from last year
     public void runSwerve(double fwd, double str, double rot_temp) {
+
+        
         
         // convenience for negating
         double rot = rot_temp;
+        /* 
         // sometimes happens if we align the modules up wrong, easier to just fix in here than redo
 
         // get new values
@@ -181,20 +185,25 @@ public class Chassis extends SubsystemBase {
         if (maxWheelSpeed > Constants.MAX_SPEED) {
             ratio = (Constants.MAX_SPEED/ maxWheelSpeed);
         }
+        */
         
 
         // pass all values to motors
 
+        ChassisSpeeds speed = new ChassisSpeeds(.1 * str * Constants.SWERVE_STRAFE_SPEED_MAX, .1* fwd * Constants.SWERVE_FORWARD_SPEED_MAX, .1*rot * ( Constants.SWERVE_ROT_SPEED_MAX));
+
+        SwerveModuleState[] states = SwerveConverter.toSwerveModules(m_kinematics, speed);
+
         // FL, FR, BL, BR
-        SwerveModuleState[] states = new SwerveModuleState[]{
+        /*SwerveModuleState[] states = new SwerveModuleState[]{
             new SwerveModuleState(ratio * speedFR, new Rotation2d(getAngle(fwd, str, rot, 0))),
             new SwerveModuleState(ratio * speedFL, new Rotation2d(getAngle(fwd, str, rot, 2))),
             new SwerveModuleState(ratio * speedBL, new Rotation2d(getAngle(fwd, str, rot, 1))),
             new SwerveModuleState(ratio * speedBR, new Rotation2d(getAngle(fwd, str, rot, 3)))
-        };
+        };*/
 
         // update swerve modules with 254's method
-        states = updateChassisSpeeds(states);
+        //states = updateChassisSpeeds(states);
 
         this.comboFL.passArgs(states[0].speedMetersPerSecond, states[0].angle.getRadians());
         this.comboBL.passArgs(states[2].speedMetersPerSecond, states[2].angle.getRadians());
